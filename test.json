@@ -1,0 +1,231 @@
+{
+    "trs": [
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [1,1],
+                    "context": "井号"
+                },
+                {
+                    "colspan": [2,2],
+                    "rowspan": [1,1],
+                    "context": "安C19-18"
+                },
+                {
+                    "colspan": [3,4],
+                    "rowspan": [1,1],
+                    "context": "钻井顺序"
+                },
+                {
+                    "colspan": [5,5],
+                    "rowspan": [1,1],
+                    "context": "1"
+                },
+                {
+                    "colspan": [6,6],
+                    "rowspan": [1],
+                    "context": "施工井队"
+                },
+                {
+                    "colspan": [7,7],
+                    "rowspan": [1,1],
+                    "context": "盘锦豫龙大修2队(长城)"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [2,2],
+                    "context": "井别"
+                },
+                {
+                    "colspan": [2,2],
+                    "rowspan": [2,2],
+                    "context": "采油井"
+                },
+                {
+                    "colspan": [3,3],
+                    "rowspan": [2,2],
+                    "context": "井型"
+                },
+                {
+                    "colspan": [4,4],
+                    "rowspan": [2,2],
+                    "context": "侧钻井"
+                },
+                {
+                    "colspan": [5,6],
+                    "rowspan": [2,2],
+                    "context": "前拖距离(m)"
+                },
+                {
+                    "colspan": [7,7],
+                    "rowspan": [2,2],
+                    "context": "0"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [3,3],
+                    "context": "地理位置"
+                },
+                {
+                    "colspan": [2,4],
+                    "rowspan": [3,3],
+                    "context": "陕西省榆林市定边县砖井镇凡食沟村"
+                },
+                {
+                    "colspan": [5,5],
+                    "rowspan": [3,4],
+                    "context": "井组复测坐标"
+                },
+                {
+                    "colspan": [6,6],
+                    "rowspan": [3,3],
+                    "context": "纵坐标(X)"
+                },
+                {
+                    "colspan": [7,7],
+                    "rowspan": [2,2],
+                    "context": "横坐标(Y)"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [4,4],
+                    "context": "构造位置"
+                },
+                {
+                    "colspan": [2,4],
+                    "rowspan": [4,4],
+                    "context": "鄂尔多斯盆地伊陕斜坡"
+                },
+                {
+                    "colspan": [6,6],
+                    "rowspan": [4,4],
+                    "context": "4148652.64"
+                },
+                {
+                    "colspan": [7,7],
+                    "rowspan": [4,4],
+                    "context": "36495013.14"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [5,6],
+                    "context": "井口坐标"
+                },
+                {
+                    "colspan": [2,2],
+                    "rowspan": [5,5],
+                    "context": "纵坐标(X)"
+                },
+                {
+                    "colspan": [3,4],
+                    "rowspan": [5,5],
+                    "context": "横坐标(Y)"
+                },
+                {
+                    "colspan": [5,6],
+                    "rowspan": [5,5],
+                    "context": "设计位移(m)"
+                },
+                {
+                    "colspan": [7,7],
+                    "rowspan": [5,5],
+                    "context": "设计方位(°)"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [2,2],
+                    "rowspan": [6,6],
+                    "context": "4148652.64"
+                },
+                {
+                    "colspan": [3,4],
+                    "rowspan": [6,6],
+                    "context": "36495013.14"
+                },
+                {
+                    "colspan": [5,6],
+                    "rowspan": [5,5],
+                    "context": "88.78"
+                },
+                {
+                    "colspan": [7,7],
+                    "rowspan": [5,5],
+                    "context": "338.08"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [7,8],
+                    "context": "中靶坐标"
+                },
+                {
+                    "colspan": [2,2],
+                    "rowspan": [7,7],
+                    "context": "纵坐标(X)"
+                },
+                {
+                    "colspan": [3,4],
+                    "rowspan": [7,7],
+                    "context": "横坐标(Y)"
+                },
+                {
+                    "colspan": [5,6],
+                    "rowspan": [7,7],
+                    "context": "靶心半径(m)"
+                },
+                {
+                    "colspan": [7,7],
+                    "rowspan": [7,7],
+                    "context": "≤10"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [2,2],
+                    "rowspan": [8,8],
+                    "context": "4148735.00"
+                },
+                {
+                    "colspan": [3,4],
+                    "rowspan": [8,8],
+                    "context": "36494980.00"
+                },
+                {
+                    "colspan": [5,6],
+                    "rowspan": [8,8],
+                    "context": "磁偏角"
+                },
+                {
+                    "colspan": [7,7],
+                    "rowspan": [8,8],
+                    "context": "-2.733°"
+                }
+            ]
+        }
+    ]
+}
