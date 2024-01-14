@@ -26,7 +26,8 @@ class Vicuna(LLM):
             content1 = json.dumps({"text": prompt})
             response = requests.request("POST", self.url_llm, data=content1)
             res = json.loads(response.text, strict=False)
-            return res['response']
+            print("res:",res)
+            return res[1]
         except:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="服务器已关闭，请联系服务器管理员")
 

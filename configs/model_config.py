@@ -8,7 +8,8 @@ LLM_URLS = ["http://region-3.seetacloud.com:31536/",
             "https://u147750-92ae-0299e063.neimeng.seetacloud.com:6443/",
             "https://u147750-b6ae-2bf49303.neimeng.seetacloud.com:6443/",
             "https://u147750-8fae-be4d7f86.neimeng.seetacloud.com:6443/",
-            "https://u147750-b6ae-0a0938b6.neimeng.seetacloud.com:6443/"]
+            "https://u147750-b6ae-0a0938b6.neimeng.seetacloud.com:6443/",
+            "http://region-31.seetacloud.com:24557/"]
 
 # LLM input history length
 LLM_HISTORY_LEN = 3

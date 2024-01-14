@@ -12,4 +12,4 @@ MINUS_DAYS_FROM_TODAY = 3
 value_map = {'否': 0.001, '可能': 1, '是': 20}
 score=20
 score_threshold=20
-n_generate_sample=10
+n_generate_sample=3
