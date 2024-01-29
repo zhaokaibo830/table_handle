@@ -5,32 +5,38 @@
                 {
                     "colspan": [1,1],
                     "rowspan": [1,1],
-                    "context": "井号"
+                    "context": "井号",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [2,2],
                     "rowspan": [1,1],
-                    "context": "安C19-18"
+                    "context": "安C19-18",
+                    "node_type": "value"
                 },
                 {
                     "colspan": [3,4],
                     "rowspan": [1,1],
-                    "context": "钻井顺序"
+                    "context": "钻井顺序",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [5,5],
                     "rowspan": [1,1],
-                    "context": "1"
+                    "context": "1",
+                    "node_type": "value"
                 },
                 {
                     "colspan": [6,6],
                     "rowspan": [1,1],
-                    "context": "施工井队"
+                    "context": "施工井队",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [7,7],
                     "rowspan": [1,1],
-                    "context": "盘锦豫龙大修2队(长城)"
+                    "context": "盘锦豫龙大修2队(长城)",
+                    "node_type": "value"
                 }
             ]
         },
@@ -39,32 +45,38 @@
                 {
                     "colspan": [1,1],
                     "rowspan": [2,2],
-                    "context": "井别"
+                    "context": "井别",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [2,2],
                     "rowspan": [2,2],
-                    "context": "采油井"
+                    "context": "采油井",
+                    "node_type": "value"
                 },
                 {
                     "colspan": [3,3],
                     "rowspan": [2,2],
-                    "context": "井型"
+                    "context": "井型",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [4,4],
                     "rowspan": [2,2],
-                    "context": "侧钻井"
+                    "context": "侧钻井",
+                    "node_type": "value"
                 },
                 {
                     "colspan": [5,6],
                     "rowspan": [2,2],
-                    "context": "前拖距离(m)"
+                    "context": "前拖距离(m)",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [7,7],
                     "rowspan": [2,2],
-                    "context": "0"
+                    "context": "0",
+                    "node_type": "value"
                 }
             ]
         },
@@ -73,27 +85,32 @@
                 {
                     "colspan": [1,1],
                     "rowspan": [3,3],
-                    "context": "地理位置"
+                    "context": "地理位置",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [2,4],
                     "rowspan": [3,3],
-                    "context": "陕西省榆林市定边县砖井镇凡食沟村"
+                    "context": "陕西省榆林市定边县砖井镇凡食沟村",
+                    "node_type": "value"
                 },
                 {
                     "colspan": [5,5],
                     "rowspan": [3,4],
-                    "context": "井组复测坐标"
+                    "context": "井组复测坐标",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [6,6],
                     "rowspan": [3,3],
-                    "context": "纵坐标(X)"
+                    "context": "纵坐标(X)",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [7,7],
                     "rowspan": [3,3],
-                    "context": "横坐标(Y)"
+                    "context": "横坐标(Y)",
+                    "node_type": "key"
                 }
             ]
         },
@@ -102,22 +119,26 @@
                 {
                     "colspan": [1,1],
                     "rowspan": [4,4],
-                    "context": "构造位置"
+                    "context": "构造位置",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [2,4],
                     "rowspan": [4,4],
-                    "context": "鄂尔多斯盆地伊陕斜坡"
+                    "context": "鄂尔多斯盆地伊陕斜坡",
+                    "node_type": "value"
                 },
                 {
                     "colspan": [6,6],
                     "rowspan": [4,4],
-                    "context": "4148652.64"
+                    "context": "4148652.64",
+                    "node_type": "value"
                 },
                 {
                     "colspan": [7,7],
                     "rowspan": [4,4],
-                    "context": "36495013.14"
+                    "context": "36495013.14",
+                    "node_type": "value"
                 }
             ]
         },
@@ -126,27 +147,32 @@
                 {
                     "colspan": [1,1],
                     "rowspan": [5,6],
-                    "context": "井口坐标"
+                    "context": "井口坐标",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [2,2],
                     "rowspan": [5,5],
-                    "context": "纵坐标(X)"
+                    "context": "纵坐标(X)",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [3,4],
                     "rowspan": [5,5],
-                    "context": "横坐标(Y)"
+                    "context": "横坐标(Y)",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [5,6],
                     "rowspan": [5,5],
-                    "context": "设计位移(m)"
+                    "context": "设计位移(m)",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [7,7],
                     "rowspan": [5,5],
-                    "context": "设计方位(°)"
+                    "context": "设计方位(°)",
+                    "node_type": "key"
                 }
             ]
         },
@@ -155,22 +181,26 @@
                 {
                     "colspan": [2,2],
                     "rowspan": [6,6],
-                    "context": "4148652.64"
+                    "context": "4148652.64",
+                    "node_type": "value"
                 },
                 {
                     "colspan": [3,4],
                     "rowspan": [6,6],
-                    "context": "36495013.14"
+                    "context": "36495013.14",
+                    "node_type": "value"
                 },
                 {
                     "colspan": [5,6],
                     "rowspan": [6,6],
-                    "context": "88.78"
+                    "context": "88.78",
+                    "node_type": "value"
                 },
                 {
                     "colspan": [7,7],
                     "rowspan": [6,6],
-                    "context": "338.08"
+                    "context": "338.08",
+                    "node_type": "value"
                 }
             ]
         },
@@ -179,27 +209,32 @@
                 {
                     "colspan": [1,1],
                     "rowspan": [7,8],
-                    "context": "中靶坐标"
+                    "context": "中靶坐标",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [2,2],
                     "rowspan": [7,7],
-                    "context": "纵坐标(X)"
+                    "context": "纵坐标(X)",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [3,4],
                     "rowspan": [7,7],
-                    "context": "横坐标(Y)"
+                    "context": "横坐标(Y)",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [5,6],
                     "rowspan": [7,7],
-                    "context": "靶心半径(m)"
+                    "context": "靶心半径(m)",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [7,7],
                     "rowspan": [7,7],
-                    "context": "≤10"
+                    "context": "≤10",
+                    "node_type": "value"
                 }
             ]
         },
@@ -208,22 +243,26 @@
                 {
                     "colspan": [2,2],
                     "rowspan": [8,8],
-                    "context": "4148735.00"
+                    "context": "4148735.00",
+                    "node_type": "value"
                 },
                 {
                     "colspan": [3,4],
                     "rowspan": [8,8],
-                    "context": "36494980.00"
+                    "context": "36494980.00",
+                    "node_type": "value"
                 },
                 {
                     "colspan": [5,6],
                     "rowspan": [8,8],
-                    "context": "磁偏角"
+                    "context": "磁偏角",
+                    "node_type": "key"
                 },
                 {
                     "colspan": [7,7],
                     "rowspan": [8,8],
-                    "context": "-2.733°"
+                    "context": "-2.733°",
+                    "node_type": "value"
                 }
             ]
         }
