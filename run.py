@@ -243,6 +243,7 @@ while last_handled_value_num < handled_value_num or last_handled_key_num < handl
                 if down_nodes_may_merge and not right_nodes_may_merge:
                     for i_current_down_all_node in current_down_all_node:
                         i_row_j_col_node.set_of_affiliation = i_row_j_col_node.set_of_affiliation | i_current_down_all_node.set_of_affiliation
+                        i_current_down_all_node.merge_method="vertical"
                     for i_current_down_all_node in current_down_all_node:
                         i_current_down_all_node.set_of_affiliation = i_row_j_col_node.set_of_affiliation
                     i_row_j_col_node.visited = True
@@ -253,6 +254,7 @@ while last_handled_value_num < handled_value_num or last_handled_key_num < handl
                 elif not down_nodes_may_merge and right_nodes_may_merge:
                     for i_current_right_all_node in current_right_all_node:
                         i_row_j_col_node.set_of_affiliation = i_row_j_col_node.set_of_affiliation | i_current_right_all_node.set_of_affiliation
+                        i_current_right_all_node.merge_method="horizontal"
                     for i_current_right_all_node in current_right_all_node:
                         i_current_right_all_node.set_of_affiliation = i_row_j_col_node.set_of_affiliation
                     i_row_j_col_node.visited = True
@@ -346,28 +348,30 @@ while last_handled_value_num < handled_value_num or last_handled_key_num < handl
                     left_nodes_may_merge = False
 
                 if up_nodes_may_merge and not left_nodes_may_merge:
-                    temp_set = current_up_all_node[0].set_of_affiliation | i_row_j_col_node.set_of_affiliation
-                    current_up_all_node[0].set_of_affiliation = temp_set
-                    i_row_j_col_node.set_of_affiliation = temp_set
+                    current_up_all_node[0].set_of_affiliation.update(i_row_j_col_node.set_of_affiliation)
+                    i_row_j_col_node.set_of_affiliation=current_up_all_node[0].set_of_affiliation
                     i_row_j_col_node.visited = True
                     tag = True
                     handled_value_num += 1
+                    i_row_j_col_node.merge_method="vertical"
                     if current_up_all_node[0].node_type == "key":
                         current_up_all_node[0].visited = True
                         handled_key_num += 1
                         last_handled_key_num = handled_key_num
+                        current_up_all_node[0].merge_method="vertical"
 
                 if not up_nodes_may_merge and left_nodes_may_merge:
-                    temp_set = current_left_all_node[0].set_of_affiliation | i_row_j_col_node.set_of_affiliation
-                    current_left_all_node[0].set_of_affiliation = temp_set
-                    i_row_j_col_node.set_of_affiliation = temp_set
+                    current_left_all_node[0].set_of_affiliation.update(i_row_j_col_node.set_of_affiliation)
+                    i_row_j_col_node.set_of_affiliation =current_left_all_node[0].set_of_affiliation
                     i_row_j_col_node.visited = True
                     tag = True
                     handled_value_num += 1
+                    i_row_j_col_node.merge_method = "horizontal"
                     if current_left_all_node[0].node_type == "key":
                         current_left_all_node[0].visited = True
                         handled_key_num += 1
                         last_handled_key_num = handled_key_num
+                        current_left_all_node[0].merge_method="horizontal"
 
                 i_row_j_col_node: Node = i_row_j_col_node.right_pointer[i]
 
