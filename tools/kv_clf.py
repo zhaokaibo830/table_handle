@@ -18,7 +18,26 @@ def table_head_extract(context):
     # print(type(sys.argv[3]))
     chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat"), prompt=prompt)
     # chain = LLMChain(llm=ChatOpenAI(model=sys.argv[3]), prompt=prompt)
-    return ast.literal_eval(chain.run(context=context))["表头"]
+    tag = True
+    table_head: List = []
+    while tag:
+        result = chain.run(context=context)
+        json_left_index, json_right_index = result.find("{"), result.find("}")
+        if json_left_index != -1 and json_right_index != -1:
+            try:
+                table_head_json = ast.literal_eval(result[json_left_index:json_right_index + 1])
+                table_head = table_head_json["表头"]
+                if not isinstance(table_head, list):
+                    raise Exception('json文件中的表头不是一个列表！')
+                else:
+                    for i in range(len(table_head)):
+                        if not isinstance(table_head[i], str):
+                            table_head[i] = str(table_head[i]).replace("\n", "").replace("\t", "").replace("\r", "")
+                tag = False
+            except Exception as e:
+                print(result)
+
+    return table_head
     pass
 
 
@@ -40,7 +59,7 @@ def kv_clf(table_dict_no_node_type: Dict):
     i = 0
     while i < 10:
         i += 1
-        segmented_table: List[Set[Node]]=[]
+        segmented_table: List[Set[Node]] = []
         all_table_node: List[Node]
         _, all_table_node = table_seg(table_dict)
         for cell in all_table_node:
