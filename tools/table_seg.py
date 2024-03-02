@@ -474,7 +474,7 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node]):
     with open('./sub_tables.json', 'w', encoding='utf-8') as f:
         # 使用json.dump()函数将序列化后的JSON格式的数据写入到文件中
         json.dump(segmented_dict, f, indent=4, ensure_ascii=False)
-    return segmented_table
+    return segmented_table, all_table_node,rows_head
 
 
 if __name__ == '__main__':

@@ -1,6 +1,7 @@
 import json
 from tools.table_seg import table_seg
 from tools.node import Node
+from tools.kv_clf import kv_clf
 from functools import cmp_to_key
 from typing import List, Set, Dict
 import uvicorn
@@ -9,24 +10,17 @@ import json
 import os
 from pydantic import BaseModel
 import sys
-
-
-class Input(BaseModel):
-    file: UploadFile = File(...)
-    question: str = ""
-
-
-# os.environ['OPENAI_API_KEY'] = "EMPTY"
-# os.environ['OPENAI_API_BASE'] = "http://124.70.207.36:7002/v1"
-os.environ['OPENAI_API_KEY'] = sys.argv[1]
-os.environ['OPENAI_API_BASE'] = sys.argv[2]
-# print(sys.argv[1])
-# print(sys.argv[2])
 from langchain.chat_models import ChatOpenAI
 # from langchain_community.embeddings import OpenAIEmbeddings
 from langchain.chains import LLMChain
 from langchain_core.prompts import PromptTemplate
 
+os.environ['OPENAI_API_KEY'] = "EMPTY"
+os.environ['OPENAI_API_BASE'] = "http://124.70.207.36:7002/v1"
+# os.environ['OPENAI_API_KEY'] = sys.argv[1]
+# os.environ['OPENAI_API_BASE'] = sys.argv[2]
+# print(sys.argv[1])
+# print(sys.argv[2])
 
 def cmp(node1: Node, node2: Node):
     if node1.rowspan[0] < node2.rowspan[0]:
@@ -42,6 +36,15 @@ def cmp(node1: Node, node2: Node):
 
 app = FastAPI()
 
+@app.post("/table/kvclf")
+def kvclf(file: UploadFile = File(...)):
+    f = open("temp.json", 'wb')
+    data = file.file.read()
+    f.write(data)
+    f.close()
+    with open("temp.json", "r", encoding='utf-8') as f:
+        table_dict: Dict = json.load(f)
+    return kv_clf(table_dict)
 
 @app.post("/table/tabletotext")
 def tabletotext(file: UploadFile = File(...)):
