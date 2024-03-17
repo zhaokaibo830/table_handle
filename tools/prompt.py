@@ -7,3 +7,14 @@ table_head_extract_prompt = """
                     {context}
                     请对表头以列表形式输出，模板如下：["出生日期","籍贯"]，只需要按照模板输出，不需要其他多余内容
                     """
+
+polish_prompt = """
+            {context}
+            请把以上内容润色成人类习惯的描述方式。
+            """
+
+sub_table_extract_prompt = """
+            {whole_caption}
+            以上是一个完整的复杂表格描述。请根据以上内容对如下子表描述的进行润色:
+            {i_caption}
+            """

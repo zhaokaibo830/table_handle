@@ -58,9 +58,9 @@ document1=Document(page_content="苏里格气田第三天然气处理厂CL3-W1-J
 metadata2 = {"source_sub_table_index": 5}
 document2=Document(page_content="苏里格气田第三天然气处理厂",metadata=metadata2)
 documents=[document1,document2]
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=20, chunk_overlap=0)
-texts = text_splitter.split_documents(documents)
-faiss_index = FAISS.from_documents(texts, embeddings)
+# text_splitter = RecursiveCharacterTextSplitter(chunk_size=20, chunk_overlap=0)
+# texts = text_splitter.split_documents(documents)
+faiss_index = FAISS.from_documents(documents, embeddings)
 # temp=llm.predict("中国")
 Q="地下水"
 docs=faiss_index.similarity_search(Q, k=1)
