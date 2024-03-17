@@ -2,6 +2,7 @@ import json
 from tools.table_seg import table_seg
 from tools.node import Node
 from tools.kv_clf import kv_clf
+from tools.simple_table_handle import simple_table_handle
 from functools import cmp_to_key
 from typing import List, Set, Dict
 import uvicorn
@@ -17,6 +18,8 @@ from langchain_core.prompts import PromptTemplate
 
 os.environ['OPENAI_API_KEY'] = "EMPTY"
 os.environ['OPENAI_API_BASE'] = "http://124.70.207.36:7002/v1"
+
+
 # os.environ['OPENAI_API_KEY'] = sys.argv[1]
 # os.environ['OPENAI_API_BASE'] = sys.argv[2]
 # print(sys.argv[1])
@@ -36,15 +39,6 @@ def cmp(node1: Node, node2: Node):
 
 app = FastAPI()
 
-@app.post("/table/kvclf")
-def kvclf(file: UploadFile = File(...)):
-    f = open("temp.json", 'wb')
-    data = file.file.read()
-    f.write(data)
-    f.close()
-    with open("temp.json", "r", encoding='utf-8') as f:
-        table_dict: Dict = json.load(f)
-    return kv_clf(table_dict)
 
 @app.post("/table/tabletotext")
 def tabletotext(file: UploadFile = File(...)):
@@ -57,17 +51,11 @@ def tabletotext(file: UploadFile = File(...)):
         with open("temp.json", "r", encoding='utf-8') as f:
             table_dict: Dict = json.load(f)
 
-        with open("key.json", "r", encoding='utf-8') as f:
-            key_dict = json.load(f)
-        for i_row in table_dict["trs"]:
-            for i_row_j_col in i_row["tds"]:
-                if i_row_j_col["context"] in key_dict["key"]:
-                    i_row_j_col["node_type"] = "key"
-                else:
-                    i_row_j_col["node_type"] = "value"
-        # print(table_dict)
+        table_dict = kv_clf(table_dict)
+        print(table_dict)
         segmented_table: List[Set[Node]]
-        segmented_table,_= table_seg(table_dict)
+        segmented_table, _, _ = table_seg(table_dict)
+
         caption = ""
         for i, segment_i in enumerate(segmented_table):
             segment_i = list(segment_i)
@@ -75,9 +63,16 @@ def tabletotext(file: UploadFile = File(...)):
             if len(segment_i) == 2:
                 caption += segment_i[0].context + "是" + segment_i[1].context + "。"
             elif len(segment_i) > 2:
+                sub_table_cell = []
                 for segment_i_cell_j in segment_i:
-                    caption += segment_i_cell_j.context + " "
-                caption += "。"
+                    temp_dict = {
+                        "colspan": [segment_i_cell_j.colspan[0], segment_i_cell_j.colspan[1]],
+                        "rowspan": [segment_i_cell_j.rowspan[0], segment_i_cell_j.rowspan[1]],
+                        "context": segment_i_cell_j.context,
+                        "node_type": segment_i_cell_j.node_type
+                    }
+                    sub_table_cell.append(temp_dict)
+                caption += simple_table_handle(sub_table_cell)
             elif len(segment_i) == 1:
                 caption += segment_i[0].context + "  "
         res = {

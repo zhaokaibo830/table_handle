@@ -1,0 +1,510 @@
+{
+    "trs": [
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [1,1],
+                    "context": "井号",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [2,3],
+                    "rowspan": [1,1],
+                    "context": "高桥29-132",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [4,4],
+                    "rowspan": [1,1],
+                    "context": "井   别",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [5,5],
+                    "rowspan": [1,1],
+                    "context": "开发井",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [6,6],
+                    "rowspan": [1,1],
+                    "context": "井   型",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [7,8],
+                    "rowspan": [1,1],
+                    "context": "定向井",
+                    "node_type": "value"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [2,2],
+                    "context": "地理位置",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [2,8],
+                    "rowspan": [2,2],
+                    "context": "陕西省延安市安塞区沿河湾镇白家沟村",
+                    "node_type": "value"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [3,3],
+                    "context": "构造位置",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [2,8],
+                    "rowspan": [3,3],
+                    "context": "鄂尔多斯盆地伊陕斜坡",
+                    "node_type": "value"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [4,4],
+                    "context": "井位坐标",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [2,8],
+                    "rowspan": [4,4],
+                    "context": "X（m）：4073162.58         Y（m）：19357324.49（计算）",
+                    "node_type": "value"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [5,5],
+                    "context": "地面海拔（m）",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [2,4],
+                    "rowspan": [5,5],
+                    "context": "1272.53（参照高桥28-133复测）",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [5,6],
+                    "rowspan": [5,5],
+                    "context": "补心海拔（m）",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [7,8],
+                    "rowspan": [5,5],
+                    "context": "1282.03",
+                    "node_type": "value"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [6,6],
+                    "context": "目的层",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [2,4],
+                    "rowspan": [6,6],
+                    "context": "盒8段、山2段、本溪组",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [5,6],
+                    "rowspan": [6,6],
+                    "context": "设计垂深（m）",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [7,8],
+                    "rowspan": [6,6],
+                    "context": "3303",
+                    "node_type": "value"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [7,7],
+                    "context": "完钻层位",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [2,2],
+                    "rowspan": [7,7],
+                    "context": "马家沟组",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [3,4],
+                    "rowspan": [7,7],
+                    "context": "完井方式",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [5,8],
+                    "rowspan": [7,7],
+                    "context": "套管完井",
+                    "node_type": "value"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [8,8],
+                    "context": "完钻原则",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [2,8],
+                    "rowspan": [8,8],
+                    "context": "钻穿本溪组目的层，钻20m口袋完钻。钻口袋过程中若发现含气显示，则应请示项目组决定是否加深。",
+                    "node_type": "value"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [9,10],
+                    "context": "井号",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [2,2],
+                    "rowspan": [9,10],
+                    "context": "井型",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [3,3],
+                    "rowspan": [9,10],
+                    "context": "采(注)井 段中深(m)",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [4,4],
+                    "rowspan": [9,10],
+                    "context": "层位",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [5,8],
+                    "rowspan": [9,9],
+                    "context": "压 力 资 料",
+                    "node_type": "key"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [5,5],
+                    "rowspan": [10,10],
+                    "context": "地层压力(MPa)",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [6,6],
+                    "rowspan": [10,10],
+                    "context": "测压时间(h:min)",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [7,7],
+                    "rowspan": [10,10],
+                    "context": "油压(MPa)",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [8,8],
+                    "rowspan": [10,10],
+                    "context": "套压(MPa)",
+                    "node_type": "key"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [11,11],
+                    "context": "高桥25-127",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [2,2],
+                    "rowspan": [11,11],
+                    "context": "斜井",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [3,3],
+                    "rowspan": [11,11],
+                    "context": "/",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [4,4],
+                    "rowspan": [11,11],
+                    "context": "盒8山1山2",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [5,5],
+                    "rowspan": [11,11],
+                    "context": "/",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [6,6],
+                    "rowspan": [11,11],
+                    "context": "/",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [7,7],
+                    "rowspan": [11,11],
+                    "context": "4",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [8,8],
+                    "rowspan": [11,11],
+                    "context": "7.15",
+                    "node_type": "value"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [12,12],
+                    "context": "高桥25-128",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [2,2],
+                    "rowspan": [12,12],
+                    "context": "斜井",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [3,3],
+                    "rowspan": [12,12],
+                    "context": "3489",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [4,4],
+                    "rowspan": [12,12],
+                    "context": "盒8山2本溪组",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [5,5],
+                    "rowspan": [12,12],
+                    "context": "/",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [6,6],
+                    "rowspan": [12,12],
+                    "context": "/",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [7,7],
+                    "rowspan": [12,12],
+                    "context": "3.91",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [8,8],
+                    "rowspan": [12,12],
+                    "context": "7.8",
+                    "node_type": "value"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [13,13],
+                    "context": "高桥26-126",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [2,2],
+                    "rowspan": [13,13],
+                    "context": "斜井",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [3,3],
+                    "rowspan": [13,13],
+                    "context": "3136.5",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [4,4],
+                    "rowspan": [13,13],
+                    "context": "盒8山2本溪组",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [5,5],
+                    "rowspan": [13,13],
+                    "context": "/",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [6,6],
+                    "rowspan": [13,13],
+                    "context": "/",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [7,7],
+                    "rowspan": [13,13],
+                    "context": "4.11",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [8,8],
+                    "rowspan": [13,13],
+                    "context": "7.75",
+                    "node_type": "value"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [14,14],
+                    "context": "靶心坐标",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [2,8],
+                    "rowspan": [14,14],
+                    "context": "X（m）：4072485          Y（m）：19357938",
+                    "node_type": "value"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [15,15],
+                    "context": "靶区半径(m)",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [2,4],
+                    "rowspan": [15,15],
+                    "context": "执行油田公司标准（50m）",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [5,7],
+                    "rowspan": [15,15],
+                    "context": "大门方向（°）",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [8,8],
+                    "rowspan": [15,15],
+                    "context": "324.46",
+                    "node_type": "value"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [16,16],
+                    "context": "靶点位移(m)",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [2,4],
+                    "rowspan": [16,16],
+                    "context": "914.06",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [5,7],
+                    "rowspan": [16,16],
+                    "context": "靶点方位（°）",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [8,8],
+                    "rowspan": [16,16],
+                    "context": "137.84",
+                    "node_type": "value"
+                }
+            ]
+        },
+        {
+            "tds": [
+                {
+                    "colspan": [1,1],
+                    "rowspan": [17,17],
+                    "context": "中靶垂深(m)",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [2,4],
+                    "rowspan": [17,17],
+                    "context": "3266",
+                    "node_type": "value"
+                },
+                {
+                    "colspan": [5,7],
+                    "rowspan": [17,17],
+                    "context": "靶心海拔(m)",
+                    "node_type": "key"
+                },
+                {
+                    "colspan": [8,8],
+                    "rowspan": [17,17],
+                    "context": "-1983.97",
+                    "node_type": "value"
+                }
+            ]
+        }
+    ]
+}
