@@ -166,7 +166,7 @@ def sub_table_extract(file: UploadFile = File(...), question: str = Form(...)):
         segmented_table: List[Set[Node]]
         segmented_table, _, _ = table_seg(table_dict)
         documents: List[Document] = []
-        ste_prompt = PromptTemplate(input_variables=["context"], template=sub_table_extract_prompt)
+        ste_prompt = PromptTemplate(input_variables=["whole_caption", "i_caption"], template=sub_table_extract_prompt)
         ste_chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat", prompt=ste_prompt))
         embeddings = OpenAIEmbeddings(model="text-davinci-003", request_timeout=120)
 
@@ -191,7 +191,6 @@ def sub_table_extract(file: UploadFile = File(...), question: str = Form(...)):
             i_caption = ste_chain.run(whole_caption=whole_caption, i_caption=i_caption)
             metadata = {"source_sub_table_index": i}
             documents.append(Document(page_content=i_caption, metadata=metadata))
-
         faiss_index = FAISS.from_documents(documents, embeddings)
         docs = faiss_index.similarity_search(question, k=1)
         index = docs[0].metadata["source_sub_table_index"]
