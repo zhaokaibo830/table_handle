@@ -91,12 +91,12 @@ def report_qa():
             out['data']['page'].append(docs_table[i][0].metadata["page_number"])
         out['data']['page'] = list(set(out['data']['page']))
 
-        context = ""
+        text = ""
         for doc in docs:
-            context += doc.page_content
-        print("context:", context)
+            text += doc.page_content
+        print("text:", text)
         question = "\n请根据给定的信息帮我回答下面的问题。\n" + Q
-        output = llm.predict(context + question)
+        output = llm.predict(text + question)
 
         print("output长度", len(output))
 

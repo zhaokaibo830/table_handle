@@ -5,9 +5,9 @@ class Node:
     """
     定义单元格对象的类
     """
-    def __init__(self, context: str, colspan: List[int], rowspan: List[int], up_pointer: List, down_pointer: List,
+    def __init__(self, text: str, colspan: List[int], rowspan: List[int], up_pointer: List, down_pointer: List,
                  left_pointer: List, right_pointer: List, node_type: str, visited=False, merge_method=None):
-        self.context = context
+        self.text = text
         self.colspan = colspan
         self.rowspan = rowspan
         # 结点的类型，key/value

@@ -64,23 +64,23 @@ def tabletotext(file: UploadFile = File(...)):
             segment_i = list(segment_i)
             segment_i.sort(key=cmp_to_key(cmp))
             if len(segment_i) == 2:
-                caption += segment_i[0].context + "是" + segment_i[1].context + "。"
+                caption += segment_i[0].text + "是" + segment_i[1].text + "。"
             elif len(segment_i) > 2:
                 sub_table_cell = []
                 for segment_i_cell_j in segment_i:
                     temp_dict = {
                         "colspan": [segment_i_cell_j.colspan[0], segment_i_cell_j.colspan[1]],
                         "rowspan": [segment_i_cell_j.rowspan[0], segment_i_cell_j.rowspan[1]],
-                        "context": segment_i_cell_j.context,
+                        "text": segment_i_cell_j.text,
                         "node_type": segment_i_cell_j.node_type
                     }
                     sub_table_cell.append(temp_dict)
                 caption += simple_table_handle(sub_table_cell)
             elif len(segment_i) == 1:
-                caption += segment_i[0].context + "  "
-        p_prompt = PromptTemplate(input_variables=["context"], template=polish_prompt)
+                caption += segment_i[0].text + "  "
+        p_prompt = PromptTemplate(input_variables=["text"], template=polish_prompt)
         polish_chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat", prompt=p_prompt))
-        polish_caption = polish_chain.run(context=caption)
+        polish_caption = polish_chain.run(text=caption)
         res = {
             "data": {
                 "text": polish_caption
@@ -103,7 +103,7 @@ def tableqa(file: UploadFile = File(...), question: str = Form(...)):
         caption = tabletotext(file)
         print("已经调用了tabletotext")
         print("caption:", caption["data"]["text"])
-        context = caption["data"]["text"]
+        text = caption["data"]["text"]
         if caption["data"]["text"] == "您的输入文件有误！":
             res = {
                 "data": {
@@ -114,19 +114,19 @@ def tableqa(file: UploadFile = File(...), question: str = Form(...)):
             return res
         else:
             try:
-                context = caption["data"]["text"]
+                text = caption["data"]["text"]
                 prompt_template = """
-                {context}
+                {text}
                 请根据以上信息回答如下问题，
                 {question}
                 """
-                prompt = PromptTemplate(input_variables=["context", "question"], template=prompt_template)
+                prompt = PromptTemplate(input_variables=["text", "question"], template=prompt_template)
                 # print(sys.argv[3])
                 # print(type(sys.argv[3]))
                 # chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat"), prompt=prompt)
                 chain = LLMChain(llm=ChatOpenAI(model=sys.argv[3]), prompt=prompt)
                 print("question:", question)
-                result = chain.run(context=context, question=question)
+                result = chain.run(text=text, question=question)
                 res = {
                     "data": {
                         "answer": result
@@ -174,20 +174,20 @@ def sub_table_extract(file: UploadFile = File(...), question: str = Form(...)):
             segment_i = list(segment_i)
             segment_i.sort(key=cmp_to_key(cmp))
             if len(segment_i) == 2:
-                i_caption = segment_i[0].context + "是" + segment_i[1].context + "。"
+                i_caption = segment_i[0].text + "是" + segment_i[1].text + "。"
             elif len(segment_i) > 2:
                 sub_table_cell = []
                 for segment_i_cell_j in segment_i:
                     temp_dict = {
                         "colspan": [segment_i_cell_j.colspan[0], segment_i_cell_j.colspan[1]],
                         "rowspan": [segment_i_cell_j.rowspan[0], segment_i_cell_j.rowspan[1]],
-                        "context": segment_i_cell_j.context,
+                        "text": segment_i_cell_j.text,
                         "node_type": segment_i_cell_j.node_type
                     }
                     sub_table_cell.append(temp_dict)
                 i_caption = simple_table_handle(sub_table_cell)
             else:
-                i_caption = segment_i[0].context + "  "
+                i_caption = segment_i[0].text + "  "
             i_caption = ste_chain.run(whole_caption=whole_caption, i_caption=i_caption)
             metadata = {"source_sub_table_index": i}
             documents.append(Document(page_content=i_caption, metadata=metadata))
@@ -200,7 +200,7 @@ def sub_table_extract(file: UploadFile = File(...), question: str = Form(...)):
             temp = {
                 "colspan": [i_cell.colspan[0], i_cell.colspan[1]],
                 "rowspan": [i_cell.rowspan[0], i_cell.rowspan[1]],
-                "context": i_cell.context,
+                "text": i_cell.text,
             }
             extractd_sub_table_list.append(temp)
         res = {

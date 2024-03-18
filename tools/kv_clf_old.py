@@ -12,18 +12,18 @@ from tools.node import Node
 import random
 
 
-def table_head_extract(context):
-    prompt = PromptTemplate(input_variables=["context"], template=table_head_extract_prompt)
+def table_head_extract(text):
+    prompt = PromptTemplate(input_variables=["text"], template=table_head_extract_prompt)
     # print(sys.argv[3])
     # print(type(sys.argv[3]))
-    print("-----------------输出context-------------------------------------")
-    print(context)
+    print("-----------------输出text-------------------------------------")
+    print(text)
     tag = True
     table_head: List = []
     while tag:
         chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat", temperature=random.random()*2), prompt=prompt)
         # chain = LLMChain(llm=ChatOpenAI(model=sys.argv[3]), prompt=prompt)
-        result = chain.run(context=context)
+        result = chain.run(text=text)
         print("-----------------输出大模型的输出结果-------------------------------------")
         print(result)
 
@@ -48,15 +48,15 @@ def table_head_extract(context):
 
 def kv_clf(table_dict_no_node_type: Dict):
     table_dict = table_dict_no_node_type
-    context = ""
+    text = ""
     for i_row in table_dict["trs"]:
         for i_row_j_col in i_row["tds"]:
-            context += i_row_j_col["context"].replace(" ", "").replace("\n", "").replace("\t", "").replace("\r",
+            text += i_row_j_col["text"].replace(" ", "").replace("\n", "").replace("\t", "").replace("\r",
                                                                                                            "") + "\n"
-    table_head = table_head_extract(context)
+    table_head = table_head_extract(text)
     for i_row in table_dict["trs"]:
         for i_row_j_col in i_row["tds"]:
-            if i_row_j_col["context"].replace(" ", "").replace("\n", "").replace("\t", "").replace("\r",
+            if i_row_j_col["text"].replace(" ", "").replace("\n", "").replace("\t", "").replace("\r",
                                                                                                    "") in table_head:
                 i_row_j_col["node_type"] = "key"
             else:
@@ -120,7 +120,7 @@ def kv_clf(table_dict_no_node_type: Dict):
                             break
 
         for cell_node in all_table_node:
-            # print("正在处理节点：", cell_node.context)
+            # print("正在处理节点：", cell_node.text)
             # print("列：", cell_node.colspan)
             # print("行：", cell_node.rowspan)
             # print("cell_node.left_pointer:", cell_node.left_pointer)
@@ -132,18 +132,18 @@ def kv_clf(table_dict_no_node_type: Dict):
                 segmented_table.append(cell_node.set_of_affiliation)
 
         for i_segmented_table in segmented_table:
-            context = ""
+            text = ""
             for i_segmented_table_j_node in list(i_segmented_table):
-                context += i_segmented_table_j_node.context.replace(" ", "").replace("\n", "").replace("\t",
+                text += i_segmented_table_j_node.text.replace(" ", "").replace("\n", "").replace("\t",
                                                                                                           "").replace(
                     "\r", "") + "\n"
-            i_segmented_table_head = table_head_extract(context)
+            i_segmented_table_head = table_head_extract(text)
             for i_segmented_table_j_node in list(i_segmented_table):
                 for one_row in table_dict['trs']:
                     all_cells_of_row = one_row['tds']
                     for cell in all_cells_of_row:
                         if cell["colspan"] == i_segmented_table_j_node.colspan and cell["rowspan"] == i_segmented_table_j_node.colspan:
-                            if cell["context"].replace(" ", "").replace("\n", "").replace("\t", "").replace("\r","") in i_segmented_table_head:
+                            if cell["text"].replace(" ", "").replace("\n", "").replace("\t", "").replace("\r","") in i_segmented_table_head:
                                 cell["node_type"] = "key"
                             else:
                                 cell["node_type"] = "value"
@@ -152,7 +152,7 @@ def kv_clf(table_dict_no_node_type: Dict):
         for irow in table_dict["trs"]:
             for irowjcol in irow["tds"]:
                 if irowjcol["node_type"] =="key":
-                    res.append(irowjcol["context"])
+                    res.append(irowjcol["text"])
         print(res)
     return table_dict
 

@@ -20,18 +20,18 @@ def merge_node(node1: Node, node2: Node):
     node2_colspan = node2.colspan
     node1_rowspan = node1.rowspan
     node2_rowspan = node2.rowspan
-    node1_context = node1.context
-    node2_context = node2.context
+    node1_text = node1.text
+    node2_text = node2.text
     if node1_colspan[0] == node2_colspan[0] and node1_colspan[1] == node2_colspan[1]:
         merged_colspan = node1_colspan
         merged_rowspan = [node1_rowspan[0], node2_rowspan[1]]
-        merged_context = node1_context + "的值是" + node2_context
-        return merged_colspan, merged_rowspan, merged_context
+        merged_text = node1_text + "的值是" + node2_text
+        return merged_colspan, merged_rowspan, merged_text
     if node1_rowspan[0] == node2_rowspan[0] and node1_rowspan[1] == node2_rowspan[1]:
         merged_rowspan = node1_rowspan
         merged_colspan = [node1_colspan[0], node2_colspan[1]]
-        merged_context = node1_context + "的值是" + node2_context
-        return merged_colspan, merged_rowspan, merged_context
+        merged_text = node1_text + "的值是" + node2_text
+        return merged_colspan, merged_rowspan, merged_text
 
 
 def get_key_value(node1: Node, node2: Node):

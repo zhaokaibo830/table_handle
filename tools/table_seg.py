@@ -17,45 +17,45 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node], List[Node]):
     key_num, value_num = 0, 0
 
     # 计算表格的行数和列数
-    for one_row in table_dict['trs']:
-        all_cells_of_row = one_row['tds']
-        for cell in all_cells_of_row:
-            left_index, right_index = cell['colspan'][0], cell['colspan'][1]
-            up_index, down_index = cell['rowspan'][0], cell['rowspan'][1]
-            table_columns = right_index if table_columns < right_index else table_columns
-            table_rows = down_index if table_rows < down_index else table_rows
+
+    all_cells = table_dict['cells']
+    for cell in all_cells:
+        left_index, right_index = cell['colspan'][0], cell['colspan'][1]
+        up_index, down_index = cell['rowspan'][0], cell['rowspan'][1]
+        table_columns = right_index if table_columns < right_index else table_columns
+        table_rows = down_index if table_rows < down_index else table_rows
 
     # 把表格中的每个单元格转换成Node类对象
-    for one_row in table_dict['trs']:
-        all_cells_of_row = one_row['tds']
-        for cell in all_cells_of_row:
-            # left_index, right_index = cell['colspan'][0], cell['colspan'][1]
-            # up_index, down_index = cell['rowspan'][0], cell['rowspan'][1]
-            if cell['node_type'] == "key":
-                key_num = key_num + 1
-            else:
-                value_num = value_num + 1
+    all_cells = table_dict['cells']
+    for cell in all_cells:
+        # left_index, right_index = cell['colspan'][0], cell['colspan'][1]
+        # up_index, down_index = cell['rowspan'][0], cell['rowspan'][1]
+        if cell['node_type'] == "key":
+            key_num = key_num + 1
+        else:
+            value_num = value_num + 1
 
-            created_node = Node(context=cell['context'], colspan=cell['colspan'], rowspan=cell['rowspan'],
-                                up_pointer=[None] * (table_columns + 1),
-                                down_pointer=[None] * (table_columns + 1),
-                                left_pointer=[None] * (table_rows + 1),
-                                right_pointer=[None] * (table_rows + 1),
-                                node_type=cell['node_type'])
+        created_node = Node(text=cell['text'], colspan=cell['colspan'], rowspan=cell['rowspan'],
+                            up_pointer=[None] * (table_columns + 1),
+                            down_pointer=[None] * (table_columns + 1),
+                            left_pointer=[None] * (table_rows + 1),
+                            right_pointer=[None] * (table_rows + 1),
+                            node_type=cell['node_type'])
 
-            created_node.set_of_affiliation.add(created_node)
-            all_table_node.append(created_node)
+        created_node.set_of_affiliation.add(created_node)
+        all_table_node.append(created_node)
 
     # print("table_rows:", table_rows)
     # print("table_columns:", table_columns)
 
     # 构建十字双向链表
-    row_column_head = Node(context="", colspan=[0, 0], rowspan=[0, 0], up_pointer=[None], down_pointer=[None],
-                           left_pointer=[None], right_pointer=[None], node_type="row_column_head")  # 复杂表格构成的双向十字链表的以行列进行索引的头指针
+    row_column_head = Node(text="", colspan=[0, 0], rowspan=[0, 0], up_pointer=[None], down_pointer=[None],
+                           left_pointer=[None], right_pointer=[None],
+                           node_type="row_column_head")  # 复杂表格构成的双向十字链表的以行列进行索引的头指针
     pre = row_column_head
-    rows_head = []   # 复杂表格构成的双向十字链表的以行进行索引的头指针列表
+    rows_head = []  # 复杂表格构成的双向十字链表的以行进行索引的头指针列表
     for i in range(table_rows):
-        row_head_i = Node(context="", colspan=[0, 0], rowspan=[i + 1, i + 1], up_pointer=[None] * (table_columns + 1),
+        row_head_i = Node(text="", colspan=[0, 0], rowspan=[i + 1, i + 1], up_pointer=[None] * (table_columns + 1),
                           down_pointer=[None] * (table_columns + 1),
                           left_pointer=[None] * (table_rows + 1), right_pointer=[None] * (table_rows + 1),
                           node_type='rows_head')
@@ -64,9 +64,9 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node], List[Node]):
         pre.down_pointer[0] = row_head_i
         pre = row_head_i
     pre = row_column_head
-    columns_head = [] # 复杂表格构成的双向十字链表的以列进行索引的头指针列表
+    columns_head = []  # 复杂表格构成的双向十字链表的以列进行索引的头指针列表
     for i in range(table_columns):
-        column_head_i = Node(context="", colspan=[i + 1, i + 1], rowspan=[0, 0],
+        column_head_i = Node(text="", colspan=[i + 1, i + 1], rowspan=[0, 0],
                              up_pointer=[None] * (table_columns + 1),
                              down_pointer=[None] * (table_columns + 1),
                              left_pointer=[None] * (table_rows + 1), right_pointer=[None] * (table_rows + 1),
@@ -79,7 +79,7 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node], List[Node]):
     # 把每一个单元格插入到十字双向链表
     # print("正在把每一个单元格插入到十字双向链表：")
     for cell_node in all_table_node:
-        # print("正在插入节点：", cell_node.context)
+        # print("正在插入节点：", cell_node.text)
         # print("列：", cell_node.colspan)
         # print("行：", cell_node.rowspan)
         # print("cell_node.left_pointer:", cell_node.left_pointer)
@@ -230,7 +230,7 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node], List[Node]):
             for i in range(1, table_rows + 1):
                 i_row_j_col_node: Node = rows_head[i - 1].right_pointer[i]
                 while i_row_j_col_node:
-                    # print("正在处理节点：", i_row_j_col_node.context)
+                    # print("正在处理节点：", i_row_j_col_node.text)
                     # print("列：", i_row_j_col_node.colspan)
                     # print("行：", i_row_j_col_node.rowspan)
                     # print("cell_node.left_pointer:", i_row_j_col_node.left_pointer)
@@ -242,8 +242,9 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node], List[Node]):
                         continue
                     # 判断属性为key的结点是否有可能和下方节点合并
                     current_down_all_node_temp: List[Node] = i_row_j_col_node.down_pointer[
-                                                        i_row_j_col_node.colspan[0]:i_row_j_col_node.colspan[1] + 1]
-                    current_down_all_node:List[Node]=[]
+                                                             i_row_j_col_node.colspan[0]:i_row_j_col_node.colspan[
+                                                                                             1] + 1]
+                    current_down_all_node: List[Node] = []
                     for i_current_down_all_node_temp in current_down_all_node_temp:
                         if i_current_down_all_node_temp not in current_down_all_node:
                             current_down_all_node.append(i_current_down_all_node_temp)
@@ -267,7 +268,8 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node], List[Node]):
                         down_nodes_may_merge = False
                     # 判断属性为key的结点是否有可能和右方节点合并
                     current_right_all_node_temp: List[Node] = i_row_j_col_node.right_pointer[
-                                                         i_row_j_col_node.rowspan[0]:i_row_j_col_node.rowspan[1] + 1]
+                                                              i_row_j_col_node.rowspan[0]:i_row_j_col_node.rowspan[
+                                                                                              1] + 1]
                     current_right_all_node: List[Node] = []
                     for i_current_right_all_node_temp in current_right_all_node_temp:
                         if i_current_right_all_node_temp not in current_right_all_node:
@@ -333,7 +335,7 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node], List[Node]):
             for i in range(1, table_rows + 1):
                 i_row_j_col_node: Node = rows_head[i - 1].right_pointer[i]
                 while i_row_j_col_node:
-                    # print("正在处理节点：", i_row_j_col_node.context)
+                    # print("正在处理节点：", i_row_j_col_node.text)
                     # print("列：", i_row_j_col_node.colspan)
                     # print("行：", i_row_j_col_node.rowspan)
                     # print("cell_node.left_pointer:", i_row_j_col_node.left_pointer)
@@ -350,7 +352,7 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node], List[Node]):
                         continue
                     # 判断属性为value的结点是否有可能和上方节点合并
                     current_up_all_node_temp: List[Node] = i_row_j_col_node.up_pointer[
-                                                      i_row_j_col_node.colspan[0]:i_row_j_col_node.colspan[1] + 1]
+                                                           i_row_j_col_node.colspan[0]:i_row_j_col_node.colspan[1] + 1]
                     current_up_all_node: List[Node] = []
                     for i_current_up_all_node_temp in current_up_all_node_temp:
                         if i_current_up_all_node_temp not in current_up_all_node:
@@ -384,7 +386,8 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node], List[Node]):
                         up_nodes_may_merge = False
                     # 判断属性为value的结点是否有可能和左方节点合并
                     current_left_all_node_temp: List[Node] = i_row_j_col_node.left_pointer[
-                                                        i_row_j_col_node.rowspan[0]:i_row_j_col_node.rowspan[1] + 1]
+                                                             i_row_j_col_node.rowspan[0]:i_row_j_col_node.rowspan[
+                                                                                             1] + 1]
                     current_left_all_node: List[Node] = []
                     for i_current_left_all_node_temp in current_left_all_node_temp:
                         if i_current_left_all_node_temp not in current_left_all_node:
@@ -450,7 +453,7 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node], List[Node]):
     segmented_table = []
     segmented_dict = {}
     for cell_node in all_table_node:
-        # print("正在处理节点：", cell_node.context)
+        # print("正在处理节点：", cell_node.text)
         # print("列：", cell_node.colspan)
         # print("行：", cell_node.rowspan)
         # print("cell_node.left_pointer:", cell_node.left_pointer)
@@ -466,12 +469,12 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node], List[Node]):
         segmented_dict['sub_table_{}'.format(i + 1)] = []
         for j, cell in enumerate(list(segment_i)):
             temp = {}
-            temp["context"] = cell.context
+            temp["text"] = cell.text
             temp["colspan"] = cell.colspan
             temp["rowspan"] = cell.rowspan
             segmented_dict['sub_table_{}'.format(i + 1)].append(temp)
             # print("**************")
-            # print("节点：", cell.context)
+            # print("节点：", cell.text)
             # print("列：", cell.colspan)
             # print("行：", cell.rowspan)
             # print("cell_node.left_pointer:", cell.left_pointer)
@@ -482,7 +485,7 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node], List[Node]):
     with open('./sub_tables.json', 'w', encoding='utf-8') as f:
         # 使用json.dump()函数将序列化后的JSON格式的数据写入到文件中
         json.dump(segmented_dict, f, indent=4, ensure_ascii=False)
-    return segmented_table, all_table_node,rows_head
+    return segmented_table, all_table_node, rows_head
 
 
 if __name__ == '__main__':
@@ -490,23 +493,22 @@ if __name__ == '__main__':
         table_dict = json.load(f)
     with open("key.json", "r", encoding='utf-8') as f:
         key_dict = json.load(f)
-    for i_row in table_dict["trs"]:
-        for i_row_j_col in i_row["tds"]:
-            if i_row_j_col["context"] in key_dict["key"]:
-                i_row_j_col["node_type"] = "key"
-            else:
-                i_row_j_col["node_type"] = "value"
-    all_table_node:List[Node]
-    segmented_table,all_table_node,_=table_seg(table_dict)
+    all_cells = table_dict['cells']
+    for i_row_j_col in all_cells:
+        if i_row_j_col["text"] in key_dict["key"]:
+            i_row_j_col["node_type"] = "key"
+        else:
+            i_row_j_col["node_type"] = "value"
+    all_table_node: List[Node]
+    segmented_table, all_table_node, _ = table_seg(table_dict)
     # for i_segmented_table in segmented_table:
     #     for j_cell in list(i_segmented_table):
-    #         print(j_cell.context, end="#")
+    #         print(j_cell.text, end="#")
     #     print()
 
     for cell in all_table_node:
         print("---------------------------------------------------")
-        print(cell.context)
+        print(cell.text)
         for j_cell in list(cell.set_of_affiliation):
-            print(j_cell.context, end="#")
+            print(j_cell.text, end="#")
         print()
-
