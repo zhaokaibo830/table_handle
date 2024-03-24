@@ -80,126 +80,6 @@ def table_head_extract(text_list)->List:
     pass
 
 
-def is_sub_table(left_up_node: Node, right_down_node: Node)->bool:
-    """
-    判断复杂表格中是否存在一个以left_up_node为左上角单元格、right_down_node为右下方单元格的子块
-    :param left_up_node: 左上角单元格
-    :param right_down_node: 右下方单元格
-    :return:
-    """
-    if left_up_node.colspan[0] > right_down_node.colspan[0] or left_up_node.rowspan[0] > right_down_node.rowspan[0]:
-        return False
-    if left_up_node.colspan[1] > right_down_node.colspan[1] or left_up_node.rowspan[1] > right_down_node.rowspan[1]:
-        return False
-    left_index, right_index, up_index, down_index = left_up_node.colspan[0], right_down_node.colspan[1], \
-        left_up_node.rowspan[0], right_down_node.rowspan[1]
-
-    temp_node: Node = left_up_node
-    while True:
-        temp_node = temp_node.right_pointer[up_index]
-        if not temp_node:
-            break
-        if temp_node.rowspan[0] < up_index:
-            return False
-        if temp_node.colspan[1] >= right_index:
-            break
-
-    temp_node: Node = left_up_node
-    while True:
-        temp_node = temp_node.down_pointer[left_index]
-        if not temp_node:
-            break
-        if temp_node.colspan[0] < left_index:
-            return False
-        if temp_node.rowspan[1] >= down_index:
-            break
-
-    temp_node: Node = right_down_node
-    while True:
-        temp_node = temp_node.up_pointer[right_index]
-        if temp_node.rowspan[0] == 0:
-            break
-        if temp_node.colspan[1] > right_index:
-            return False
-        if temp_node.rowspan[0] <= up_index:
-            break
-
-    temp_node: Node = right_down_node
-    while True:
-        temp_node = temp_node.left_pointer[down_index]
-        if temp_node.colspan[0] == 0:
-            break
-        if temp_node.rowspan[1] > down_index:
-            return False
-        if temp_node.colspan[0] <= left_index:
-            break
-
-    return True
-    pass
-
-
-def get_sub_table_nodes(left_up_node: Node, right_down_node: Node, rows_head: List[Node])->List[Node]:
-    """
-    得到子表中的所有结点
-    :param left_up_node: 子表中左上角单元格
-    :param right_down_node: 子表中右下角单元格
-    :param rows_head: 表格构成的双向十字链表以行进行索引的头指针列表
-    :return:
-    sub_table_nodes：为子表中所有结点构成的列表
-    """
-    sub_table_nodes: List[Node] = []
-    left_index, right_index, up_index, down_index = left_up_node.colspan[0], right_down_node.colspan[1], \
-        left_up_node.rowspan[0], right_down_node.rowspan[1]
-    for i in range(up_index, down_index + 1):
-        temp_node: Node = rows_head[i - 1].right_pointer[i]
-        while temp_node and temp_node.colspan[0] <= right_index:
-            if temp_node in sub_table_nodes:
-                temp_node = temp_node.right_pointer[i]
-                continue
-            else:
-                if temp_node.colspan[0] >= left_index and temp_node.colspan[1] <= right_index and temp_node.rowspan[
-                    0] >= up_index and temp_node.rowspan[1] <= down_index:
-                    sub_table_nodes.append(temp_node)
-
-            temp_node = temp_node.right_pointer[i]
-
-    return sub_table_nodes
-
-
-def sub_table_have_remain_key(sub_table_nodes: List[Node], whole_table_dict: Dict) -> bool:
-    """
-    判断表格分块后是否还存在多余的key
-    :param sub_table_nodes: 子表的结点列表
-    :param whole_table_dict: 整个复杂表格的字典表示，其中每个节点的类型已知
-    """
-    column_shift, row_shift = sub_table_nodes[0].colspan[0], sub_table_nodes[0].rowspan[0]
-    for i_sub_table_node in sub_table_nodes:
-        column_shift = i_sub_table_node.colspan[0] if column_shift > i_sub_table_node.colspan[0] else column_shift
-        row_shift = i_sub_table_node.rowspan[1] if row_shift > i_sub_table_node.rowspan[1] else row_shift
-    sub_table_dict = {"cells": []}
-    all_cells = whole_table_dict['cells']
-    for irowjcol in all_cells:
-        for i_sub_table_node in sub_table_nodes:
-            if irowjcol["colspan"] == i_sub_table_node.colspan and irowjcol["rowspan"] == i_sub_table_node.rowspan:
-                temp = {"colspan": [i_sub_table_node.colspan[0] - column_shift + 1,
-                                    i_sub_table_node.colspan[1] - column_shift + 1],
-                        "rowspan": [i_sub_table_node.rowspan[0] - row_shift + 1,
-                                    i_sub_table_node.rowspan[1] - row_shift + 1],
-                        "text": i_sub_table_node.text,
-                        "node_type": i_sub_table_node.node_type
-                        }
-                sub_table_dict["cells"].append(temp)
-                break
-    sub_table_segmented_table: List[Set[Node]]
-    sub_table_segmented_table, _, _ = table_seg(sub_table_dict)
-    if all([False if (
-            len(i_sub_table_segmented_table) == 1 and list(i_sub_table_segmented_table)[0].node_type == "key") else True
-            for
-            i_sub_table_segmented_table in sub_table_segmented_table]):
-        return False
-    else:
-        return True
-
 
 def kv_clf(table_dict_no_node_type: Dict) -> Dict:
     """
@@ -223,7 +103,7 @@ def kv_clf(table_dict_no_node_type: Dict) -> Dict:
     segmented_table: List[Set[Node]]
 
     # key粗粒度检测
-    loop = 10
+    loop = 3
     # table_head_dict统计每一个单元格被判断为key的次数
     table_head_dict: Dict = {}
     for _ in range(loop):
@@ -299,49 +179,6 @@ def kv_clf(table_dict_no_node_type: Dict) -> Dict:
     for k in range(len(all_table_node_kv_count)):
         print(all_table_node[k].text, "-->", all_table_node_kv_count[k])
 
-    # key细粒度检测
-    handle_sub_table_count = 0
-    while handle_sub_table_count < 10:
-        selected_nodes_index = sorted(random.sample([_ for _ in range(len(all_table_node))], 2))
-        i, j = selected_nodes_index[0], selected_nodes_index[1]
-        if is_sub_table(all_table_node[i], all_table_node[j]):
-            sub_table_nodes: List[Node] = get_sub_table_nodes(all_table_node[i], all_table_node[j], rows_head)
-            if len(sub_table_nodes) > len(all_table_node) / 5:
-                continue
-            print("-----------left_up_node, right_down_node-----------------")
-            print(all_table_node[i].text, all_table_node[j].text)
-            print("--------------------sub_table_nodes-----------------------")
-            for i_sub_table_node in sub_table_nodes:
-                print(i_sub_table_node.text)
-            sub_table_cell_text_list: List[str] = []
-            for i_sub_table_node in sub_table_nodes:
-                sub_table_cell_text_list.append(
-                    i_sub_table_node.text.replace(" ", "").replace("\n", "").replace("\t", "").replace("\r", ""))
-            sub_table_head = table_head_extract(sub_table_cell_text_list)
-
-            for i_sub_table_node in sub_table_nodes:
-                if i_sub_table_node.text.replace(" ", "").replace("\n", "").replace("\t", "").replace("\r",
-                                                                                                         "") in sub_table_head:
-                    i_sub_table_node.node_type = "key"
-                else:
-                    i_sub_table_node.node_type = "value"
-            if sub_table_have_remain_key(sub_table_nodes, table_dict):
-                continue
-
-            for i_sub_table_node in sub_table_nodes:
-                cell_index = all_table_node.index(i_sub_table_node)
-                if i_sub_table_node.text.replace(" ", "").replace("\n", "").replace("\t", "").replace("\r",
-                                                                                                         "") in sub_table_head:
-                    all_table_node_kv_count[cell_index].append(1)
-                else:
-                    all_table_node_kv_count[cell_index].append(0)
-
-            handle_sub_table_count += 1
-            print("----------输出handle_sub_table_count---------------")
-            print(handle_sub_table_count)
-            print("----------输出此时的all_table_node_kv_count---------------")
-            for k in range(len(all_table_node_kv_count)):
-                print(all_table_node[k].text, "-->", all_table_node_kv_count[k])
 
     print("-------------开始打印key-----------------")
     for i in range(len(all_table_node)):

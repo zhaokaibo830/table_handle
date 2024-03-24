@@ -18,18 +18,3 @@ sub_table_extract_prompt = """
             以上是一个完整的复杂表格描述。请根据以上内容对如下子表描述的进行润色:
             {i_caption}
             """
-{
-    "cells": [
-        {
-            "colspan": [1,1],
-            "rowspan": [1,1],
-            "text": "Name"
-        },
-        {
-            "colspan": [2,2],
-            "rowspan": [1,1],
-            "text": "Nathan"
-        },
-        ...
-        ]
-}
