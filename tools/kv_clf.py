@@ -103,7 +103,7 @@ def kv_clf(table_dict_no_node_type: Dict) -> Dict:
     segmented_table: List[Set[Node]]
 
     # key粗粒度检测
-    loop = 3
+    loop = 1
     # table_head_dict统计每一个单元格被判断为key的次数
     table_head_dict: Dict = {}
     for _ in range(loop):
@@ -136,7 +136,7 @@ def kv_clf(table_dict_no_node_type: Dict) -> Dict:
                         table_head_dict[i_table_head] = 1
                 # 分割后没有剩余的key说明此时划分的key、value结果在结构上是无歧义的
                 break
-            if count >= 10:
+            if count >= 2:
                 print(
                     "---------------------------有剩余的key且已经达到了最大处理次数，并打印此时的table_dict，打印完之后不再处理-----------------------------------------")
                 for i_segmented_table in segmented_table:

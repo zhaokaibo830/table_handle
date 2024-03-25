@@ -10,7 +10,7 @@ table_head_extract_prompt = """
 
 polish_prompt = """
             {text}
-            请把以上内容润色成人类习惯的描述方式。
+            请把以上内容润色成人类习惯的描述方式。尽量保持其中的专业术语。
             """
 
 sub_table_extract_prompt = """

@@ -2,7 +2,6 @@ import json
 from tools.table_seg import table_seg
 from tools.node import Node
 from tools.kv_clf import kv_clf
-from tools.simple_table_handle import simple_table_handle
 from functools import cmp_to_key
 from typing import List, Set, Dict
 import uvicorn
@@ -19,12 +18,12 @@ from langchain.docstore.document import Document
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 
-os.environ['OPENAI_API_KEY'] = "EMPTY"
-os.environ['OPENAI_API_BASE'] = "http://124.70.207.36:7002/v1"
+# os.environ['OPENAI_API_KEY'] = "EMPTY"
+# os.environ['OPENAI_API_BASE'] = "http://124.70.207.36:7002/v1"
 
 
-# os.environ['OPENAI_API_KEY'] = sys.argv[1]
-# os.environ['OPENAI_API_BASE'] = sys.argv[2]
+os.environ['OPENAI_API_KEY'] = sys.argv[1]
+os.environ['OPENAI_API_BASE'] = sys.argv[2]
 # print(sys.argv[1])
 # print(sys.argv[2])
 
@@ -68,24 +67,21 @@ def table2text(file: UploadFile = File(...)):
             elif len(segment_i) > 2:
                 sub_table_cell = []
                 for segment_i_cell_j in segment_i:
-                    temp_dict = {
-                        "colspan": [segment_i_cell_j.colspan[0], segment_i_cell_j.colspan[1]],
-                        "rowspan": [segment_i_cell_j.rowspan[0], segment_i_cell_j.rowspan[1]],
-                        "text": segment_i_cell_j.text,
-                        "node_type": segment_i_cell_j.node_type
-                    }
-                    sub_table_cell.append(temp_dict)
-                caption += simple_table_handle(sub_table_cell)
+                    caption += segment_i_cell_j.text + "  "
+                caption += "。"
             elif len(segment_i) == 1:
                 caption += segment_i[0].text + "  "
         p_prompt = PromptTemplate(input_variables=["text"], template=polish_prompt)
-        polish_chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat", prompt=p_prompt))
+        # polish_chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat"),prompt=p_prompt)
+        polish_chain = LLMChain(llm=ChatOpenAI(model=sys.argv[3]),prompt=p_prompt)
         polish_caption = polish_chain.run(text=caption)
         res = {
             "data": {
                 "text": polish_caption
             }
         }
+        print("---------polish_caption-----------")
+        print(polish_caption)
     except Exception as e:
         print(e)
         res = {
@@ -95,12 +91,11 @@ def table2text(file: UploadFile = File(...)):
         }
     return res
 
-
 @app.post("/table/tableqa")
 def tableqa(file: UploadFile = File(...), question: str = Form(...)):
     print(question)
     try:
-        caption = tabletotext(file)
+        caption = table2text(file)
         print("已经调用了tabletotext")
         print("caption:", caption["data"]["text"])
         text = caption["data"]["text"]
