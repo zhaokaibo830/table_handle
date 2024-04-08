@@ -1,0 +1,238 @@
+{
+    "cells": [
+        {
+            "colspan": [1,1],
+            "rowspan": [1,1],
+            "text": "井号",
+            "node_type": "key"
+        },
+        {
+            "colspan": [2,2],
+            "rowspan": [1,1],
+            "text": "安C19-18",
+            "node_type": "value"
+        },
+        {
+            "colspan": [3,4],
+            "rowspan": [1,1],
+            "text": "钻井顺序",
+            "node_type": "key"
+        },
+        {
+            "colspan": [5,5],
+            "rowspan": [1,1],
+            "text": "1",
+            "node_type": "value"
+        },
+        {
+            "colspan": [6,6],
+            "rowspan": [1,1],
+            "text": "施工井队",
+            "node_type": "key"
+        },
+        {
+            "colspan": [7,7],
+            "rowspan": [1,1],
+            "text": "盘锦豫龙大修2队(长城)",
+            "node_type": "value"
+        },
+        {
+            "colspan": [1,1],
+            "rowspan": [2,2],
+            "text": "井别",
+            "node_type": "key"
+        },
+        {
+            "colspan": [2,2],
+            "rowspan": [2,2],
+            "text": "采油井",
+            "node_type": "value"
+        },
+        {
+            "colspan": [3,3],
+            "rowspan": [2,2],
+            "text": "井型",
+            "node_type": "key"
+        },
+        {
+            "colspan": [4,4],
+            "rowspan": [2,2],
+            "text": "侧钻井",
+            "node_type": "value"
+        },
+        {
+            "colspan": [5,6],
+            "rowspan": [2,2],
+            "text": "前拖距离(m)",
+            "node_type": "key"
+        },
+        {
+            "colspan": [7,7],
+            "rowspan": [2,2],
+            "text": "0",
+            "node_type": "value"
+        },
+        {
+            "colspan": [1,1],
+            "rowspan": [3,3],
+            "text": "地理位置",
+            "node_type": "key"
+        },
+        {
+            "colspan": [2,4],
+            "rowspan": [3,3],
+            "text": "陕西省榆林市定边县砖井镇凡食沟村",
+            "node_type": "value"
+        },
+        {
+            "colspan": [5,5],
+            "rowspan": [3,4],
+            "text": "井组复测坐标",
+            "node_type": "key"
+        },
+        {
+            "colspan": [6,6],
+            "rowspan": [3,3],
+            "text": "纵坐标(X)",
+            "node_type": "key"
+        },
+        {
+            "colspan": [7,7],
+            "rowspan": [3,3],
+            "text": "横坐标(Y)",
+            "node_type": "key"
+        },
+        {
+            "colspan": [1,1],
+            "rowspan": [4,4],
+            "text": "构造位置",
+            "node_type": "key"
+        },
+        {
+            "colspan": [2,4],
+            "rowspan": [4,4],
+            "text": "鄂尔多斯盆地伊陕斜坡",
+            "node_type": "value"
+        },
+        {
+            "colspan": [6,6],
+            "rowspan": [4,4],
+            "text": "4148652.64",
+            "node_type": "value"
+        },
+        {
+            "colspan": [7,7],
+            "rowspan": [4,4],
+            "text": "36495013.14",
+            "node_type": "value"
+        },
+        {
+            "colspan": [1,1],
+            "rowspan": [5,6],
+            "text": "井口坐标",
+            "node_type": "key"
+        },
+        {
+            "colspan": [2,2],
+            "rowspan": [5,5],
+            "text": "纵坐标(X)",
+            "node_type": "key"
+        },
+        {
+            "colspan": [3,4],
+            "rowspan": [5,5],
+            "text": "横坐标(Y)",
+            "node_type": "key"
+        },
+        {
+            "colspan": [5,6],
+            "rowspan": [5,5],
+            "text": "设计位移(m)",
+            "node_type": "key"
+        },
+        {
+            "colspan": [7,7],
+            "rowspan": [5,5],
+            "text": "设计方位(°)",
+            "node_type": "key"
+        },
+        {
+            "colspan": [2,2],
+            "rowspan": [6,6],
+            "text": "4148652.64",
+            "node_type": "value"
+        },
+        {
+            "colspan": [3,4],
+            "rowspan": [6,6],
+            "text": "36495013.14",
+            "node_type": "value"
+        },
+        {
+            "colspan": [5,6],
+            "rowspan": [6,6],
+            "text": "88.78",
+            "node_type": "value"
+        },
+        {
+            "colspan": [7,7],
+            "rowspan": [6,6],
+            "text": "338.08",
+            "node_type": "value"
+        },
+        {
+            "colspan": [1,1],
+            "rowspan": [7,8],
+            "text": "中靶坐标",
+            "node_type": "key"
+        },
+        {
+            "colspan": [2,2],
+            "rowspan": [7,7],
+            "text": "纵坐标(X)",
+            "node_type": "key"
+        },
+        {
+            "colspan": [3,4],
+            "rowspan": [7,7],
+            "text": "横坐标(Y)",
+            "node_type": "key"
+        },
+        {
+            "colspan": [5,6],
+            "rowspan": [7,7],
+            "text": "靶心半径(m)",
+            "node_type": "key"
+        },
+        {
+            "colspan": [7,7],
+            "rowspan": [7,7],
+            "text": "≤10",
+            "node_type": "value"
+        },
+        {
+            "colspan": [2,2],
+            "rowspan": [8,8],
+            "text": "4148735.00",
+            "node_type": "value"
+        },
+        {
+            "colspan": [3,4],
+            "rowspan": [8,8],
+            "text": "36494980.00",
+            "node_type": "value"
+        },
+        {
+            "colspan": [5,6],
+            "rowspan": [8,8],
+            "text": "磁偏角",
+            "node_type": "key"
+        },
+        {
+            "colspan": [7,7],
+            "rowspan": [8,8],
+            "text": "-2.733°",
+            "node_type": "value"
+        }
+    ]
+}

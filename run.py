@@ -18,12 +18,12 @@ from langchain.docstore.document import Document
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 
-# os.environ['OPENAI_API_KEY'] = "EMPTY"
-# os.environ['OPENAI_API_BASE'] = "http://124.70.207.36:7002/v1"
+os.environ['OPENAI_API_KEY'] = "EMPTY"
+os.environ['OPENAI_API_BASE'] = "http://124.70.207.36:7002/v1"
 
 
-os.environ['OPENAI_API_KEY'] = sys.argv[1]
-os.environ['OPENAI_API_BASE'] = sys.argv[2]
+# os.environ['OPENAI_API_KEY'] = sys.argv[1]
+# os.environ['OPENAI_API_BASE'] = sys.argv[2]
 # print(sys.argv[1])
 # print(sys.argv[2])
 
@@ -63,7 +63,7 @@ def table2text(file: UploadFile = File(...)):
             segment_i = list(segment_i)
             segment_i.sort(key=cmp_to_key(cmp))
             if len(segment_i) == 2:
-                caption += segment_i[0].text + "是" + segment_i[1].text + "。"
+                caption += segment_i[0].text + "is" + segment_i[1].text + ". "
             elif len(segment_i) > 2:
                 sub_table_cell = []
                 for segment_i_cell_j in segment_i:
