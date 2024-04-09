@@ -1,0 +1,41 @@
+{
+    "sub_table_1": [
+        {
+            "text": "Ground elevation (m)",
+            "colspan": [
+                1,
+                1
+            ],
+            "rowspan": [
+                1,
+                1
+            ]
+        }
+    ],
+    "sub_table_2": [
+        {
+            "text": "Target layer",
+            "colspan": [
+                2,
+                2
+            ],
+            "rowspan": [
+                1,
+                1
+            ]
+        }
+    ],
+    "sub_table_3": [
+        {
+            "text": "Extended group leader 8",
+            "colspan": [
+                3,
+                5
+            ],
+            "rowspan": [
+                1,
+                1
+            ]
+        }
+    ]
+}

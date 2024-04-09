@@ -18,3 +18,15 @@ sub_table_extract_prompt = """
             The above is a complete description of a complex table. Please polish the following sub-table description based on the above content:
             {i_caption}
             """
+
+fact_verification_analysis_prompt="""
+                        {context}
+                        
+                        Based on the above information, please determine whether the following proposition is correct and analyze step by step.
+                        """
+
+fact_verification_judge_prompt = """
+                        {analysis}
+
+                        Based on the above information, please determine whether the proposition is correct. If it is correct, only ["true"] needs to be returned, and if it is not, only ["false"] needs to be returned. It is prohibited to output additional explanations.
+                        """

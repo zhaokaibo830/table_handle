@@ -2,6 +2,7 @@ import json
 from tools.table_seg import table_seg
 from tools.node import Node
 from tools.kv_clf import kv_clf
+from tools.simple_table_handle import simple_table_handle
 from functools import cmp_to_key
 from typing import List, Set, Dict
 import uvicorn
@@ -42,8 +43,8 @@ def cmp(node1: Node, node2: Node):
 app = FastAPI()
 
 
-@app.post("/table/table2text")
-def table2text(file: UploadFile = File(...)):
+@app.post("/table/tabletotext")
+def tabletotext(file: UploadFile = File(...)):
     try:
         # 读取表格的json文件
         f = open("temp.json", 'wb')
@@ -63,25 +64,28 @@ def table2text(file: UploadFile = File(...)):
             segment_i = list(segment_i)
             segment_i.sort(key=cmp_to_key(cmp))
             if len(segment_i) == 2:
-                caption += segment_i[0].text + "is" + segment_i[1].text + ". "
+                caption += segment_i[0].text + "是" + segment_i[1].text + "。"
             elif len(segment_i) > 2:
                 sub_table_cell = []
                 for segment_i_cell_j in segment_i:
-                    caption += segment_i_cell_j.text + "  "
-                caption += "。"
+                    temp_dict = {
+                        "colspan": [segment_i_cell_j.colspan[0], segment_i_cell_j.colspan[1]],
+                        "rowspan": [segment_i_cell_j.rowspan[0], segment_i_cell_j.rowspan[1]],
+                        "text": segment_i_cell_j.text,
+                        "node_type": segment_i_cell_j.node_type
+                    }
+                    sub_table_cell.append(temp_dict)
+                caption += simple_table_handle(sub_table_cell)
             elif len(segment_i) == 1:
                 caption += segment_i[0].text + "  "
         p_prompt = PromptTemplate(input_variables=["text"], template=polish_prompt)
-        # polish_chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat"),prompt=p_prompt)
-        polish_chain = LLMChain(llm=ChatOpenAI(model=sys.argv[3]),prompt=p_prompt)
+        polish_chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat", prompt=p_prompt))
         polish_caption = polish_chain.run(text=caption)
         res = {
             "data": {
                 "text": polish_caption
             }
         }
-        print("---------polish_caption-----------")
-        print(polish_caption)
     except Exception as e:
         print(e)
         res = {
@@ -91,11 +95,12 @@ def table2text(file: UploadFile = File(...)):
         }
     return res
 
+
 @app.post("/table/tableqa")
 def tableqa(file: UploadFile = File(...), question: str = Form(...)):
     print(question)
     try:
-        caption = table2text(file)
+        caption = tabletotext(file)
         print("已经调用了tabletotext")
         print("caption:", caption["data"]["text"])
         text = caption["data"]["text"]
@@ -140,6 +145,75 @@ def tableqa(file: UploadFile = File(...), question: str = Form(...)):
         res = {
             "data": {
                 "answer": "您的输入文件有误！"
+            }
+        }
+        return res
+
+
+@app.post("/table/sub_table_extract")
+def sub_table_extract(file: UploadFile = File(...), question: str = Form(...)):
+    try:
+        whole_caption = tabletotext(file)
+        f = open("temp.json", 'wb')
+        data = file.file.read()
+        f.write(data)
+        f.close()
+        with open("temp.json", "r", encoding='utf-8') as f:
+            table_dict: Dict = json.load(f)
+
+        table_dict = kv_clf(table_dict)
+        print(table_dict)
+        segmented_table: List[Set[Node]]
+        segmented_table, _, _ = table_seg(table_dict)
+        documents: List[Document] = []
+        ste_prompt = PromptTemplate(input_variables=["whole_caption", "i_caption"], template=sub_table_extract_prompt)
+        ste_chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat", prompt=ste_prompt))
+        embeddings = OpenAIEmbeddings(model="text-davinci-003", request_timeout=120)
+
+        for i, segment_i in enumerate(segmented_table):
+            segment_i = list(segment_i)
+            segment_i.sort(key=cmp_to_key(cmp))
+            if len(segment_i) == 2:
+                i_caption = segment_i[0].text + "是" + segment_i[1].text + "。"
+            elif len(segment_i) > 2:
+                sub_table_cell = []
+                for segment_i_cell_j in segment_i:
+                    temp_dict = {
+                        "colspan": [segment_i_cell_j.colspan[0], segment_i_cell_j.colspan[1]],
+                        "rowspan": [segment_i_cell_j.rowspan[0], segment_i_cell_j.rowspan[1]],
+                        "text": segment_i_cell_j.text,
+                        "node_type": segment_i_cell_j.node_type
+                    }
+                    sub_table_cell.append(temp_dict)
+                i_caption = simple_table_handle(sub_table_cell)
+            else:
+                i_caption = segment_i[0].text + "  "
+            i_caption = ste_chain.run(whole_caption=whole_caption, i_caption=i_caption)
+            metadata = {"source_sub_table_index": i}
+            documents.append(Document(page_content=i_caption, metadata=metadata))
+        faiss_index = FAISS.from_documents(documents, embeddings)
+        docs = faiss_index.similarity_search(question, k=1)
+        index = docs[0].metadata["source_sub_table_index"]
+        extractd_sub_table = segmented_table[index]
+        extractd_sub_table_list = []
+        for i_cell in list(extractd_sub_table):
+            temp = {
+                "colspan": [i_cell.colspan[0], i_cell.colspan[1]],
+                "rowspan": [i_cell.rowspan[0], i_cell.rowspan[1]],
+                "text": i_cell.text,
+            }
+            extractd_sub_table_list.append(temp)
+        res = {
+            "data": {
+                "answer": extractd_sub_table_list
+            }
+        }
+        return res
+    except Exception as e:
+        print(e)
+        res = {
+            "data": {
+                "answer": "输入的表格有误！"
             }
         }
         return res

@@ -1,0 +1,365 @@
+{
+  "cells": [
+    {
+      "colspan": [1, 1],
+      "rowspan": [1, 10],
+      "text": "Basic data",
+      "node_type": "key"
+    },
+    {
+      "colspan": [2, 3],
+      "rowspan": [1, 1],
+      "text": "Exploration project",
+      "node_type": "key"
+    },
+    {
+      "colspan": [4, 14],
+      "rowspan": [1, 1],
+      "text": "Oil pre-exploration",
+      "node_type": "value"
+    },
+    {
+      "colspan": [2, 3],
+      "rowspan": [2, 2],
+      "text": "Pound sign",
+      "node_type": "key"
+    },
+    {
+      "colspan": [4, 6],
+      "rowspan": [2, 2],
+      "text": "51",
+      "node_type": "value"
+    },
+    {
+      "colspan": [7, 8],
+      "rowspan": [2, 2],
+      "text": "Well betsu",
+      "node_type": "key"
+    },
+    {
+      "colspan": [9, 10],
+      "rowspan": [2, 2],
+      "text": "Preliminary exploration well",
+      "node_type": "value"
+    },
+    {
+      "colspan": [11, 12],
+      "rowspan": [2, 2],
+      "text": "Well type",
+      "node_type": "key"
+    },
+    {
+      "colspan": [13, 14],
+      "rowspan": [2, 2],
+      "text": "Vertical well",
+      "node_type": "value"
+    },
+    {
+      "colspan": [2, 3],
+      "rowspan": [3, 3],
+      "text": "Geographical position",
+      "node_type": "key"
+    },
+    {
+      "colspan": [4, 14],
+      "rowspan": [3, 3],
+      "text": "Qingyang City, Gansu Province",
+      "node_type": "value"
+    },
+    {
+      "colspan": [2, 3],
+      "rowspan": [4, 4],
+      "text": "Structural location",
+      "node_type": "key"
+    },
+    {
+      "colspan": [4, 14],
+      "rowspan": [4, 4],
+      "text": "Ordos basin",
+      "node_type": "value"
+    },
+    {
+      "colspan": [2, 3],
+      "rowspan": [5, 6],
+      "text": "Line position",
+      "node_type": "key"
+    },
+    {
+      "colspan": [4, 4],
+      "rowspan": [5, 5],
+      "text": "two-dimensional",
+      "node_type": "key"
+    },
+    {
+      "colspan": [5, 14],
+      "rowspan": [5, 5],
+      "text": "4",
+      "node_type": "value"
+    },
+    {
+      "colspan": [4, 4],
+      "rowspan": [6, 6],
+      "text": "three-dimensional",
+      "node_type": "key"
+    },
+    {
+      "colspan": [5, 14],
+      "rowspan": [6, 6],
+      "text": "6",
+      "node_type": "value"
+    },
+    {
+      "colspan": [2, 3],
+      "rowspan": [7, 8],
+      "text": "Geodetic coordinates",
+      "node_type": "key"
+    },
+    {
+      "colspan": [4, 4],
+      "rowspan": [7, 7],
+      "text": "X",
+      "node_type": "key"
+    },
+    {
+      "colspan": [5, 7],
+      "rowspan": [7, 7],
+      "text": "7926.894",
+      "node_type": "value"
+    },
+    {
+      "colspan": [8, 9],
+      "rowspan": [7, 8],
+      "text": "Latitude and longitude
+(°)",
+      "node_type": "key"
+    },
+    {
+      "colspan": [10, 10],
+      "rowspan": [7, 7],
+      "text": "East longitude",
+      "node_type": "key"
+    },
+    {
+      "colspan": [11, 14],
+      "rowspan": [7, 7],
+      "text": "147°33'30.50"",
+      "node_type": "value"
+    },
+    {
+      "colspan": [4, 4],
+      "rowspan": [8, 8],
+      "text": "Y",
+      "node_type": "key"
+    },
+    {
+      "colspan": [5, 7],
+      "rowspan": [8, 8],
+      "text": "36244.928",
+      "node_type": "value"
+    },
+    {
+      "colspan": [10, 10],
+      "rowspan": [8, 8],
+      "text": "Northern latitude",
+      "node_type": "key"
+    },
+    {
+      "colspan": [11, 14],
+      "rowspan": [8, 8],
+      "text": "316°06'36.57"",
+      "node_type": "value"
+    },
+    {
+      "colspan": [2, 3],
+      "rowspan": [9, 9],
+      "text": "Ground elevation (m)",
+      "node_type": "key"
+    },
+    {
+      "colspan": [4, 7],
+      "rowspan": [9, 9],
+      "text": "16.401",
+      "node_type": "value"
+    },
+    {
+      "colspan": [8, 9],
+      "rowspan": [9, 9],
+      "text": "Magnetic declination",
+      "node_type": "key"
+    },
+    {
+      "colspan": [10, 14],
+      "rowspan": [9, 9],
+      "text": "-4°55'",
+      "node_type": "value"
+    },
+    {
+      "colspan": [2, 3],
+      "rowspan": [10, 10],
+      "text": "Design well depth (m)",
+      "node_type": "key"
+    },
+    {
+      "colspan": [4, 7],
+      "rowspan": [10, 10],
+      "text": "232",
+      "node_type": "value"
+    },
+    {
+      "colspan": [8, 9],
+      "rowspan": [10, 10],
+      "text": "Completion zone",
+      "node_type": "key"
+    },
+    {
+      "colspan": [10, 10],
+      "rowspan": [10, 10],
+      "text": "Long 10",
+      "node_type": "value"
+    },
+    {
+      "colspan": [11, 12],
+      "rowspan": [10, 10],
+      "text": "Target layer",
+      "node_type": "key"
+    },
+    {
+      "colspan": [13, 14],
+      "rowspan": [10, 10],
+      "text": "Jurassic system",
+      "node_type": "value"
+    },
+    {
+      "colspan": [1, 1],
+      "rowspan": [11, 14],
+      "text": "Bullseye data",
+      "node_type": "key"
+    },
+    {
+      "colspan": [2, 3],
+      "rowspan": [11, 11],
+      "text": "Design layering",
+      "node_type": "key"
+    },
+    {
+      "colspan": [4, 14],
+      "rowspan": [11, 11],
+      "text": "Target design",
+      "node_type": "key"
+    },
+    {
+      "colspan": [2, 2],
+      "rowspan": [12, 13],
+      "text": "position",
+      "node_type": "key"
+    },
+    {
+      "colspan": [3, 3],
+      "rowspan": [12, 13],
+      "text": "Design target vertical depth (m)",
+      "node_type": "key"
+    },
+    {
+      "colspan": [4, 4],
+      "rowspan": [12, 13],
+      "text": "Target point",
+      "node_type": "key"
+    },
+    {
+      "colspan": [5, 5],
+      "rowspan": [12, 13],
+      "text": "Measuring line",
+      "node_type": "key"
+    },
+    {
+      "colspan": [6, 9],
+      "rowspan": [12, 12],
+      "text": "Bullseye coordinates",
+      "node_type": "key"
+    },
+    {
+      "colspan": [10, 11],
+      "rowspan": [12, 13],
+      "text": "Target radius (m)",
+      "node_type": "key"
+    },
+    {
+      "colspan": [12, 13],
+      "rowspan": [12, 13],
+      "text": "Bull 's-eye bearing (°)",
+      "node_type": "key"
+    },
+    {
+      "colspan": [14, 14],
+      "rowspan": [12, 13],
+      "text": "Bullseye distance (m)",
+      "node_type": "key"
+    },
+    {
+      "colspan": [6, 7],
+      "rowspan": [13, 13],
+      "text": "X",
+      "node_type": "key"
+    },
+    {
+      "colspan": [8, 9],
+      "rowspan": [13, 13],
+      "text": "Y",
+      "node_type": "key"
+    },
+    {
+      "colspan": [2, 2],
+      "rowspan": [14, 14],
+      "text": "3",
+      "node_type": "value"
+    },
+    {
+      "colspan": [3, 3],
+      "rowspan": [14, 14],
+      "text": "4",
+      "node_type": "value"
+    },
+    {
+      "colspan": [4, 4],
+      "rowspan": [14, 14],
+      "text": "5",
+      "node_type": "value"
+    },
+    {
+      "colspan": [5, 5],
+      "rowspan": [14, 14],
+      "text": "3",
+      "node_type": "value"
+    },
+    {
+      "colspan": [6, 7],
+      "rowspan": [14, 14],
+      "text": "3",
+      "node_type": "value"
+    },
+    {
+      "colspan": [8, 9],
+      "rowspan": [14, 14],
+      "text": "3",
+      "node_type": "value"
+    },
+    {
+      "colspan": [10, 11],
+      "rowspan": [14, 14],
+      "text": "30",
+      "node_type": "value"
+    },
+    {
+      "colspan": [12, 13],
+      "rowspan": [14, 14],
+      "text": "3",
+      "node_type": "value"
+    },
+    {
+      "colspan": [14, 14],
+      "rowspan": [14, 14],
+      "text": "3",
+      "node_type": "value"
+    }
+  ]
+}

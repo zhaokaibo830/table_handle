@@ -1,0 +1,112 @@
+{
+  "cells": [
+    {
+      "colspan": [1, 1],
+      "rowspan": [1, 1],
+      "text": "proposition",
+      "node_type": "key"
+    },
+    {
+      "colspan": [2, 2],
+      "rowspan": [1, 1],
+      "text": "1(true)/0(false)",
+      "node_type": "key"
+    },
+    {
+      "colspan": [1, 1],
+      "rowspan": [2, 2],
+      "text": "John's total points in the game were 25.",
+      "node_type": "value"
+    },
+    {
+      "colspan": [2, 2],
+      "rowspan": [2, 2],
+      "text": "1",
+      "node_type": "value"
+    },
+    {
+      "colspan": [1, 1],
+      "rowspan": [3, 3],
+      "text": "John's total assists in the game were 18.",
+      "node_type": "value"
+    },
+    {
+      "colspan": [2, 2],
+      "rowspan": [3, 3],
+      "text": "1",
+      "node_type": "value"
+    },
+    {
+      "colspan": [1, 1],
+      "rowspan": [4, 4],
+      "text": "John's total rebounds in the game were 26.",
+      "node_type": "value"
+    },
+    {
+      "colspan": [2, 2],
+      "rowspan": [4, 4],
+      "text": "0",
+      "node_type": "value"
+    },
+    {
+      "colspan": [1, 1],
+      "rowspan": [5, 5],
+      "text": "John had more steals in the first half than in the second half.",
+      "node_type": "value"
+    },
+    {
+      "colspan": [2, 2],
+      "rowspan": [5, 5],
+      "text": "0",
+      "node_type": "value"
+    },
+    {
+      "colspan": [1, 1],
+      "rowspan": [6, 6],
+      "text": "John's total blocks in the game were 7.",
+      "node_type": "value"
+    },
+    {
+      "colspan": [2, 2],
+      "rowspan": [6, 6],
+      "text": "1",
+      "node_type": "value"
+    },
+    {
+      "colspan": [1, 1],
+      "rowspan": [7, 7],
+      "text": "John's total turnovers in the game were 14.",
+      "node_type": "value"
+    },
+    {
+      "colspan": [2, 2],
+      "rowspan": [7, 7],
+      "text": "1",
+      "node_type": "value"
+    },
+    {
+      "colspan": [1, 1],
+      "rowspan": [8, 8],
+      "text": "John played for a total of 21 minutes in the game.",
+      "node_type": "value"
+    },
+    {
+      "colspan": [2, 2],
+      "rowspan": [8, 8],
+      "text": "1",
+      "node_type": "value"
+    },
+    {
+      "colspan": [1, 1],
+      "rowspan": [9, 9],
+      "text": "John played as a Forward in the first and fourth quarters, and as a Center in the third quarter.",
+      "node_type": "value"
+    },
+    {
+      "colspan": [2, 2],
+      "rowspan": [9, 9],
+      "text": "1",
+      "node_type": "value"
+    }
+  ]
+}
