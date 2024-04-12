@@ -23,6 +23,7 @@ fact_verification_analysis_prompt="""
                         {context}
                         
                         Based on the above information, please determine whether the following proposition is correct and analyze step by step.
+                        {proposition}
                         """
 
 fact_verification_judge_prompt = """

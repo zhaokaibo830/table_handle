@@ -13,8 +13,8 @@ def load_table(path):
 def language_judgement(table):
     for i in range(len(table)):
         if table[i]['node_type'] == 'key':  # 判断所有的key,如果出现中文，则判断为中文，否则判断为英文language=1
-            str_context = table[i]['context']
-            for char in str_context:
+            str_text = table[i]['text']
+            for char in str_text:
                 if "\u4e00" <= char <= "\u9fff":
                     language = 0
                     break
@@ -111,17 +111,17 @@ def split_table(table, colnum, rownum, h, language):
     head = []
     if table[0]['colspan'][1] - table[0]['colspan'][0] + 1 == colnum:  # 若是列表头，删除列表头，列数减一，行数不变生成表格
         if language == 0:
-            str = table[0]['context'] + "的"
+            str = table[0]['text'] + "的"
         else:
-            str = table[0]['context'] + "'s "
+            str = table[0]['text'] + "'s "
         head += str
         rownum = rownum - 1
         del table[0]
     elif table[0]['rowspan'][1] - table[0]['rowspan'][0] + 1 == rownum:  # 同理
         if language == 0:
-            str = table[0]['context'] + "的"
+            str = table[0]['text'] + "的"
         else:
-            str = table[0]['context'] + "'s "
+            str = table[0]['text'] + "'s "
         head += str
         colnum = colnum - 1
         del table[0]
@@ -137,7 +137,7 @@ def split_table(table, colnum, rownum, h, language):
                     if table[i + j]['node_type'] == "key" and table[i + j]['colspan'][0] >= table[i]['colspan'][0] and \
                             table[i + j]['colspan'][1] <= table[i]['colspan'][1] and table[i + j]['rowspan'][0] == \
                             table[i]['rowspan'][1] + 1:  # 在下一行且是小key
-                        table[i + j]['context'] = table[i]['context'] + '的' + table[i + j]['context']
+                        table[i + j]['text'] = table[i]['text'] + '的' + table[i + j]['text']
                         if table[i + j]['colspan'][1] == table[i]['colspan'][1]:
                             del table[i]
                             i -= 1
@@ -155,7 +155,7 @@ def split_table(table, colnum, rownum, h, language):
                     if table[i + j]['node_type'] == "key" and table[i + j]['colspan'][0] >= table[i]['colspan'][0] and \
                             table[i + j]['colspan'][1] <= table[i]['colspan'][1] and table[i + j]['rowspan'][0] == \
                             table[i]['rowspan'][1] + 1:  # 在下一行且是小key
-                        table[i + j]['context'] = table[i]['context'] + '的' + table[i + j]['context']
+                        table[i + j]['text'] = table[i]['text'] + '的' + table[i + j]['text']
                         table[i + j]['rowspan'][0] = table[i + j]['rowspan'][1]
                         if table[i + j]['colspan'][1] == table[i]['colspan'][1]:
                             del table[i]
@@ -188,14 +188,14 @@ def split_table(table, colnum, rownum, h, language):
                 rowstart = element['rowspan'][0] - 1
                 colend = element['colspan'][1]
                 rowend = element['rowspan'][1]
-                context = element['context']
+                text = element['text']
                 node_type = element['node_type']
                 for m in range(rowstart, rowend):
                     for n in range(colstart, colend):
                         if node_type == 'key' and rowstart == 0:  # 两行表头
-                            splitted_table[m][n] = head + context
+                            splitted_table[m][n] = head + text
                         else:
-                            splitted_table[m][n] = context
+                            splitted_table[m][n] = text
 
         k += (colnum - 1)
     return splitted_table
@@ -265,7 +265,8 @@ def simple_table_handle(table):
 
 
 if __name__ == '__main__':
-    table = load_table('unhorizon(yaliziliao3).py')
+    # table = load_table('unhorizon(yaliziliao3).py')
+    table=[{'colspan': [3, 3], 'rowspan': [3, 3], 'text': 'Education', 'node_type': 'key'}, {'colspan': [3, 3], 'rowspan': [4, 4], 'text': "Master's Degree", 'node_type': 'value'}, {'colspan': [8, 8], 'rowspan': [4, 4], 'text': 'Occupation', 'node_type': 'value'}]
     language = language_judgement(table)
     # print(count_table(table))
     unrownum, uncolnum = count_table(table)

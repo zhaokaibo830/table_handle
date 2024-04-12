@@ -1,0 +1,41 @@
+{
+    "sub_table_1": [
+        {
+            "text": "Emily Smith",
+            "colspan": [
+                1,
+                1
+            ],
+            "rowspan": [
+                1,
+                1
+            ]
+        }
+    ],
+    "sub_table_2": [
+        {
+            "text": "Wife",
+            "colspan": [
+                2,
+                2
+            ],
+            "rowspan": [
+                1,
+                1
+            ]
+        }
+    ],
+    "sub_table_3": [
+        {
+            "text": "Doctor",
+            "colspan": [
+                3,
+                5
+            ],
+            "rowspan": [
+                1,
+                1
+            ]
+        }
+    ]
+}

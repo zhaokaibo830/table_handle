@@ -32,9 +32,10 @@ def cmp(node1: Node, node2: Node):
             return 1
 
 
-def table2text(table_dict, coarse_grained_degree, fine_grained_degree):
-    table_dict = kv_clf(table_dict, coarse_grained_degree, fine_grained_degree)
-    print(table_dict)
+def table2text(table_dict, is_node_type,coarse_grained_degree=5, fine_grained_degree=10):
+    if not is_node_type:
+        table_dict = kv_clf(table_dict, coarse_grained_degree, fine_grained_degree)
+        print(table_dict)
     segmented_table: List[Set[Node]]
     segmented_table, _, _ = table_seg(table_dict)
 
@@ -54,10 +55,16 @@ def table2text(table_dict, coarse_grained_degree, fine_grained_degree):
                     "node_type": segment_i_cell_j.node_type
                 }
                 sub_table_cell.append(temp_dict)
-            caption += simple_table_handle(sub_table_cell)
+            print("-------------打印子表---------------------")
+            print(sub_table_cell)
+            try:
+                caption += simple_table_handle(sub_table_cell)
+            except Exception as e:
+                print("子表处理异常！！！！！！")
+                caption+= " ".join([segment_i_cell_j.text for segment_i_cell_j in segment_i])
         elif len(segment_i) == 1:
             caption += segment_i[0].text + "  "
     p_prompt = PromptTemplate(input_variables=["text"], template=polish_prompt)
-    polish_chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat", prompt=p_prompt))
+    polish_chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat"),prompt=p_prompt)
     polish_caption = polish_chain.run(text=caption)
     return polish_caption

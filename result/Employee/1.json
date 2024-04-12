@@ -1,0 +1,72 @@
+{
+    "fine_degree-0": {
+        "TP": 10,
+        "TN": 28,
+        "FP": 0,
+        "FN": 8,
+        "table_description": "Subject: Comprehensive Profile for Nathan Smith\nFull Name: Nathan Smith\nGender: Male\nDate of Birth: June 25, 1982\nHealth Status: Maintains excellent well-being, not classified as a health condition but an indicator of personal fitness.\nMarital Status: Married\nEducation: Holds a Master's Degree\nContact Information:\n- Primary: +1 (555) 123-6789\n- Secondary: +1 (555) 987-6543\n- Additional: +1 (555) 234-5678\n- Home Phone: +1 (555) 123-4567\nResidence: \n123 Oak Street, Springfield, IL 62701, United States\n\nProfessional Profile:\n- Affiliation: Evergreen Technologies, Inc.\n- Department: Innovation Development Department\n- Employment Start: March 5, 2021\n- Position: Full-time employee, contributing to the company's continuous innovation drive\n\nFamily Details:\n- Father: John Smith, Professional Role - Engineer\n- Mother: Mary Smith, Occupation - Educator\n- Spouse: Emily Smith, MD (Doctor)\n- Son: Michael Smith, currently a student\n\nThis profile provides a brief overview of Nathan Smith's personal and professional life, emphasizing his health, education, and work experience at Evergreen Technologies, Inc. in the Innovation Development Department. Familiarity with his family members includes their occupations and relationships within the family structure.",
+        "fv_true_count": 5,
+        "fv_false_count": 5,
+        "precision": 1.0,
+        "recall": 0.5555555555555556,
+        "accuracy": 0.8260869565217391,
+        "F1_Score": 0.7142857142857143,
+        "fv_accuracy": 0.5
+    },
+    "fine_degree-2": {
+        "TP": 12,
+        "TN": 27,
+        "FP": 1,
+        "FN": 6,
+        "table_description": "Nathan Smith, a male individual born on June 25, 1982, maintains excellent health. He is a happily married man residing at 123 Oak Street, Springfield, Illinois 62701, United States. His current professional life is well-established, working full-time at Evergreen Technologies, Inc., where he contributes to the Innovation Development Department since March 5, 2021. Nathan holds a Master's degree, demonstrating his strong educational background.\n\nIn his personal life, he is surrounded by a family consisting of his spouse (a medical professional, Dr. Smith, with a contact number +1(555)234-5678), his father, an engineer with a phone number +1(555)123-6789, his mother, an educator at +1(555)987-6543, and their son, a student with contact +1(555)678-9012. This comprehensive profile highlights Nathan's dual roles as a dedicated employee and a family man in the community.",
+        "fv_true_count": 6,
+        "fv_false_count": 4,
+        "precision": 0.9230769230769231,
+        "recall": 0.6666666666666666,
+        "accuracy": 0.8478260869565217,
+        "F1_Score": 0.7741935483870968,
+        "fv_accuracy": 0.6
+    },
+    "fine_degree-5": {
+        "TP": 12,
+        "TN": 27,
+        "FP": 1,
+        "FN": 6,
+        "table_description": "Nathan Smith is a male individual born on June 25, 1982. He enjoys a favorable health status, indicating he is in good physical and mental well-being. As a married individual, Nathan resides at 123 Oak Street in Springfield, Illinois, 62701, United States. His contact information includes a phone number, +1(555) 123-4567.\n\nCurrently employed at Evergreen Technologies, Inc., he works in the Innovation Development Department, having joined on March 5, 2021, in a full-time capacity. Nathan holds a Master's degree, demonstrating his professional expertise in the field. \n\nNathan's family includes John Smith, an engineer with a direct line at +1(555)123-6789, his mother, a teacher, with a number of +1(555)987-6543, his wife, who is a practicing doctor and can be reached at +1(555)234-5678, and their son, a student, whose contact number is +1(555)678-9012. His occupation, as a contact person, implies he likely serves as a point of connection in his professional life.",
+        "fv_true_count": 6,
+        "fv_false_count": 4,
+        "precision": 0.9230769230769231,
+        "recall": 0.6666666666666666,
+        "accuracy": 0.8478260869565217,
+        "F1_Score": 0.7741935483870968,
+        "fv_accuracy": 0.6
+    },
+    "fine_degree-7": {
+        "TP": 12,
+        "TN": 27,
+        "FP": 1,
+        "FN": 6,
+        "table_description": "Subject: Comprehensive Profile for Nathan Smith\nFull Name: Nathan Smith\nGender: Male\nDate of Birth: June 25, 1982\nHealth Status: Optimal\nResidence: 123 Oak Street, Springfield, IL 62701, United States\n\nNathan is a well-being individual, residing in Springfield. He holds a married status and is an active member of the community. His professional life is centered at Evergreen Technologies, Inc., where he has been contributing since March 5, 2021, as a full-time employee in the Innovation Development Department. His expertise and educational background are marked by a Master's Degree, reflecting his commitment to his career.\n\nIn his personal life, Nathan is a family man with the Smith clan. His father, John Smith, is an accomplished Engineer, whose contact number is +1(555)123-6789. His mother, a dedicated Teacher, can be reached at +1(555)987-6543. His spouse, a professional Doctor, maintains her practice with the number +1(555)234-5678, and their son, a student, is represented by +1(555)678-9012.\n\nNathan's role at work primarily involves managing contacts and potentially serving as a key point of communication for the company. His comprehensive profile highlights his balanced professional and personal life in the tech sector.",
+        "fv_true_count": 6,
+        "fv_false_count": 4,
+        "precision": 0.9230769230769231,
+        "recall": 0.6666666666666666,
+        "accuracy": 0.8478260869565217,
+        "F1_Score": 0.7741935483870968,
+        "fv_accuracy": 0.6
+    },
+    "fine_degree-10": {
+        "TP": 12,
+        "TN": 26,
+        "FP": 2,
+        "FN": 6,
+        "table_description": "Individual Profile:\n\nNathan, a male, was born on June 25, 1982. He is in good health, indicating a strong well-being. Nathan is married, reflecting a stable personal life. He holds a Master's degree, which contributes to his professional expertise. Currently, he is employed at Evergreen Technologies, Inc., where he serves as part of the Innovation Development Department, having joined on March 5, 2021, in a full-time capacity. His work address is 123 Oak Street, Springfield, IL 62701, USA.\n\nHis contact information includes a phone number of +1(555) 123-4567. In his family, Nathan's father, an engineer with the contact number +1(555)123-6789, plays a key role. His mother, a teacher, is at +1(555)987-6543, and his wife, a professional doctor, can be reached at +1(555)234-5678. They also have a child, a student, whose contact details are +1(555)678-9012, who presumably attends school.\n\nThis concise description highlights Nathan's personal and professional attributes, while maintaining a formal tone.",
+        "fv_true_count": 7,
+        "fv_false_count": 3,
+        "precision": 0.8571428571428571,
+        "recall": 0.6666666666666666,
+        "accuracy": 0.8260869565217391,
+        "F1_Score": 0.75,
+        "fv_accuracy": 0.7
+    }
+}

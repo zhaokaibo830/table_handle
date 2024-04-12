@@ -1,13 +1,25 @@
-from openpyxl import load_workbook
+from collections import Counter
 
-# 打开工作簿
-wb = load_workbook(r"E:\code\table_handle\data\drilling\1.xlsx")
-sheet = wb["table"]
-sheet1 = wb["fact verification"]
 
-# 转换为 JSON 格式
+class MyObject:
+    def __init__(self, name, value):
+        self.name = name
+        self.value = value
 
-propositions = []
-for row in list(sheet1.iter_rows())[1:]:
-    print(row[0].value)
-    print(row[1].value)
+    # 创建对象列表
+
+
+objects = [
+    MyObject('A', 10),
+    MyObject('B', 5),
+    MyObject('C', 10),
+    MyObject('D', 5),
+    MyObject('E', 20),
+]
+
+# 提取每个对象的value属性并计数  
+value_counts = Counter(obj.value for obj in objects)
+
+# 打印结果  
+for value, count in value_counts.items():
+    print(f"Value {value} appears {count} times.")
