@@ -15,20 +15,32 @@ import sys
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
 from langchain_core.prompts import PromptTemplate
-from tools.prompt import fact_verification_analysis_prompt, fact_verification_judge_prompt
+from tools.prompt import fact_verification_analysis_prompt_en, fact_verification_judge_prompt_en
 from langchain.docstore.document import Document
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
+from tools.kv_amend import kv_amend
+from tools.func import language_judgement
 
 os.environ['OPENAI_API_KEY'] = "EMPTY"
 os.environ['OPENAI_API_BASE'] = "http://124.70.207.36:7002/v1"
-analysis_prompt = PromptTemplate(input_variables=["context", "proposition"], template=fact_verification_analysis_prompt)
+analysis_prompt = PromptTemplate(input_variables=["context", "proposition"], template=fact_verification_analysis_prompt_en)
 analysis_chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat"), prompt=analysis_prompt)
-judge_prompt = PromptTemplate(input_variables=["analysis"], template=fact_verification_judge_prompt)
+judge_prompt = PromptTemplate(input_variables=["analysis"], template=fact_verification_judge_prompt_en)
 judge_chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat"), prompt=judge_prompt)
 
-
+def cmp(node1: Node, node2: Node):
+    if node1.rowspan[0] < node2.rowspan[0]:
+        return -1
+    elif node1.rowspan[0] > node2.rowspan[0]:
+        return 1
+    else:
+        if node1.colspan[0] < node2.colspan[0]:
+            return -1
+        else:
+            return 1
 def kv_fv_test(coarse_grained_degree, fine_grained_degree, file_path, fine_degrees):
+
     gt_table, propositions = any_format_to_json(file_path)
     predict_table = {"cells": []}
     for cell in gt_table["cells"]:
@@ -41,14 +53,31 @@ def kv_fv_test(coarse_grained_degree, fine_grained_degree, file_path, fine_degre
     predict_table_list = kv_clf(predict_table, coarse_grained_degree=coarse_grained_degree,
                                 fine_grained_degree=fine_grained_degree, checkpoint=fine_degrees)
     one_file_result = {}
+
     for i, predict_table in enumerate(predict_table_list):
+        language = language_judgement(predict_table["cells"])
         TP = 0  # TP将key预测为key
         TN = 0  # TN将value预测为value
         FP = 0  # FN将value预测为key
         FN = 0  # TN将key预测为value
         fv_true_count = 0  # 统计此类数据命题判断正确的数量
         fv_false_count = 0  # 统计此类数据命题判断错误的数量
+        segmented_table, _, _=table_seg(predict_table)
 
+        caption = ""
+        predict_table={"cells":[]}
+        for i, segment_i in enumerate(segmented_table):
+            sub_table_cell = []
+            for segment_i_cell_j in segment_i:
+                temp_dict = {
+                    "colspan": [segment_i_cell_j.colspan[0], segment_i_cell_j.colspan[1]],
+                    "rowspan": [segment_i_cell_j.rowspan[0], segment_i_cell_j.rowspan[1]],
+                    "text": segment_i_cell_j.text,
+                    "node_type": segment_i_cell_j.node_type
+                }
+                sub_table_cell.append(temp_dict)
+            amended_table, _, _=kv_amend(sub_table_cell)
+            predict_table["cells"].extend(amended_table)
         for predict_cell in predict_table["cells"]:
             for gt_cell in gt_table["cells"]:
                 if predict_cell["colspan"] == gt_cell["colspan"] and predict_cell["rowspan"] == gt_cell["rowspan"]:
@@ -62,7 +91,7 @@ def kv_fv_test(coarse_grained_degree, fine_grained_degree, file_path, fine_degre
                             FP += 1
                         else:
                             TN += 1
-        table_description = table2text(predict_table, is_node_type=True)
+        table_description = table2text(predict_table, is_node_type=True,language=language)
         for one_proposition in propositions:
             proposition = one_proposition["proposition"]
             value = one_proposition["value"]

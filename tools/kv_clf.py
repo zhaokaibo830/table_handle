@@ -7,7 +7,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
 from langchain_core.prompts import PromptTemplate
 import ast
-from tools.prompt import table_head_analysis_prompt, table_head_extract_prompt
+from tools.prompt import table_head_analysis_prompt_en, table_head_extract_prompt_en,table_head_analysis_prompt_ch, table_head_extract_prompt_ch
 from tools.table_seg import table_seg
 from tools.node import Node
 import random
@@ -25,7 +25,7 @@ def keep_chinese_english_digit(text) -> str:
     return result
 
 
-def table_head_extract(text_list) -> List:
+def table_head_extract(text_list,language) -> List:
     """
     利用大模型提取表格中可能为表头的单元格
     :param text_list: 表格中的所有单元格文本构成的列表
@@ -33,8 +33,12 @@ def table_head_extract(text_list) -> List:
     table_head：可能为表头的单元格文本列表
     """
     text = "\n".join(text_list)
-    analysis_prompt = PromptTemplate(input_variables=["text"], template=table_head_analysis_prompt)
-    extract_prompt = PromptTemplate(input_variables=["analysis_text"], template=table_head_extract_prompt)
+    if language == "Chinese":
+        analysis_prompt = PromptTemplate(input_variables=["text"], template=table_head_analysis_prompt_ch)
+        extract_prompt = PromptTemplate(input_variables=["analysis_text"], template=table_head_extract_prompt_ch)
+    else:
+        analysis_prompt = PromptTemplate(input_variables=["text"], template=table_head_analysis_prompt_en)
+        extract_prompt = PromptTemplate(input_variables=["analysis_text"], template=table_head_extract_prompt_en)
     # print(sys.argv[3])
     # print(type(sys.argv[3]))
     print("-----------------输出text-------------------------------------")
@@ -209,7 +213,7 @@ def sub_table_have_remain_key(sub_table_nodes: List[Node], whole_table_dict: Dic
 
 
 def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grained_degree: int,
-           checkpoint: List[int]) -> List:
+           checkpoint: List[int],language) -> List:
     """
     利用大模型提取语义信息再结合表格的结构信息对表格中的单元格进行key/value属性分类
     :param table_dict_no_node_type: 表格的字典表示，其中每个节点的类型未知
@@ -240,7 +244,7 @@ def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grain
         count = 0
         while True:
             count += 1
-            table_head = table_head_extract(cell_text_list)
+            table_head = table_head_extract(cell_text_list,language)
             for i_row_j_col in table_dict['cells']:
                 if replace_multiple_spaces(i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r",
                                                                                                            "")).strip().lower() in table_head:
@@ -340,7 +344,7 @@ def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grain
                 sub_table_cell_text_list.append(
                     replace_multiple_spaces(
                         i_sub_table_node.text.replace("\n", "").replace("\t", "").replace("\r", "")).strip().lower())
-            sub_table_head = table_head_extract(sub_table_cell_text_list)
+            sub_table_head = table_head_extract(sub_table_cell_text_list,language)
 
             for i_sub_table_node in sub_table_nodes:
                 if replace_multiple_spaces(i_sub_table_node.text.replace("\n", "").replace("\t", "").replace("\r",
