@@ -1,17 +1,6 @@
 {
     "sub_table_1": [
         {
-            "text": "Nathan",
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                1,
-                1
-            ]
-        },
-        {
             "text": "Name",
             "colspan": [
                 1,
@@ -21,507 +10,64 @@
                 1,
                 1
             ]
+        },
+        {
+            "text": "Nathan",
+            "colspan": [
+                1,
+                1
+            ],
+            "rowspan": [
+                2,
+                2
+            ]
         }
     ],
     "sub_table_2": [
         {
-            "text": "male",
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                1,
-                1
-            ]
-        },
-        {
-            "text": "Gender",
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                1,
-                1
-            ]
-        }
-    ],
-    "sub_table_3": [
-        {
-            "text": "June 25th, 1982",
-            "colspan": [
-                6,
-                6
-            ],
-            "rowspan": [
-                1,
-                1
-            ]
-        },
-        {
-            "text": "Date of Birth",
-            "colspan": [
-                5,
-                5
-            ],
-            "rowspan": [
-                1,
-                1
-            ]
-        }
-    ],
-    "sub_table_4": [
-        {
-            "text": "Married",
-            "colspan": [
-                7,
-                7
-            ],
-            "rowspan": [
-                9,
-                9
-            ]
-        },
-        {
-            "text": "+1(555)123-6789",
-            "colspan": [
-                7,
-                7
-            ],
-            "rowspan": [
-                4,
-                4
-            ]
-        },
-        {
-            "text": "Good",
-            "colspan": [
-                7,
-                7
-            ],
-            "rowspan": [
-                2,
-                2
-            ]
-        },
-        {
-            "text": "+1(555)987-6543",
-            "colspan": [
-                7,
-                7
-            ],
-            "rowspan": [
-                5,
-                5
-            ]
-        },
-        {
-            "text": "+1(555)678-9012",
-            "colspan": [
-                7,
-                7
-            ],
-            "rowspan": [
-                7,
-                7
-            ]
-        },
-        {
-            "text": "Marital Status",
-            "colspan": [
-                7,
-                7
-            ],
-            "rowspan": [
-                8,
-                8
-            ]
-        },
-        {
-            "text": "Contact Phone",
-            "colspan": [
-                7,
-                7
-            ],
-            "rowspan": [
-                3,
-                3
-            ]
-        },
-        {
-            "text": "+1(555)234-5678",
-            "colspan": [
-                7,
-                7
-            ],
-            "rowspan": [
-                6,
-                6
-            ]
-        },
-        {
-            "text": "Health Condition",
-            "colspan": [
-                7,
-                7
-            ],
-            "rowspan": [
-                1,
-                1
-            ]
-        }
-    ],
-    "sub_table_5": [
-        {
             "text": "Home Address",
             "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
                 2,
                 2
+            ],
+            "rowspan": [
+                1,
+                1
             ]
         },
         {
             "text": "123 Oak Street Springfield, IL 62701 United States",
             "colspan": [
                 2,
+                2
+            ],
+            "rowspan": [
+                2,
                 4
-            ],
-            "rowspan": [
-                2,
-                2
             ]
         }
     ],
-    "sub_table_6": [
+    "sub_table_3": [
         {
-            "text": "+1(555) 123-4567",
+            "text": "male",
             "colspan": [
-                6,
-                6
+                1,
+                1
             ],
             "rowspan": [
-                2,
-                2
+                4,
+                4
             ]
         },
         {
-            "text": "Phone number",
-            "colspan": [
-                5,
-                5
-            ],
-            "rowspan": [
-                2,
-                2
-            ]
-        }
-    ],
-    "sub_table_7": [
-        {
-            "text": "Wife",
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                6,
-                6
-            ]
-        },
-        {
-            "text": "Relationship",
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                3,
-                3
-            ]
-        },
-        {
-            "text": "Name",
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                3,
-                3
-            ]
-        },
-        {
-            "text": "Son",
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                7,
-                7
-            ]
-        },
-        {
-            "text": "Mother",
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                5,
-                5
-            ]
-        },
-        {
-            "text": "Mary Smith",
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                5,
-                5
-            ]
-        },
-        {
-            "text": "Michael Smith",
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                7,
-                7
-            ]
-        },
-        {
-            "text": "Family Members",
+            "text": "Gender",
             "colspan": [
                 1,
                 1
             ],
             "rowspan": [
                 3,
-                7
-            ]
-        },
-        {
-            "text": "Emily Smith",
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                6,
-                6
-            ]
-        },
-        {
-            "text": "John Smith",
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                4,
-                4
-            ]
-        },
-        {
-            "text": "Father",
-            "colspan": [
-                3,
                 3
-            ],
-            "rowspan": [
-                4,
-                4
-            ]
-        }
-    ],
-    "sub_table_8": [
-        {
-            "text": "Doctor",
-            "colspan": [
-                4,
-                6
-            ],
-            "rowspan": [
-                6,
-                6
-            ]
-        },
-        {
-            "text": "Occupation",
-            "colspan": [
-                4,
-                6
-            ],
-            "rowspan": [
-                3,
-                3
-            ]
-        },
-        {
-            "text": "Student",
-            "colspan": [
-                4,
-                6
-            ],
-            "rowspan": [
-                7,
-                7
-            ]
-        },
-        {
-            "text": "Teacher",
-            "colspan": [
-                4,
-                6
-            ],
-            "rowspan": [
-                5,
-                5
-            ]
-        },
-        {
-            "text": "Engineer",
-            "colspan": [
-                4,
-                6
-            ],
-            "rowspan": [
-                4,
-                4
-            ]
-        }
-    ],
-    "sub_table_9": [
-        {
-            "text": "Innovation Development Department",
-            "colspan": [
-                3,
-                6
-            ],
-            "rowspan": [
-                9,
-                9
-            ]
-        },
-        {
-            "text": "Evergreen Technologies, Inc.",
-            "colspan": [
-                3,
-                6
-            ],
-            "rowspan": [
-                8,
-                8
-            ]
-        },
-        {
-            "text": "Company Name",
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                8,
-                8
-            ]
-        },
-        {
-            "text": "Employment Status",
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                11,
-                11
-            ]
-        },
-        {
-            "text": "Date of Entry",
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                10,
-                10
-            ]
-        },
-        {
-            "text": "Department",
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                9,
-                9
-            ]
-        },
-        {
-            "text": "March 5th, 2021",
-            "colspan": [
-                3,
-                6
-            ],
-            "rowspan": [
-                10,
-                10
-            ]
-        },
-        {
-            "text": "Employment Information",
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                8,
-                11
-            ]
-        },
-        {
-            "text": "full-time",
-            "colspan": [
-                3,
-                6
-            ],
-            "rowspan": [
-                11,
-                11
-            ]
-        }
-    ],
-    "sub_table_10": [
-        {
-            "text": "Master's Degree",
-            "colspan": [
-                7,
-                7
-            ],
-            "rowspan": [
-                11,
-                11
-            ]
-        },
-        {
-            "text": "Education",
-            "colspan": [
-                7,
-                7
-            ],
-            "rowspan": [
-                10,
-                10
             ]
         }
     ]

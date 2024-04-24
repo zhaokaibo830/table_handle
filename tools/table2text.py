@@ -19,6 +19,8 @@ from langchain.docstore.document import Document
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
 from tools.kv_amend import kv_amend
+from tools.func import language_judgement,sub_table_adjust
+from tools.st_merge import sub_table_merge
 
 
 def cmp(node1: Node, node2: Node):
@@ -33,20 +35,26 @@ def cmp(node1: Node, node2: Node):
             return 1
 
 
-def table2text(table_dict, is_node_type=False, coarse_grained_degree=5, fine_grained_degree=10, language="Chinese"):
+def table2text(table_dict, is_node_type=False, coarse_grained_degree=5, fine_grained_degree=10):
+    language = language_judgement(table_dict["cells"])
     if not is_node_type:
         table_dict = \
-            kv_clf(table_dict, coarse_grained_degree, fine_grained_degree, checkpoint=[0, 10], language=language)[1]
+            kv_clf(table_dict, coarse_grained_degree, fine_grained_degree, checkpoint=[0, 20], language=language)[-1]
         print(table_dict)
     segmented_table: List[Set[Node]]
-    segmented_table, _, _ = table_seg(table_dict)
+    segmented_table, all_table_node, rows_head = table_seg(table_dict)
+    segmented_table=sub_table_adjust(segmented_table, all_table_node)
+    segmented_table = sub_table_merge(segmented_table)
 
     caption = ""
     for i, segment_i in enumerate(segmented_table):
         segment_i = list(segment_i)
         segment_i.sort(key=cmp_to_key(cmp))
         if len(segment_i) == 2:
-            caption += segment_i[0].text + "is" + segment_i[1].text + ". "
+            if language == "Chinese":
+                caption += segment_i[0].text + "是" + segment_i[1].text + "。 "
+            else:
+                caption += segment_i[0].text + "is" + segment_i[1].text + ". "
         elif len(segment_i) > 2:
             sub_table_cell = []
             for segment_i_cell_j in segment_i:
@@ -61,9 +69,10 @@ def table2text(table_dict, is_node_type=False, coarse_grained_degree=5, fine_gra
             print(sub_table_cell)
             try:
                 _, unified_table, have_table_head = kv_amend(sub_table_cell)
-                caption += simple_table2text(unified_table, have_table_head)
+                caption += simple_table2text(unified_table, have_table_head, language)
             except Exception as e:
                 print("子表处理异常！！！！！！")
+                print(e)
                 caption += " ".join([segment_i_cell_j.text for segment_i_cell_j in segment_i])
         elif len(segment_i) == 1:
             caption += segment_i[0].text + "  "
@@ -79,7 +88,8 @@ def table2text(table_dict, is_node_type=False, coarse_grained_degree=5, fine_gra
 if __name__ == "__main__":
     from tools.preprocess import any_format_to_json
 
-    gt_table, propositions = any_format_to_json("11.xlsx")
-    caption = table2text(gt_table, is_node_type=False, coarse_grained_degree=1, fine_grained_degree=10,
-                         language="Chinese")
+    os.environ['OPENAI_API_KEY'] = "EMPTY"
+    os.environ['OPENAI_API_BASE'] = "http://124.70.207.36:7002/v1"
+    gt_table, propositions = any_format_to_json(r"E:\code\table_handle\tools\11.xlsx")
+    caption = table2text(gt_table, is_node_type=False, coarse_grained_degree=1, fine_grained_degree=20)
     print(caption)

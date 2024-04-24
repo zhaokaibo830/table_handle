@@ -25,6 +25,24 @@ def have_next_level_head(i_node: Node, direct: str):
 
 
 def kv_amend(simple_table: List):
+    if len(simple_table) == 1:
+        amended_table = []
+        simple_table[0]["node_type"] = "value"
+        amended_table.append({
+            "text": simple_table[0]["text"],
+            "colspan": simple_table[0]["colspan"][:],
+            "rowspan": simple_table[0]["rowspan"][:],
+            "node_type": "value"
+        })
+        unified_table = []
+        unified_table.append({
+            "text": simple_table[0]["text"],
+            "colspan": [1, 1],
+            "rowspan": [1, 1],
+            "node_type": "value"
+        })
+        return amended_table, unified_table, False
+
     left_index, right_index = simple_table[0]["colspan"][0], simple_table[0]["colspan"][1]
     up_index, down_index = simple_table[0]["rowspan"][0], simple_table[0]["rowspan"][1]
     for cell in simple_table:
@@ -52,10 +70,12 @@ def kv_amend(simple_table: List):
     # print("left_index:",left_index)
     # print("up_index:",up_index)
     for cell in simple_table:
-        cell["colspan"][0] -= left_index-1
-        cell["rowspan"][0] -= up_index-1
-        cell["colspan"][1] -= left_index-1
-        cell["rowspan"][1] -= up_index-1
+        cell["colspan"][0] -= left_index - 1
+        cell["rowspan"][0] -= up_index - 1
+        cell["colspan"][1] -= left_index - 1
+        cell["rowspan"][1] -= up_index - 1
+    print("-----------simple_table-----------------")
+    print(simple_table)
     all_table_node, row_column_head, rows_head, columns_head = create_cross_list(simple_table)
 
     # 根据表格结构判断表头是否在左边
@@ -120,7 +140,7 @@ def kv_amend(simple_table: List):
         up_is_head = False
     # print("------------up_node-----------------")
     # for i_up_node in up_node:
-        # print(i_up_node.text)
+    # print(i_up_node.text)
     while True:
         # print("__________")
         # for _ in up_all_head_node:
@@ -156,7 +176,7 @@ def kv_amend(simple_table: List):
             else:
                 up_is_head = False
                 break
-                    
+
     # print("up_is_head",up_is_head)
 
     if left_is_head and not up_is_head:
@@ -173,11 +193,11 @@ def kv_amend(simple_table: List):
             up_node.add(i_col_head.down_pointer[i + 1])
         if Counter(i_left_node.node_type for i_left_node in left_node)["key"] > \
                 Counter(i_up_node.node_type for i_up_node in up_node)["key"]:
-            up_is_head=False
+            up_is_head = False
             head_nodes = left_node
 
         else:
-            left_is_head=False
+            left_is_head = False
             head_nodes = up_node
     else:
         head_nodes = []
@@ -191,86 +211,90 @@ def kv_amend(simple_table: List):
     if one_level_head:
         amended_table.append(one_level_head)
     for cell_node in all_table_node:
-        temp = {}
-        temp["text"] = cell_node.text
-        temp["colspan"] = cell_node.colspan[0]+left_index,cell_node.colspan[1]+left_index
-        temp["rowspan"] = cell_node.rowspan[0]+up_index,cell_node.rowspan[1]+up_index
-        temp["node_type"] = cell_node.node_type
-        amended_table.append(temp)
+        amended_table.append({
+            "text": cell_node.text,
+            "colspan": [cell_node.colspan[0] + left_index - 1, cell_node.colspan[1] + left_index - 1],
+            "rowspan": [cell_node.rowspan[0] + up_index - 1, cell_node.rowspan[1] + up_index - 1],
+            "node_type": cell_node.node_type
+        })
 
-    unified_table=[]
-    right_index =  all_table_node[0].colspan[1]
+    unified_table = []
+    right_index = all_table_node[0].colspan[1]
     down_index = all_table_node[0].colspan[1]
     for cell in all_table_node:
-        right_index =  max(right_index, cell.colspan[1])
-        down_index =  max(down_index, cell.rowspan[1])
+        right_index = max(right_index, cell.colspan[1])
+        down_index = max(down_index, cell.rowspan[1])
     if left_is_head and not up_is_head:
         if one_level_head:
             unified_table.append({
                 "text": one_level_head["text"],
-                "colspan": [1,1],
-                "rowspan": [1,down_index],
+                "colspan": [1, 1],
+                "rowspan": [1, down_index],
                 "node_type": "key"
             })
             for cell_node in all_table_node:
-                temp = {}
-                temp["text"] = cell_node.text
-                temp["colspan"] = cell_node.colspan[0] + 1, cell_node.colspan[1] + 1
-                temp["rowspan"] = cell_node.rowspan[0], cell_node.rowspan[1]
-                temp["node_type"] = cell_node.node_type
-                amended_table.append(temp)
+                unified_table.append({
+                    "text": cell_node.text,
+                    "colspan": [cell_node.colspan[0] + 1, cell_node.colspan[1] + 1],
+                    "rowspan": [cell_node.rowspan[0], cell_node.rowspan[1]],
+                    "node_type": cell_node.node_type
+                })
         else:
             for cell_node in all_table_node:
-                temp = {}
-                temp["text"] = cell_node.text
-                temp["colspan"] = cell_node.colspan[0], cell_node.colspan[1]
-                temp["rowspan"] = cell_node.rowspan[0], cell_node.rowspan[1]
-                temp["node_type"] = cell_node.node_type
-                amended_table.append(temp)
+                unified_table.append({
+                    "text": cell_node.text,
+                    "colspan": [cell_node.colspan[0], cell_node.colspan[1]],
+                    "rowspan": [cell_node.rowspan[0], cell_node.rowspan[1]],
+                    "node_type": cell_node.node_type
+                })
         for cell in unified_table:
-            cell["colspan"], cell["rowspan"]= cell["rowspan"],cell["colspan"]
+            cell["colspan"], cell["rowspan"] = cell["rowspan"], cell["colspan"]
     elif not left_is_head and up_is_head:
         if one_level_head:
             unified_table.append({
                 "text": one_level_head["text"],
-                "colspan": [1,right_index],
-                "rowspan": [1,1],
+                "colspan": [1, right_index],
+                "rowspan": [1, 1],
                 "node_type": "key"
             })
             for cell_node in all_table_node:
-                temp = {}
-                temp["text"] = cell_node.text
-                temp["colspan"] = cell_node.colspan[0], cell_node.colspan[1]
-                temp["rowspan"] = cell_node.rowspan[0]+1, cell_node.rowspan[1]+1
-                temp["node_type"] = cell_node.node_type
-                amended_table.append(temp)
+                unified_table.append({
+                    "text": cell_node.text,
+                    "colspan": [cell_node.colspan[0], cell_node.colspan[1]],
+                    "rowspan": [cell_node.rowspan[0] + 1, cell_node.rowspan[1] + 1],
+                    "node_type": cell_node.node_type
+                })
         else:
             for cell_node in all_table_node:
-                temp = {}
-                temp["text"] = cell_node.text
-                temp["colspan"] = cell_node.colspan[0], cell_node.colspan[1]
-                temp["rowspan"] = cell_node.rowspan[0], cell_node.rowspan[1]
-                temp["node_type"] = cell_node.node_type
-                amended_table.append(temp)
+                unified_table.append({
+                    "text": cell_node.text,
+                    "colspan": [cell_node.colspan[0], cell_node.colspan[1]],
+                    "rowspan": [cell_node.rowspan[0], cell_node.rowspan[1]],
+                    "node_type": cell_node.node_type
+                })
     else:
         for cell in amended_table:
             unified_table.append({
                 "text": cell["text"],
                 "colspan": cell["colspan"],
-                "rowspan":cell["rowspan"],
+                "rowspan": cell["rowspan"],
                 "node_type": cell["node_type"]
             })
 
     if left_is_head or up_is_head:
-        have_table_head=True
+        have_table_head = True
     else:
-        have_table_head=False
-    return amended_table,unified_table,have_table_head
+        have_table_head = False
+    return amended_table, unified_table, have_table_head
 
 
 if __name__ == "__main__":
     from tools.preprocess import any_format_to_json
 
     gt_table, propositions = any_format_to_json("11.xlsx")
-    table = kv_amend(gt_table["cells"])
-    print(table)
+    print("--------gt_table--------------------")
+    print(gt_table)
+    amended_table, unified_table, have_table_head = kv_amend(gt_table["cells"])
+    print(amended_table)
+    print(unified_table)
+    print(have_table_head)

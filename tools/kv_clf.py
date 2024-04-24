@@ -7,7 +7,8 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
 from langchain_core.prompts import PromptTemplate
 import ast
-from tools.prompt import table_head_analysis_prompt_en, table_head_extract_prompt_en,table_head_analysis_prompt_ch, table_head_extract_prompt_ch
+from tools.prompt import table_head_analysis_prompt_en, table_head_extract_prompt_en, table_head_analysis_prompt_ch, \
+    table_head_extract_prompt_ch
 from tools.table_seg import table_seg
 from tools.node import Node
 import random
@@ -25,7 +26,7 @@ def keep_chinese_english_digit(text) -> str:
     return result
 
 
-def table_head_extract(text_list,language) -> List:
+def table_head_extract(text_list, language) -> List:
     """
     利用大模型提取表格中可能为表头的单元格
     :param text_list: 表格中的所有单元格文本构成的列表
@@ -77,16 +78,28 @@ def table_head_extract(text_list,language) -> List:
                 print("-----------------输出表头提取错误信息-------------------------------------")
                 print(e)
     table_head: List = []
-    for i_text_list in text_list:
-        for j_table_head_temp in table_head_temp:
-            if ((replace_multiple_spaces(
-                    keep_chinese_english_digit(j_table_head_temp)).lower() in keep_chinese_english_digit(
-                i_text_list)) or (
-                        keep_chinese_english_digit(i_text_list) in replace_multiple_spaces(
-                    keep_chinese_english_digit(j_table_head_temp)).lower())) and replace_multiple_spaces(
-                keep_chinese_english_digit(j_table_head_temp)).lower() and keep_chinese_english_digit(i_text_list):
-                table_head.append(i_text_list)
-                break
+
+    if language == "Chinese":
+        for i_text_list in text_list:
+            for j_table_head_temp in table_head_temp:
+                if ((keep_chinese_english_digit(j_table_head_temp) in keep_chinese_english_digit(i_text_list)) or (
+                        keep_chinese_english_digit(i_text_list) in keep_chinese_english_digit(
+                    j_table_head_temp))) and keep_chinese_english_digit(
+                    j_table_head_temp) and keep_chinese_english_digit(i_text_list):
+                    table_head.append(i_text_list)
+                    break
+    else:
+        for i_text_list in text_list:
+            for j_table_head_temp in table_head_temp:
+                if ((replace_multiple_spaces(
+                        keep_chinese_english_digit(j_table_head_temp)).lower() in keep_chinese_english_digit(
+                    i_text_list)) or (
+                            keep_chinese_english_digit(i_text_list) in replace_multiple_spaces(
+                        keep_chinese_english_digit(j_table_head_temp)).lower())) and replace_multiple_spaces(
+                    keep_chinese_english_digit(j_table_head_temp)).lower() and keep_chinese_english_digit(i_text_list):
+                    table_head.append(i_text_list)
+                    break
+
     return table_head
     pass
 
@@ -213,7 +226,7 @@ def sub_table_have_remain_key(sub_table_nodes: List[Node], whole_table_dict: Dic
 
 
 def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grained_degree: int,
-           checkpoint: List[int],language) -> List:
+           checkpoint: List[int], language) -> List:
     """
     利用大模型提取语义信息再结合表格的结构信息对表格中的单元格进行key/value属性分类
     :param table_dict_no_node_type: 表格的字典表示，其中每个节点的类型未知
@@ -225,10 +238,15 @@ def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grain
     table_dict = table_dict_no_node_type
     # cell_text_list是表格中的所有单元格文本构成的列表
     cell_text_list: List[str] = []
-    for i_row_j_col in table_dict['cells']:
-        cell_text_list.append(
-            replace_multiple_spaces(
-                i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r", "")).strip().lower())
+    if language == "Chinese":
+        for i_row_j_col in table_dict['cells']:
+            cell_text_list.append(
+                i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r", "").replace(" ", ""))
+    else:
+        for i_row_j_col in table_dict['cells']:
+            cell_text_list.append(
+                replace_multiple_spaces(
+                    i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r", "")).strip().lower())
     # all_table_node列表，其中的每一个元素是输入表格中的一个单元格
     all_table_node: List[Node]
     # rows_head是表格构成的双向十字链表以行进行索引的头指针列表
@@ -244,13 +262,21 @@ def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grain
         count = 0
         while True:
             count += 1
-            table_head = table_head_extract(cell_text_list,language)
-            for i_row_j_col in table_dict['cells']:
-                if replace_multiple_spaces(i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r",
-                                                                                                           "")).strip().lower() in table_head:
-                    i_row_j_col["node_type"] = "key"
-                else:
-                    i_row_j_col["node_type"] = "value"
+            table_head = table_head_extract(cell_text_list, language)
+            if language == "Chinese":
+                for i_row_j_col in table_dict['cells']:
+                    if i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r", "").replace(" ",
+                                                                                                         "") in table_head:
+                        i_row_j_col["node_type"] = "key"
+                    else:
+                        i_row_j_col["node_type"] = "value"
+            else:
+                for i_row_j_col in table_dict['cells']:
+                    if replace_multiple_spaces(i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r",
+                                                                                                               "")).strip().lower() in table_head:
+                        i_row_j_col["node_type"] = "key"
+                    else:
+                        i_row_j_col["node_type"] = "value"
 
             segmented_table, all_table_node, rows_head = table_seg(table_dict)
             if all([False if (len(i_segmented_table) == 1 and list(i_segmented_table)[0].node_type == "key") else True
@@ -298,21 +324,28 @@ def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grain
             table_head.append(k)
     print("--------------输出key粗粒度检测结果的所有表头-----------------")
     print(table_head)
-    for i_row_j_col in table_dict['cells']:
-        if replace_multiple_spaces(i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r",
-                                                                                                   "")).strip().lower() in table_head:
-            i_row_j_col["node_type"] = "key"
-        else:
-            i_row_j_col["node_type"] = "value"
+    if language == "Chinese":
+        for i_row_j_col in table_dict['cells']:
+            if i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r", "").replace(" ",
+                                                                                                 "") in table_head:
+                i_row_j_col["node_type"] = "key"
+            else:
+                i_row_j_col["node_type"] = "value"
+    else:
+        for i_row_j_col in table_dict['cells']:
+            if replace_multiple_spaces(i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r",
+                                                                                                       "")).strip().lower() in table_head:
+                i_row_j_col["node_type"] = "key"
+            else:
+                i_row_j_col["node_type"] = "value"
     coarse_table = {"cells": []}
     for i_row_j_col in table_dict['cells']:
-        temp = {
+        coarse_table["cells"].append({
             "colspan": [i_row_j_col["colspan"][0], i_row_j_col["colspan"][1]],
             "rowspan": [i_row_j_col["rowspan"][0], i_row_j_col["rowspan"][1]],
             "text": i_row_j_col["text"],
             "node_type": i_row_j_col["node_type"]
-        }
-        coarse_table["cells"].append(temp)
+        })
     # coarse_table=copy.deepcopy(table_dict)
     segmented_table, all_table_node, rows_head = table_seg(table_dict)
     # all_table_node_kv_count统计key粗粒度和每一步细粒度检测的属性类别，key为1，value为0
@@ -328,89 +361,109 @@ def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grain
     # key细粒度检测
     handle_sub_table_count = 0
     while handle_sub_table_count < fine_grained_degree:
-        selected_nodes_index = sorted(random.sample([_ for _ in range(len(all_table_node))], 2))
-        i, j = selected_nodes_index[0], selected_nodes_index[1]
-        if is_sub_table(all_table_node[i], all_table_node[j]):
-            sub_table_nodes: List[Node] = get_sub_table_nodes(all_table_node[i], all_table_node[j], rows_head)
-            if len(sub_table_nodes) > len(all_table_node) / 5:
-                continue
-            print("-----------left_up_node, right_down_node-----------------")
-            print(all_table_node[i].text, all_table_node[j].text)
-            print("--------------------sub_table_nodes-----------------------")
-            for i_sub_table_node in sub_table_nodes:
-                print(i_sub_table_node.text)
-            sub_table_cell_text_list: List[str] = []
-            for i_sub_table_node in sub_table_nodes:
-                sub_table_cell_text_list.append(
-                    replace_multiple_spaces(
-                        i_sub_table_node.text.replace("\n", "").replace("\t", "").replace("\r", "")).strip().lower())
-            sub_table_head = table_head_extract(sub_table_cell_text_list,language)
-
-            for i_sub_table_node in sub_table_nodes:
-                if replace_multiple_spaces(i_sub_table_node.text.replace("\n", "").replace("\t", "").replace("\r",
-                                                                                                             "")).strip().lower() in sub_table_head:
-                    i_sub_table_node.node_type = "key"
+        weights = [1 / len(x) for x in all_table_node_kv_count]
+        index = random.choices(range(len(all_table_node_kv_count)), weights=weights, k=1)[0]
+        index_node = all_table_node[index]
+        print("-------------index_node------------")
+        print(index_node.text)
+        tag_temp=False
+        for m in range(len(all_table_node_kv_count)):
+            for n in range(len(all_table_node_kv_count)):
+                if m == n:
+                    continue
+                m_node, n_node = all_table_node[m], all_table_node[n]
+                if not (m_node.colspan[0] <= index_node.colspan[0] and m_node.rowspan[0] <= index_node.rowspan[0] and n_node.colspan[1] >= index_node.colspan[1] and n_node.rowspan[1] >= index_node.rowspan[1]):
+                    continue
+                if not is_sub_table(m_node, n_node):
+                    continue
+                sub_table_nodes: List[Node] = get_sub_table_nodes(m_node, n_node, rows_head)
+                if len(sub_table_nodes) > len(all_table_node) / 2:
+                    continue
+                print("-----------left_up_node, right_down_node-----------------")
+                print(all_table_node[m].text, all_table_node[n].text)
+                print("--------------------sub_table_nodes-----------------------")
+                for i_sub_table_node in sub_table_nodes:
+                    print(i_sub_table_node.text)
+                sub_table_cell_text_list: List[str] = []
+                if language == "Chinese":
+                    for i_sub_table_node in sub_table_nodes:
+                        sub_table_cell_text_list.append(
+                            i_sub_table_node.text.replace(" ", "").replace("\n", "").replace("\t", "").replace("\r",
+                                                                                                               ""))
                 else:
-                    i_sub_table_node.node_type = "value"
-            if sub_table_have_remain_key(sub_table_nodes, table_dict):
-                continue
-
-            for i_sub_table_node in sub_table_nodes:
-                cell_index = all_table_node.index(i_sub_table_node)
-                if replace_multiple_spaces(i_sub_table_node.text.replace("\n", "").replace("\t", "").replace("\r",
-                                                                                                             "")).strip().lower() in sub_table_head:
-                    all_table_node_kv_count[cell_index].append(1)
+                    for i_sub_table_node in sub_table_nodes:
+                        sub_table_cell_text_list.append(
+                            replace_multiple_spaces(
+                                i_sub_table_node.text.replace("\n", "").replace("\t", "").replace("\r",
+                                                                                                  "")).strip().lower())
+                sub_table_head = table_head_extract(sub_table_cell_text_list, language)
+                if language == "Chinese":
+                    for i_sub_table_node in sub_table_nodes:
+                        if i_sub_table_node.text.replace(" ", "").replace("\n", "").replace("\t", "").replace("\r",
+                                                                                                              "") in sub_table_head:
+                            i_sub_table_node.node_type = "key"
+                        else:
+                            i_sub_table_node.node_type = "value"
                 else:
-                    all_table_node_kv_count[cell_index].append(0)
+                    for i_sub_table_node in sub_table_nodes:
+                        if replace_multiple_spaces(
+                                i_sub_table_node.text.replace("\n", "").replace("\t", "").replace("\r",
+                                                                                                  "")).strip().lower() in sub_table_head:
+                            i_sub_table_node.node_type = "key"
+                        else:
+                            i_sub_table_node.node_type = "value"
+                if sub_table_have_remain_key(sub_table_nodes, table_dict):
+                    continue
+                if language == "Chinese":
+                    for i_sub_table_node in sub_table_nodes:
+                        cell_index = all_table_node.index(i_sub_table_node)
+                        if i_sub_table_node.text.replace(" ", "").replace("\n", "").replace("\t", "").replace("\r",
+                                                                                                              "") in sub_table_head:
+                            all_table_node_kv_count[cell_index].append(1)
+                        else:
+                            all_table_node_kv_count[cell_index].append(0)
+                else:
+                    for i_sub_table_node in sub_table_nodes:
+                        cell_index = all_table_node.index(i_sub_table_node)
+                        if replace_multiple_spaces(
+                                i_sub_table_node.text.replace("\n", "").replace("\t", "").replace("\r",
+                                                                                                  "")).strip().lower() in sub_table_head:
+                            all_table_node_kv_count[cell_index].append(1)
+                        else:
+                            all_table_node_kv_count[cell_index].append(0)
 
-            handle_sub_table_count += 1
-            print("----------输出handle_sub_table_count---------------")
-            print(handle_sub_table_count)
-            print("----------输出此时的all_table_node_kv_count---------------")
-            for k in range(len(all_table_node_kv_count)):
-                print(all_table_node[k].text, "-->", all_table_node_kv_count[k])
-            if handle_sub_table_count in checkpoint:
-                for i in range(len(all_table_node)):
-                    if sum(all_table_node_kv_count[i]) >= len(all_table_node_kv_count[i]) / 2:
-                        all_table_node[i].node_type = "key"
-                        print(all_table_node[i].text)
-                    else:
-                        all_table_node[i].node_type = "value"
-                    for cell in table_dict['cells']:
-                        if cell["colspan"] == all_table_node[i].colspan and cell["rowspan"] == all_table_node[
-                            i].rowspan:
-                            cell["node_type"] = all_table_node[i].node_type
-                            break
-                checkpoint_table = {"cells": []}
-                for i_row_j_col in table_dict['cells']:
-                    temp = {
-                        "colspan": [i_row_j_col["colspan"][0], i_row_j_col["colspan"][1]],
-                        "rowspan": [i_row_j_col["rowspan"][0], i_row_j_col["rowspan"][1]],
-                        "text": i_row_j_col["text"],
-                        "node_type": i_row_j_col["node_type"]
-                    }
-                    checkpoint_table["cells"].append(temp)
-
-                ret.append(checkpoint_table)
-
-    print("-------------开始打印key-----------------")
-    for i in range(len(all_table_node)):
-        if sum(all_table_node_kv_count[i]) >= len(all_table_node_kv_count[i]) / 2:
-            all_table_node[i].node_type = "key"
-            print(all_table_node[i].text)
-        else:
-            all_table_node[i].node_type = "value"
-        for cell in table_dict['cells']:
-            if cell["colspan"] == all_table_node[i].colspan and cell["rowspan"] == all_table_node[i].rowspan:
-                cell["node_type"] = all_table_node[i].node_type
+                handle_sub_table_count += 1
+                tag_temp=True
+                print("----------输出handle_sub_table_count---------------")
+                print(handle_sub_table_count)
+                print("----------输出此时的all_table_node_kv_count---------------")
+                for k in range(len(all_table_node_kv_count)):
+                    print(all_table_node[k].text, "-->", all_table_node_kv_count[k])
+                if handle_sub_table_count in checkpoint:
+                    for i in range(len(all_table_node)):
+                        if sum(all_table_node_kv_count[i]) >= len(all_table_node_kv_count[i]) / 2:
+                            all_table_node[i].node_type = "key"
+                            print(all_table_node[i].text)
+                        else:
+                            all_table_node[i].node_type = "value"
+                        for cell in table_dict['cells']:
+                            if cell["colspan"] == all_table_node[i].colspan and cell["rowspan"] == all_table_node[
+                                i].rowspan:
+                                cell["node_type"] = all_table_node[i].node_type
+                                break
+                    checkpoint_table = {"cells": []}
+                    for i_row_j_col in table_dict['cells']:
+                        checkpoint_table["cells"].append({
+                            "colspan": [i_row_j_col["colspan"][0], i_row_j_col["colspan"][1]],
+                            "rowspan": [i_row_j_col["rowspan"][0], i_row_j_col["rowspan"][1]],
+                            "text": i_row_j_col["text"],
+                            "node_type": i_row_j_col["node_type"]
+                        })
+                    ret.append(checkpoint_table)
+                if tag_temp:
+                    break
+            if tag_temp:
                 break
-
-    res = []
-    for irowjcol in table_dict['cells']:
-        if irowjcol["node_type"] == "key":
-            res.append(irowjcol["text"])
-    print(res)
-
     return ret
 
 
@@ -420,15 +473,16 @@ if __name__ == '__main__':
     os.environ['OPENAI_API_KEY'] = "EMPTY"
     os.environ['OPENAI_API_BASE'] = "http://124.70.207.36:7002/v1"
 
-    gt_table, propositions = any_format_to_json(r"E:\code\table_handle\data\Employee\1.xlsx")
-    predict_table = {"cells": []}
-    for cell in gt_table["cells"]:
-        temp = {
-            "colspan": [cell["colspan"][0], cell["colspan"][1]],
-            "rowspan": [cell["rowspan"][0], cell["rowspan"][1]],
-            "text": cell["text"]
-        }
-        predict_table["cells"].append(temp)
-    predict_table = kv_clf(predict_table, coarse_grained_degree=1,
-                           fine_grained_degree=5)
-    print(predict_table)
+    gt_table, propositions = any_format_to_json(r"E:\code\table_handle\tools\11.xlsx")
+    print(gt_table)
+    predict_table_list = kv_clf(gt_table, coarse_grained_degree=1, fine_grained_degree=50, checkpoint=[_ for _ in range(0,51,2)],
+                                language="Chinese")
+    for i, predict_table in enumerate(predict_table_list):
+        print(f"----------------------{i}-----------------------")
+        print(predict_table)
+
+    # for i in range(len(all_table_node)):
+    #     for j in range(i+1,len(all_table_node)):
+    #         print("-----------left_up_node, right_down_node-----------------")
+    #         print(all_table_node[i].text, all_table_node[j].text)
+    #         is_sub_table(all_table_node[i], all_table_node[j])

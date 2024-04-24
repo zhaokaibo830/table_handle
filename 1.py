@@ -1,1 +1,0 @@
-print("dgvr{},{}".format([2,4]))

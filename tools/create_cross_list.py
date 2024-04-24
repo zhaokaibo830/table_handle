@@ -61,57 +61,22 @@ def create_cross_list(table: List):
     # print("正在把每一个单元格插入到十字双向链表：")
     for cell_node in all_table_node:
         # print("正在插入节点：", cell_node.text)
-        # print("列：", cell_node.colspan)
-        # print("行：", cell_node.rowspan)
-        # print("cell_node.left_pointer:", cell_node.left_pointer)
-        # print("cell_node.right_pointer:", cell_node.right_pointer)
-        # print("cell_node.up_pointer:", cell_node.up_pointer)
-        # print("cell_node.down_pointer:", cell_node.down_pointer)
+        #
         left_index, right_index = cell_node.colspan[0], cell_node.colspan[1]
         up_index, down_index = cell_node.rowspan[0], cell_node.rowspan[1]
 
         # 插入到水平双向链表
         all_left_pre: Set[Node] = set(rows_head[up_index - 1:down_index])
-        tag = True
-        while tag:
-            tag = False
-            all_pre_temp: Set[Node] = set()
-            for i_pre in all_left_pre:
-                i_pre_all_right_node: List[Node] = i_pre.right_pointer[
-                                                   max(i_pre.rowspan[0], up_index): min(i_pre.rowspan[1],
-                                                                                        down_index) + 1]
-                for j_right_node in i_pre_all_right_node:
-                    if not j_right_node:
-                        all_pre_temp.add(i_pre)
-                    else:
-                        if j_right_node.colspan[1] < left_index:
-                            all_pre_temp.add(j_right_node)
-                            # tag = True
-            all_pre_temp_temp: List[Node] = list(all_pre_temp)[:]
-            for i, i_all_pre_temp_temp in enumerate(all_pre_temp_temp):
-                for j, j_all_pre_temp_temp in enumerate(all_pre_temp_temp):
-                    if i == j:
-                        continue
-                    i_all_pre_temp_temp_up_index, i_all_pre_temp_temp_down_index = max(i_all_pre_temp_temp.rowspan[0],
-                                                                                       up_index), min(
-                        i_all_pre_temp_temp.rowspan[1], down_index)
-                    j_all_pre_temp_temp_up_index, j_all_pre_temp_temp_down_index = max(j_all_pre_temp_temp.rowspan[0],
-                                                                                       up_index), min(
-                        j_all_pre_temp_temp.rowspan[1], down_index)
-                    if i_all_pre_temp_temp_up_index >= j_all_pre_temp_temp_up_index and i_all_pre_temp_temp_down_index <= j_all_pre_temp_temp_down_index:
-                        if i_all_pre_temp_temp.colspan[1] < j_all_pre_temp_temp.colspan[0]:
-                            all_pre_temp.discard(i_all_pre_temp_temp)
-                        else:
-                            all_pre_temp.discard(j_all_pre_temp_temp)
-                        continue
-            for i_all_pre_temp in all_pre_temp:
-                if i_all_pre_temp not in all_left_pre:
-                    tag = True
-            if tag:
-                all_left_pre = all_pre_temp
         all_right_next: Set[Node] = set()
-        for j_pre in all_left_pre:
-            all_right_next.update(j_pre.right_pointer[up_index: down_index + 1])
+        for i_row in range(up_index,down_index+1):
+            pre=rows_head[i_row-1]
+            while pre:
+                if pre.colspan[1]<cell_node.colspan[0]:
+                    all_left_pre.add(pre)
+                elif pre.colspan[0]>cell_node.colspan[1]:
+                    all_right_next.add(pre)
+                pre=pre.right_pointer[i_row]
+
         for j_pre in all_left_pre:
             j_pre_up_index, j_pre_down_index = max(j_pre.rowspan[0], up_index), min(j_pre.rowspan[1], down_index)
             # print("j_pre_up_index, j_pre_down_index：",j_pre_up_index, j_pre_down_index)
@@ -130,48 +95,16 @@ def create_cross_list(table: List):
                         j_next.left_pointer[k] = cell_node
 
         # 插入到垂直双向链表
-        all_up_pre: Set[Node] = set(columns_head[left_index - 1: right_index])
-        tag = True
-        while tag:
-            tag = False
-            all_pre_temp: Set[Node] = set()
-            for i_pre in all_up_pre:
-                i_pre_all_down_node: List[Node] = i_pre.down_pointer[
-                                                  max(i_pre.colspan[0], left_index): min(i_pre.colspan[1],
-                                                                                         right_index) + 1]
-                for j_down_node in i_pre_all_down_node:
-                    if not j_down_node:
-                        all_pre_temp.add(i_pre)
-                    else:
-                        all_pre_temp.add(j_down_node)
-            all_pre_temp_temp: List[Node] = list(all_pre_temp)[:]
-            for i, i_all_pre_temp_temp in enumerate(all_pre_temp_temp):
-                for j, j_all_pre_temp_temp in enumerate(all_pre_temp_temp):
-                    if i == j:
-                        continue
-                    i_all_pre_temp_temp_left_index, i_all_pre_temp_temp_right_index = max(
-                        i_all_pre_temp_temp.colspan[0],
-                        left_index), min(
-                        i_all_pre_temp_temp.colspan[1], right_index)
-                    j_all_pre_temp_temp_left_index, j_all_pre_temp_temp_right_index = max(
-                        j_all_pre_temp_temp.colspan[0],
-                        left_index), min(
-                        j_all_pre_temp_temp.colspan[1], right_index)
-                    if i_all_pre_temp_temp_left_index >= j_all_pre_temp_temp_left_index and i_all_pre_temp_temp_right_index <= j_all_pre_temp_temp_right_index:
-                        if i_all_pre_temp_temp.rowspan[1] < j_all_pre_temp_temp.rowspan[0]:
-                            all_pre_temp.discard(i_all_pre_temp_temp)
-                        else:
-                            all_pre_temp.discard(j_all_pre_temp_temp)
-                        continue
-            for i_all_pre_temp in all_pre_temp:
-                if i_all_pre_temp not in all_up_pre:
-                    tag = True
-            if tag:
-                all_up_pre = all_pre_temp
-
+        all_up_pre: Set[Node] = set()
         all_down_next: Set[Node] = set()
-        for j_pre in all_up_pre:
-            all_down_next.update(j_pre.down_pointer[left_index: right_index + 1])
+        for i_col in range(left_index, right_index + 1):
+            pre = columns_head[i_col - 1]
+            while pre:
+                if pre.rowspan[1] < cell_node.rowspan[0]:
+                    all_up_pre.add(pre)
+                elif pre.colspan[0] > cell_node.colspan[1]:
+                    all_down_next.add(pre)
+                pre = pre.down_pointer[i_col]
 
         for j_pre in all_up_pre:
             j_pre_left_index, j_pre_right_index = max(j_pre.colspan[0], left_index), min(j_pre.colspan[1], right_index)
@@ -190,3 +123,19 @@ def create_cross_list(table: List):
                         j_next.up_pointer[k] = cell_node
     # print("构建完十字双向链表")
     return all_table_node, row_column_head, rows_head, columns_head
+
+if __name__ == '__main__':
+    from tools.preprocess import any_format_to_json
+
+
+    gt_table, propositions = any_format_to_json(r"E:\code\table_handle\tools\11.xlsx")
+    print(gt_table)
+    all_table_node, row_column_head, rows_head, columns_head = create_cross_list(gt_table["cells"])
+    for cell_node in all_table_node:
+        print("正在插入节点：", cell_node.text)
+        print("列：", cell_node.colspan)
+        print("行：", cell_node.rowspan)
+        print("cell_node.left_pointer:", cell_node.left_pointer)
+        print("cell_node.right_pointer:", cell_node.right_pointer)
+        print("cell_node.up_pointer:", cell_node.up_pointer)
+        print("cell_node.down_pointer:", cell_node.down_pointer)
