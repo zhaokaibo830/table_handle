@@ -2,7 +2,29 @@ from typing import List
 from tools.node import Node
 from typing import List, Set
 import numpy as np
+from typing import List, Set, Dict
 
+def cmp_node(node1: Node, node2: Node):
+    if node1.rowspan[0] < node2.rowspan[0]:
+        return -1
+    elif node1.rowspan[0] > node2.rowspan[0]:
+        return 1
+    else:
+        if node1.colspan[0] < node2.colspan[0]:
+            return -1
+        else:
+            return 1
+
+def cmp_dict(node1: Dict, node2: Dict):
+    if node1["rowspan"][0] < node2["rowspan"][0]:
+        return -1
+    elif node1["rowspan"][0] > node2["rowspan"][0]:
+        return 1
+    else:
+        if node1["colspan"][0] < node2["colspan"][0]:
+            return -1
+        else:
+            return 1
 
 def language_judgement(table: List) -> str:
     """
@@ -96,7 +118,7 @@ def sub_table_adjust(segmented_table: List[Set[Node]], all_table_node: List[Node
 if __name__ == '__main__':
     from tools.preprocess import any_format_to_json
     from tools.table_seg import table_seg
-    gt_table, propositions = any_format_to_json("11.xlsx")
+    gt_table, propositions = any_format_to_json(r"E:\code\table_handle\tools\11.xlsx")
 
     segmented_table, all_table_node, rows_head = table_seg(gt_table)
     for i_segmented_table in segmented_table:

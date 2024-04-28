@@ -18,24 +18,13 @@ from tools.prompt import polish_prompt_en, sub_table_extract_prompt_en, polish_p
 from langchain.docstore.document import Document
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
-from tools.kv_amend import kv_amend
-from tools.func import language_judgement,sub_table_adjust
+from tools.kv_amend import sub_table_kv_amend, table_kv_amend
+from tools.func import language_judgement, sub_table_adjust, cmp_dict, cmp_node
 from tools.st_merge import sub_table_merge
 
 
-def cmp(node1: Node, node2: Node):
-    if node1.rowspan[0] < node2.rowspan[0]:
-        return -1
-    elif node1.rowspan[0] > node2.rowspan[0]:
-        return 1
-    else:
-        if node1.colspan[0] < node2.colspan[0]:
-            return -1
-        else:
-            return 1
-
-
 def table2text(table_dict, is_node_type=False, coarse_grained_degree=5, fine_grained_degree=10):
+    table_dict["cells"].sort(key=cmp_to_key(cmp_dict))
     language = language_judgement(table_dict["cells"])
     if not is_node_type:
         table_dict = \
@@ -43,13 +32,14 @@ def table2text(table_dict, is_node_type=False, coarse_grained_degree=5, fine_gra
         print(table_dict)
     segmented_table: List[Set[Node]]
     segmented_table, all_table_node, rows_head = table_seg(table_dict)
-    segmented_table=sub_table_adjust(segmented_table, all_table_node)
-    segmented_table = sub_table_merge(segmented_table)
+    segmented_table = sub_table_adjust(segmented_table, all_table_node)
+    segmented_table = table_kv_amend(segmented_table, all_table_node)
+    segmented_table = sub_table_merge(segmented_table, all_table_node)
 
     caption = ""
     for i, segment_i in enumerate(segmented_table):
         segment_i = list(segment_i)
-        segment_i.sort(key=cmp_to_key(cmp))
+        segment_i.sort(key=cmp_to_key(cmp_node))
         if len(segment_i) == 2:
             if language == "Chinese":
                 caption += segment_i[0].text + "是" + segment_i[1].text + "。 "
@@ -68,7 +58,7 @@ def table2text(table_dict, is_node_type=False, coarse_grained_degree=5, fine_gra
             print("-------------打印子表---------------------")
             print(sub_table_cell)
             try:
-                _, unified_table, have_table_head = kv_amend(sub_table_cell)
+                _, unified_table, have_table_head = sub_table_kv_amend(sub_table_cell)
                 caption += simple_table2text(unified_table, have_table_head, language)
             except Exception as e:
                 print("子表处理异常！！！！！！")

@@ -428,7 +428,7 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node], List[Node]):
                                             if all(i_current_left_all_key_node.colspan[1] ==
                                                    current_left_all_key_node[0].colspan[1] for
                                                    i_current_left_all_key_node in current_left_all_key_node):
-                                                if current_left_all_key_node[0].rowspan[0] == i_row_j_col_node.rowspan[0] and current_left_all_key_node[-1].rowspan[1] ==i_row_j_col_node.colspan[1]:
+                                                if current_left_all_key_node[0].rowspan[0] == i_row_j_col_node.rowspan[0] and current_left_all_key_node[-1].rowspan[1] ==i_row_j_col_node.rowspan[1]:
                                                     left_nodes_may_merge = True
                                     else:
                                         left_nodes_may_merge = False
@@ -526,10 +526,20 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node], List[Node]):
 
 if __name__ == '__main__':
     from tools.preprocess import any_format_to_json
-
-    gt_table, propositions = any_format_to_json(r"E:\code\table_handle\data\teacher\1.xlsx")
-    print("----------------gt_table-------------")
-    print(gt_table)
+    import random
+    from tools.func import cmp_dict, cmp_node
+    from functools import cmp_to_key
+    gt_table, propositions = any_format_to_json(r"E:\code\table_handle\tools\11.xlsx")
+    # print("----------------gt_table-------------")
+    # print(gt_table)
+    # random.shuffle(gt_table["cells"])
+    # with open( "1.json", 'w',encoding='utf-8') as f:
+    #     # 使用json.dump()函数将序列化后的JSON格式的数据写入到文件中
+    #     json.dump(gt_table, f, indent=4, ensure_ascii=False)
+    # gt_table["cells"].sort(key=cmp_to_key(cmp_dict))
+    # with open( "2.json", 'w',encoding='utf-8') as f:
+    #     # 使用json.dump()函数将序列化后的JSON格式的数据写入到文件中
+    #     json.dump(gt_table, f, indent=4, ensure_ascii=False)
     all_table_node: List[Node]
     segmented_table, all_table_node, _ = table_seg(gt_table)
     for i_segmented_table in segmented_table:

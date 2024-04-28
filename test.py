@@ -19,8 +19,10 @@ from tools.prompt import fact_verification_analysis_prompt_en, fact_verification
 from langchain.docstore.document import Document
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.vectorstores import FAISS
-from tools.kv_amend import kv_amend
 from tools.func import language_judgement
+from tools.kv_amend import sub_table_kv_amend, table_kv_amend
+from tools.func import language_judgement, sub_table_adjust, cmp_dict, cmp_node
+from tools.st_merge import sub_table_merge
 
 os.environ['OPENAI_API_KEY'] = "EMPTY"
 os.environ['OPENAI_API_BASE'] = "http://124.70.207.36:7002/v1"
@@ -65,8 +67,10 @@ def kv_fv_test(coarse_grained_degree, fine_grained_degree, file_path, fine_degre
         FN = 0  # TN将key预测为value
         fv_true_count = 0  # 统计此类数据命题判断正确的数量
         fv_false_count = 0  # 统计此类数据命题判断错误的数量
-        segmented_table, _, _ = table_seg(predict_table)
-
+        segmented_table, all_table_node, _ = table_seg(predict_table)
+        segmented_table = sub_table_adjust(segmented_table, all_table_node)
+        segmented_table = table_kv_amend(segmented_table, all_table_node)
+        segmented_table = sub_table_merge(segmented_table, all_table_node)
         caption = ""
         predict_table = {"cells": []}
         for j, segment_i in enumerate(segmented_table):
@@ -78,7 +82,7 @@ def kv_fv_test(coarse_grained_degree, fine_grained_degree, file_path, fine_degre
                     "text": segment_i_cell_j.text,
                     "node_type": segment_i_cell_j.node_type
                 })
-            amended_table, _, _ = kv_amend(sub_table_cell)
+            amended_table, _, _ = sub_table_kv_amend(sub_table_cell)
             predict_table["cells"].extend(amended_table)
         print("----------打印最后的predict_table---------")
         print(predict_table)
@@ -135,22 +139,22 @@ if __name__ == "__main__":
                 os.mkdir(os.path.join("result", item))
             item_path = os.path.join("data", item)
             for file_name in os.listdir(item_path):
-                # try:
-                print(item + file_name.split(".")[0] + ".json")
-                if file_name.split(".")[0] + ".json" in os.listdir(os.path.join("result", item)):
-                    continue
-                one_file_result = kv_fv_test(coarse_grained_degree=1, fine_grained_degree=50,
-                                             file_path=os.path.join(item_path, file_name),
-                                             fine_degrees=[_ for _ in range(0, 51, 2)])
-                with open(os.path.join("result", item, file_name.split(".")[0] + ".json"), 'w',
-                          encoding='utf-8') as f:
-                    # 使用json.dump()函数将序列化后的JSON格式的数据写入到文件中
-                    json.dump(one_file_result, f, indent=4, ensure_ascii=False)
-                # except Exception as e:
-                #     print("************************************************************************")
-                #     print(e)
-                #     print(item + file_name.split(".")[0] + ".json" + "处理异常！！！！")
-                #     print("************************************************************************")
+                try:
+                    print(item + file_name.split(".")[0] + ".json")
+                    if file_name.split(".")[0] + ".json" in os.listdir(os.path.join("result", item)):
+                        continue
+                    one_file_result = kv_fv_test(coarse_grained_degree=1, fine_grained_degree=50,
+                                                 file_path=os.path.join(item_path, file_name),
+                                                 fine_degrees=[_ for _ in range(0, 51, 2)])
+                    with open(os.path.join("result", item, file_name.split(".")[0] + ".json"), 'w',
+                              encoding='utf-8') as f:
+                        # 使用json.dump()函数将序列化后的JSON格式的数据写入到文件中
+                        json.dump(one_file_result, f, indent=4, ensure_ascii=False)
+                except Exception as e:
+                    print("************************************************************************")
+                    print(e)
+                    print(item + file_name.split(".")[0] + ".json" + "处理异常！！！！")
+                    print("************************************************************************")
 
     # for item in os.listdir("result"):
     #     item_path = os.path.join("result", item)

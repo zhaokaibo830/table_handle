@@ -154,7 +154,7 @@ def is_merge(first_sub_table: Set[Node], second_sub_table: Set[Node]) -> bool:
                 first_sub_table_value_range.append([temp.colspan[0], temp.colspan[1]])
             temp = temp.right_pointer[first_sub_table_down_index]
 
-        second_sub_table_key_right_index = second_sub_table_left_index
+        second_sub_table_key_right_index = -1
         second_sub_table_value_range = []
         temp = second_sub_table_left_up_node
         while temp and temp in second_sub_table:
@@ -165,7 +165,7 @@ def is_merge(first_sub_table: Set[Node], second_sub_table: Set[Node]) -> bool:
                 second_sub_table_key_right_index = temp.colspan[1]
             else:
                 second_sub_table_value_range.append([temp.colspan[0], temp.colspan[1]])
-            temp = temp.right_pointer[second_sub_table_down_index]
+            temp = temp.right_pointer[second_sub_table_up_index]
 
         if first_sub_table_key_right_index != second_sub_table_key_right_index:
             # print(15)
@@ -214,7 +214,7 @@ def merge_two_sub_tables(first_sub_table: Set[Node], second_sub_table: Set[Node]
     return temp_Set
 
 
-def sub_table_merge(segmented_table: List[Set[Node]]):
+def sub_table_merge(segmented_table: List[Set[Node]],all_table_node:List[Node]):
     tag = True
     while tag:
         tag = False
@@ -246,27 +246,64 @@ def sub_table_merge(segmented_table: List[Set[Node]]):
                     break
             if flag:
                 break
+    for i_segmented_table in segmented_table:
+        for cell in all_table_node:
+            if cell in i_segmented_table:
+                cell.set_of_affiliation=set()
+                cell.set_of_affiliation.update(i_segmented_table)
+
+    segmented_table = []
+    for cell_node in all_table_node:
+        if all((cell_node not in segment_i) for segment_i in segmented_table):
+            temp_set = set()
+            temp_set.update(cell_node.set_of_affiliation)
+            segmented_table.append(temp_set)
+
     return segmented_table
 
 
 if __name__ == '__main__':
     from tools.table_seg import table_seg
     from tools.preprocess import any_format_to_json
-
-    gt_table, propositions = any_format_to_json(r"E:\code\table_handle\data\teacher\11.xlsx")
+    from tools.func import language_judgement, sub_table_adjust, cmp_dict, cmp_node
+    from tools.kv_amend import table_kv_amend
+    import random
+    gt_table, propositions = any_format_to_json(r"E:\code\table_handle\tools\11.xlsx")
+    # random.shuffle(gt_table["cells"])
     segmented_table: List[Set[Node]]
-    segmented_table, _, _ = table_seg(gt_table)
+    segmented_table, all_table_node, _ = table_seg(gt_table)
     for i, i_sub_table in enumerate(segmented_table):
         print("--------------------打印第{}个子表！--------------------".format(i))
         for cell in list(i_sub_table):
             print("text:", cell.text, end="#")
             print("colspan:", cell.colspan, end="#")
-            print("rowspan:", cell.rowspan)
+            print("rowspan:", cell.rowspan, end="#")
+            print("rowspan:", cell.node_type)
+    print("**************************************单元格调整后************************************************************")
+    segmented_table = sub_table_adjust(segmented_table, all_table_node)
+    for i, i_sub_table in enumerate(segmented_table):
+        print("--------------------打印第{}个子表！--------------------".format(i))
+        for cell in list(i_sub_table):
+            print("text:", cell.text, end="#")
+            print("colspan:", cell.colspan, end="#")
+            print("rowspan:", cell.rowspan, end="#")
+            print("rowspan:", cell.node_type)
+
+    print("**************************************key-value调整后************************************************************")
+    segmented_table = table_kv_amend(segmented_table, all_table_node)
+    for i, i_sub_table in enumerate(segmented_table):
+        print("--------------------打印第{}个子表！--------------------".format(i))
+        for cell in list(i_sub_table):
+            print("text:", cell.text, end="#")
+            print("colspan:", cell.colspan, end="#")
+            print("rowspan:", cell.rowspan, end="#")
+            print("rowspan:", cell.node_type)
     print("**************************************合并后************************************************************")
-    segmented_table = sub_table_merge(segmented_table)
+    segmented_table = sub_table_merge(segmented_table,all_table_node)
     for i, i_sub_table in enumerate(segmented_table):
         print("--------------------打印第{}个子表！--------------------".format(i))
         for cell in list(i_sub_table):
             print("text:", cell.text, end="#")
             print("colspan:", cell.colspan, end="#")
-            print("rowspan:", cell.rowspan)
+            print("rowspan:", cell.rowspan,end="#")
+            print("rowspan:", cell.node_type)

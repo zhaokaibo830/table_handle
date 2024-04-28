@@ -16,7 +16,7 @@ def create_cross_list(table: List):
     # 把表格中的每个单元格转换成Node类对象
     all_cells = table
     for cell in all_cells:
-        created_node = Node(text=cell['text'], colspan=cell['colspan'], rowspan=cell['rowspan'],
+        created_node = Node(text=cell['text'], colspan=cell['colspan'][:], rowspan=cell['rowspan'][:],
                             up_pointer=[None] * (table_columns + 1),
                             down_pointer=[None] * (table_columns + 1),
                             left_pointer=[None] * (table_rows + 1),
@@ -95,14 +95,14 @@ def create_cross_list(table: List):
                         j_next.left_pointer[k] = cell_node
 
         # 插入到垂直双向链表
-        all_up_pre: Set[Node] = set()
+        all_up_pre: Set[Node] = set(columns_head[left_index-1:right_index])
         all_down_next: Set[Node] = set()
         for i_col in range(left_index, right_index + 1):
             pre = columns_head[i_col - 1]
             while pre:
                 if pre.rowspan[1] < cell_node.rowspan[0]:
                     all_up_pre.add(pre)
-                elif pre.colspan[0] > cell_node.colspan[1]:
+                elif pre.rowspan[0] > cell_node.rowspan[1]:
                     all_down_next.add(pre)
                 pre = pre.down_pointer[i_col]
 
@@ -118,7 +118,7 @@ def create_cross_list(table: List):
                 j_next_left_index, j_next_right_index = (max(j_next.colspan[0], left_index),
                                                          min(j_next.colspan[1], right_index))
                 for k in range(j_next_left_index, j_next_right_index + 1):
-                    if j_next.left_pointer[k] not in all_down_next:
+                    if j_next.up_pointer[k] not in all_down_next:
                         cell_node.down_pointer[k] = j_next
                         j_next.up_pointer[k] = cell_node
     # print("构建完十字双向链表")
@@ -126,13 +126,18 @@ def create_cross_list(table: List):
 
 if __name__ == '__main__':
     from tools.preprocess import any_format_to_json
-
+    import random
 
     gt_table, propositions = any_format_to_json(r"E:\code\table_handle\tools\11.xlsx")
+    random.shuffle(gt_table["cells"])
     print(gt_table)
     all_table_node, row_column_head, rows_head, columns_head = create_cross_list(gt_table["cells"])
+    print("rows_head:",rows_head)
+    print("columns_head:",columns_head)
     for cell_node in all_table_node:
+
         print("正在插入节点：", cell_node.text)
+        print(cell_node)
         print("列：", cell_node.colspan)
         print("行：", cell_node.rowspan)
         print("cell_node.left_pointer:", cell_node.left_pointer)
