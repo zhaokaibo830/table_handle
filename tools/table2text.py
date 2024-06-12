@@ -25,11 +25,13 @@ from tools.is_simple_table import is_simple_table
 from tools.create_cross_list import create_cross_list
 from tools.func import is_rectangle
 
+
 def is_table(table_dict):
     pass
 
 
 def table2text(table_dict, is_node_type=False, coarse_grained_degree=1, fine_grained_degree=0):
+    fine_grained_degree = len(table_dict["cells"]) // 50
     left_index, up_index = table_dict["cells"][0]["colspan"][0], table_dict["cells"][0]["rowspan"][0]
     for i_cell in table_dict["cells"]:
         left_index = left_index if left_index <= i_cell["colspan"][0] else i_cell["colspan"][0]
