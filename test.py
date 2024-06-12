@@ -1,4 +1,6 @@
 import json
+import time
+
 from tools.table_seg import table_seg
 from tools.node import Node
 from tools.kv_clf import kv_clf
@@ -140,6 +142,7 @@ if __name__ == "__main__":
             item_path = os.path.join("data", item)
             for file_name in os.listdir(item_path):
                 try:
+                    time.sleep(60)
                     print(item + file_name.split(".")[0] + ".json")
                     if file_name.split(".")[0] + ".json" in os.listdir(os.path.join("result", item)):
                         continue

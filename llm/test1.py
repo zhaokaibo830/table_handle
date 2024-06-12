@@ -19,8 +19,28 @@ prompt = PromptTemplate(input_variables=["adjective"], template=prompt_template)
 chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat", temperature=random.random() / 2), prompt=prompt)
 
 embeddings = OpenAIEmbeddings(model="text-davinci-003", request_timeout=120)
-result = chain.run(adjective='俄罗斯')
+
+input="""
+["行政区/县",
+"岳麓区",
+"街道",
+"芙蓉街道".
+"学校信息",
+"学校名称",
+"明峰中学",
+"教学楼",
+"北区5A",
+"学年",
+"2023-2026",
+"入学日期",
+"2023年9月日"]
+以上列表是一个表格的全部内容，其中每一个元素对应表格的一个单元格内容，请根据语义信息找出其中可能是表头的单元格,。请一步一步进行分析，要注意每一个元素内容对应一个单元格，所以不能对每一行的内容进行拆分理解。
+"""
+result = chain.run(adjective=input)
+
 print(result)
+print("-----------------------------------------------")
+
 # loader = TextLoader("state_of_the_union.txt")
 # index =VectorstoreIndexCreator(embedding=embedding).from_loaders([loader])
 # llm = ChatOpenAI(model="qwen-14b-chat")

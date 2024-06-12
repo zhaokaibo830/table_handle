@@ -278,7 +278,7 @@ def excel_to_json(excel_path: str) -> Tuple:
             cells.append({
                 "colspan": col_span,
                 "rowspan": row_span,
-                "text": str(cell_value).strip().replace("\n", " "),
+                "text": str(cell_value).strip(),
                 "node_type": node_type
             })
 
@@ -394,10 +394,13 @@ def any_format_to_json(file_path: str) -> Dict:
 
 if __name__ == '__main__':
     image_path = r"D:\project\torchlearing\ceshi\table.png"
-    excel_path = r"E:\code\table_handle\data\player\2.xlsx"
+    excel_path = r"E:\code\table_handle\tools\11.xlsx"
     docx_file = "D:\\project\\torchlearing\\ceshi\\test.docx"
     output_json_path = "output.json"
-    excel_to_json(excel_path)
+    table=excel_to_json(excel_path)[0]
+    with open(os.path.join(output_json_path), 'w',encoding='utf-8') as f:
+        # 使用json.dump()函数将序列化后的JSON格式的数据写入到文件中
+        json.dump(table, f, indent=4, ensure_ascii=False)
     # word_to_json(docx_file)
     # image_to_json(image_path)
     # any_format_to_json(docx_file)
