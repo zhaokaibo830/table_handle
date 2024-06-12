@@ -7,6 +7,23 @@ def load_table(path):
     return table
 
 
+'''判断是中文还是英文'''
+
+
+def language_judgement(table):
+    for i in range(len(table)):
+        if table[i]['node_type'] == 'key':  # 判断所有的key,如果出现中文，则判断为中文，否则判断为英文language=1
+            str_text = table[i]['text']
+            for char in str_text:
+                if "\u4e00" <= char <= "\u9fff":
+                    language = 0
+                    break
+                else:
+                    language = 1
+        if language == 0: break  # 只要表头中出现中文，就判断为中文表格
+    return language
+
+
 '''获取表格真的行数和列数'''
 
 
@@ -89,16 +106,22 @@ def horizon_table(table, unrownum, uncolnum):
 ''' 将横表处理成标准化表'''
 
 
-def split_table(table, colnum, rownum, h):
-    '''将横跨表格行或表格列的表头与普通value融合'''
+def split_table(table, colnum, rownum, h, language):
+    '''将横跨表格行或表格列的表头与普通key融合'''
     head = []
     if table[0]['colspan'][1] - table[0]['colspan'][0] + 1 == colnum:  # 若是列表头，删除列表头，列数减一，行数不变生成表格
-        str = table[0]['text'] + "的"
+        if language == 0:
+            str = table[0]['text'] + "的"
+        else:
+            str = table[0]['text'] + "'s "
         head += str
         rownum = rownum - 1
         del table[0]
     elif table[0]['rowspan'][1] - table[0]['rowspan'][0] + 1 == rownum:  # 同理
-        str = table[0]['text'] + "的"
+        if language == 0:
+            str = table[0]['text'] + "的"
+        else:
+            str = table[0]['text'] + "'s "
         head += str
         colnum = colnum - 1
         del table[0]
@@ -107,36 +130,40 @@ def split_table(table, colnum, rownum, h):
     ''' 处理 压力资料 类型（需要区分横表竖表）'''
     if h == 0:  # 横表处理：
         i = 0
-        while table[i]['node_type'] == 'key':
-            if table[i]["rowspan"][1] != table[i]["rowspan"][0]:  # key占用的行不是一行，即存在”压力资料表格“情况
-                rownum -= 1
-                for i in range(colnum):
-                    if table[i]["rowspan"][1] == table[i]["rowspan"][0]:  # 第一行遇到跨行key
-                        str = table[i]['text'] + '的'
-                        for j in range(1, colnum + 1):  # 在后面1行之内的key中寻找小key
-                            if table[i + j]['colspan'][0] >= table[i]['colspan'][0] and table[i + j]['colspan'][1] <= \
-                                    table[i]['colspan'][1] and table[i + j]['node_type'] == 'key':
-                                table[i + j]['text'] = str + table[i + j]['text']
-                                # 变成  大key的小key，找全后删除“压力资料”单元格
-                                if table[i + j]['colspan'][1] == table[i]['colspan'][1]: del table[i]
-                    else:
-                        table[i]['rowspan'][0] = table[i]['rowspan'][1]
-            i = i + 1
+        while table[i]['node_type'] == 'key':  # 当标签是key ,一行之内，若有压力资料类型，则碰上；若第一行没有碰上，则无”压力资料“类型
+
+            if table[i]['rowspan'][1] == table[i]['rowspan'][0]:
+                for j in range(1, len(table) - i):
+                    if table[i + j]['node_type'] == "key" and table[i + j]['colspan'][0] >= table[i]['colspan'][0] and \
+                            table[i + j]['colspan'][1] <= table[i]['colspan'][1] and table[i + j]['rowspan'][0] == \
+                            table[i]['rowspan'][1] + 1:  # 在下一行且是小key
+                        table[i + j]['text'] = table[i]['text'] + '的' + table[i + j]['text']
+                        if table[i + j]['colspan'][1] == table[i]['colspan'][1]:
+                            del table[i]
+                            i -= 1
+                            break
+            if table[i]['rowspan'][1] != table[i]['rowspan'][0]:  # 普通表头
+                table[i]['rowspan'][0] = table[i]['rowspan'][1]
+            i += 1
+
     elif h == 1:  # 竖表处理
         i = 0
-        while table[i]['node_type'] == 'key':
-            if table[i]['colspan'][1] != table[i]['colspan'][0]:  # key占用的不是一列，即存在且遇到“压力资料’情况
-                rownum -= (table[i]['rowspan'][1] - table[i]['rowspan'][0] + 1)
-                str = table[i]['text'] + '的'
-                for j in range(1, colnum + 1):  # 在后面的一行中寻找小key
-                    if table[i + j]['colspan'][0] >= table[i]['colspan'][0] and table[i + j]['colspan'][1] <= \
-                            table[i]['colspan'][1] and table[i + j]['node_type'] == 'key':
-                        table[i + j]['text'] = str + table[i + j]['text']
-                        # 变成  大key的小key，找全后删除“压力资料”单元格
-                        if table[i + j]['colspan'][1] == table[i]['colspan'][1]: del table[i]
-            else:
+        while table[i]['node_type'] == 'key':  # 当标签是key ,一行之内，若有压力资料类型，则碰上；若第一行没有碰上，则无”压力资料“类型
+
+            if table[i]['colspan'][1] != table[i]['colspan'][0]:
+                for j in range(1, len(table) - i):
+                    if table[i + j]['node_type'] == "key" and table[i + j]['colspan'][0] >= table[i]['colspan'][0] and \
+                            table[i + j]['colspan'][1] <= table[i]['colspan'][1] and table[i + j]['rowspan'][0] == \
+                            table[i]['rowspan'][1] + 1:  # 在下一行且是小key
+                        table[i + j]['text'] = table[i]['text'] + '的' + table[i + j]['text']
+                        table[i + j]['rowspan'][0] = table[i + j]['rowspan'][1]
+                        if table[i + j]['colspan'][1] == table[i]['colspan'][1]:
+                            del table[i]
+                            i -= 1
+                            break
+            if table[i]['colspan'][1] == table[i]['colspan'][0]:  # 普通表头
                 table[i]['rowspan'][0] = table[i]['rowspan'][1]
-            i = i + 1
+            i += 1
 
     '''标准化坐标'''
     rowdecrease = table[0]['rowspan'][0] - 1  # 行标准化坐标需减的差
@@ -203,34 +230,48 @@ def del_table(splitted_table, h):
 '''得到表头描述'''
 
 
-def get_description(splitted_table):
+def get_description(splitted_table, language):
     table_description = ""
     for i in range(1, len(splitted_table)):  # 第i行
         for j in range(len(splitted_table[0])):  # 第j列
-            table_description += splitted_table[0][j] + "是" + splitted_table[i][j]  # 表头描述对应表格内容，按行描述
-            if j < len(splitted_table[0]) - 1:
-                table_description += '，'
-            elif j == len(splitted_table[0]) - 1 and i != len(splitted_table) - 1:
-                table_description += '；'
+            if language == 0:
+                table_description += splitted_table[0][j] + "是" + splitted_table[i][j]  # 表头描述对应表格内容，按行描述
             else:
-                table_description += '。'
+                table_description += splitted_table[0][j] + " is " + splitted_table[i][j]
+            if j < len(splitted_table[0]) - 1:
+                if language == 0:
+                    table_description += '，'
+                else:
+                    table_description += ', '
+            elif j == len(splitted_table[0]) - 1 and i != len(splitted_table) - 1:
+                table_description += '； '
+            else:
+                if language == 0:
+                    table_description += '。'
+                else:
+                    table_description += '. '
     return table_description
 
 
 def simple_table_handle(table):
-    unrownum, uncolnum = count_table(table)
-    table, rownum, colnum, h = horizon_table(table, unrownum, uncolnum)
-    splitted_table = split_table(table, colnum, rownum, h)
-    splitted_table = del_table(splitted_table, h)
-    return get_description(splitted_table)
-
-
-if __name__ == '__main__':
-    table = load_table('data.py')
+    language = language_judgement(table)
     # print(count_table(table))
     unrownum, uncolnum = count_table(table)
     table, rownum, colnum, h = horizon_table(table, unrownum, uncolnum)
-    splitted_table = split_table(table, colnum, rownum, h)
+    splitted_table = split_table(table, colnum, rownum, h, language)
     splitted_table = del_table(splitted_table, h)
     # print(splitted_table)
-    print(get_description(splitted_table))
+    return get_description(splitted_table, language)
+
+
+if __name__ == '__main__':
+    # table = load_table('unhorizon(yaliziliao3).py')
+    table=[{'colspan': [3, 3], 'rowspan': [3, 3], 'text': 'Education', 'node_type': 'key'}, {'colspan': [3, 3], 'rowspan': [4, 4], 'text': "Master's Degree", 'node_type': 'value'}, {'colspan': [8, 8], 'rowspan': [4, 4], 'text': 'Occupation', 'node_type': 'value'}]
+    language = language_judgement(table)
+    # print(count_table(table))
+    unrownum, uncolnum = count_table(table)
+    table, rownum, colnum, h = horizon_table(table, unrownum, uncolnum)
+    splitted_table = split_table(table, colnum, rownum, h, language)
+    splitted_table = del_table(splitted_table, h)
+    # print(splitted_table)
+    print(get_description(splitted_table, language))

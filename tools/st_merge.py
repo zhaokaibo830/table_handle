@@ -49,7 +49,7 @@ def is_merge(first_sub_table: Set[Node], second_sub_table: Set[Node]) -> bool:
             first_sub_table_up_index, second_sub_table_up_index = second_sub_table_up_index, first_sub_table_up_index
             first_sub_table_down_index, second_sub_table_down_index = second_sub_table_down_index, first_sub_table_down_index
         if first_sub_table_right_index + 1 != second_sub_table_left_index:
-            print(1)
+            # print(1)
             return False
 
         first_sub_table_right_up_node: Node = None
@@ -69,7 +69,7 @@ def is_merge(first_sub_table: Set[Node], second_sub_table: Set[Node]) -> bool:
         while temp and temp in first_sub_table:
             if temp.node_type == "key":
                 if first_sub_table_value_range:
-                    print(2)
+                    # print(2)
                     return False
                 first_sub_table_key_down_index = temp.rowspan[1]
             else:
@@ -82,7 +82,7 @@ def is_merge(first_sub_table: Set[Node], second_sub_table: Set[Node]) -> bool:
         while temp and temp in second_sub_table:
             if temp.node_type == "key":
                 if second_sub_table_value_range:
-                    print(4)
+                    # print(4)
                     return False
                 second_sub_table_key_down_index = temp.rowspan[1]
             else:
@@ -90,33 +90,33 @@ def is_merge(first_sub_table: Set[Node], second_sub_table: Set[Node]) -> bool:
             temp = temp.down_pointer[second_sub_table_left_index]
 
         if first_sub_table_key_down_index != second_sub_table_key_down_index:
-            print(5)
+            # print(5)
             return False
         if len(first_sub_table_value_range) == len(second_sub_table_value_range) == 1:
-            print(6)
+            # print(6)
             return False
         if not first_sub_table_value_range or not second_sub_table_value_range:
-            print(7)
+            # print(7)
             return False
         if first_sub_table_value_range[-1][1] != second_sub_table_value_range[-1][1]:
-            print(8)
+            # print(8)
             return False
         for i_first_sub_table_value_range in first_sub_table_value_range:
             for i_second_sub_table_value_range in second_sub_table_value_range:
                 if i_first_sub_table_value_range[0] < i_second_sub_table_value_range[0] < i_first_sub_table_value_range[
                     1] < \
                         i_second_sub_table_value_range[1]:
-                    print(9)
+                    # print(9)
                     return False
                 if i_second_sub_table_value_range[0] < i_first_sub_table_value_range[0] < \
                         i_second_sub_table_value_range[1] < \
                         i_first_sub_table_value_range[1]:
-                    print(10)
+                    # print(10)
                     return False
         for i_first_sub_table in first_sub_table:
             if i_first_sub_table.node_type == "key" and i_first_sub_table.rowspan[0] > first_sub_table_key_down_index:
                 return False
-        print(11)
+        # print(11)
         return True
 
     if first_sub_table_left_index == second_sub_table_left_index and first_sub_table_right_index == second_sub_table_right_index:
@@ -127,7 +127,7 @@ def is_merge(first_sub_table: Set[Node], second_sub_table: Set[Node]) -> bool:
             first_sub_table_up_index, second_sub_table_up_index = second_sub_table_up_index, first_sub_table_up_index
             first_sub_table_down_index, second_sub_table_down_index = second_sub_table_down_index, first_sub_table_down_index
         if first_sub_table_down_index + 1 != second_sub_table_up_index:
-            print(12)
+            # print(12)
             return False
 
         first_sub_table_left_down_node: Node = None
@@ -141,62 +141,62 @@ def is_merge(first_sub_table: Set[Node], second_sub_table: Set[Node]) -> bool:
                 second_sub_table_left_up_node = node
                 break
 
-        first_sub_table_key_right_index = -1
+        first_sub_table_key_right_index = first_sub_table_left_index
         first_sub_table_value_range = []
         temp = first_sub_table_left_down_node
         while temp and temp in first_sub_table:
             if temp.node_type == "key":
                 if first_sub_table_value_range:
-                    print(13)
+                    # print(13)
                     return False
-                first_sub_table_key_down_index = temp.colspan[1]
+                first_sub_table_key_right_index = temp.colspan[1]
             else:
                 first_sub_table_value_range.append([temp.colspan[0], temp.colspan[1]])
             temp = temp.right_pointer[first_sub_table_down_index]
 
-        second_sub_table_key_right_index = second_sub_table_left_index
+        second_sub_table_key_right_index = -1
         second_sub_table_value_range = []
         temp = second_sub_table_left_up_node
         while temp and temp in second_sub_table:
             if temp.node_type == "key":
                 if second_sub_table_value_range:
-                    print(14)
+                    # print(14)
                     return False
                 second_sub_table_key_right_index = temp.colspan[1]
             else:
                 second_sub_table_value_range.append([temp.colspan[0], temp.colspan[1]])
-            temp = temp.right_pointer[second_sub_table_down_index]
+            temp = temp.right_pointer[second_sub_table_up_index]
 
         if first_sub_table_key_right_index != second_sub_table_key_right_index:
-            print(15)
+            # print(15)
             return False
         if len(first_sub_table_value_range) == len(second_sub_table_value_range) == 1:
-            print(16)
+            # print(16)
             return False
         if not first_sub_table_value_range or not second_sub_table_value_range:
-            print(17)
+            # print(17)
             return False
         if first_sub_table_value_range[-1][1] != second_sub_table_value_range[-1][1]:
-            print(18)
+            # print(18)
             return False
         for i_first_sub_table_value_range in first_sub_table_value_range:
             for i_second_sub_table_value_range in second_sub_table_value_range:
                 if i_first_sub_table_value_range[0] < i_second_sub_table_value_range[0] < i_first_sub_table_value_range[
                     1] < \
                         i_second_sub_table_value_range[1]:
-                    print(19)
+                    # print(19)
                     return False
                 if i_second_sub_table_value_range[0] < i_first_sub_table_value_range[0] < \
                         i_second_sub_table_value_range[1] < \
                         i_first_sub_table_value_range[1]:
-                    print(20)
+                    # print(20)
                     return False
         for i_first_sub_table in first_sub_table:
             if i_first_sub_table.node_type == "key" and i_first_sub_table.colspan[0] > first_sub_table_key_right_index:
                 return False
-        print(21)
+        # print(21)
         return True
-    print(22)
+    # print(22)
     return False
 
 
@@ -209,11 +209,12 @@ def merge_two_sub_tables(first_sub_table: Set[Node], second_sub_table: Set[Node]
     """
     temp_Set = first_sub_table | second_sub_table
     for cell in list(temp_Set):
-        cell.set_of_affiliation = temp_Set
+        cell.set_of_affiliation=set()
+        cell.set_of_affiliation.update(temp_Set)
     return temp_Set
 
 
-def sub_table_merge(segmented_table: List[Set[Node]]):
+def sub_table_merge(segmented_table: List[Set[Node]],all_table_node:List[Node]):
     tag = True
     while tag:
         tag = False
@@ -224,16 +225,16 @@ def sub_table_merge(segmented_table: List[Set[Node]]):
                     continue
 
                 if is_merge(segmented_table[i], segmented_table[j]):
-                    print("--------------------打印可能合并的第一个子表！--------------------")
-                    for cell in list(segmented_table[i]):
-                        print("text:", cell.text, end="#")
-                        print("colspan:", cell.colspan, end="#")
-                        print("rowspan:", cell.rowspan)
-                    print("--------------------打印可能合并的第二个子表！--------------------")
-                    for cell in list(segmented_table[j]):
-                        print("text:", cell.text, end="#")
-                        print("colspan:", cell.colspan, end="#")
-                        print("rowspan:", cell.rowspan)
+                    # print("--------------------打印可能合并的第一个子表！--------------------")
+                    # for cell in list(segmented_table[i]):
+                    #     print("text:", cell.text, end="#")
+                    #     print("colspan:", cell.colspan, end="#")
+                    #     print("rowspan:", cell.rowspan)
+                    # print("--------------------打印可能合并的第二个子表！--------------------")
+                    # for cell in list(segmented_table[j]):
+                    #     print("text:", cell.text, end="#")
+                    #     print("colspan:", cell.colspan, end="#")
+                    #     print("rowspan:", cell.rowspan)
 
                     tag = True
                     merged_table: Set[Node] = merge_two_sub_tables(segmented_table[i], segmented_table[j])
@@ -245,21 +246,64 @@ def sub_table_merge(segmented_table: List[Set[Node]]):
                     break
             if flag:
                 break
+    for i_segmented_table in segmented_table:
+        for cell in all_table_node:
+            if cell in i_segmented_table:
+                cell.set_of_affiliation=set()
+                cell.set_of_affiliation.update(i_segmented_table)
+
+    segmented_table = []
+    for cell_node in all_table_node:
+        if all((cell_node not in segment_i) for segment_i in segmented_table):
+            temp_set = set()
+            temp_set.update(cell_node.set_of_affiliation)
+            segmented_table.append(temp_set)
+
     return segmented_table
 
 
 if __name__ == '__main__':
     from tools.table_seg import table_seg
-
-    with open(r"E:\code\table_handle\result\3.json", "r", encoding='utf-8') as f:
-        table_dict = json.load(f)
+    from tools.preprocess import any_format_to_json
+    from tools.func import language_judgement, sub_table_adjust, cmp_dict, cmp_node
+    from tools.kv_amend import table_kv_amend
+    import random
+    gt_table, propositions = any_format_to_json(r"E:\code\table_handle\tools\11.xlsx")
+    # random.shuffle(gt_table["cells"])
     segmented_table: List[Set[Node]]
-    segmented_table, _, _ = table_seg(table_dict)
-
-    segmented_table = sub_table_merge(segmented_table)
+    segmented_table, all_table_node, _ = table_seg(gt_table)
     for i, i_sub_table in enumerate(segmented_table):
         print("--------------------打印第{}个子表！--------------------".format(i))
         for cell in list(i_sub_table):
             print("text:", cell.text, end="#")
             print("colspan:", cell.colspan, end="#")
-            print("rowspan:", cell.rowspan)
+            print("rowspan:", cell.rowspan, end="#")
+            print("rowspan:", cell.node_type)
+    print("**************************************单元格调整后************************************************************")
+    segmented_table = sub_table_adjust(segmented_table, all_table_node)
+    for i, i_sub_table in enumerate(segmented_table):
+        print("--------------------打印第{}个子表！--------------------".format(i))
+        for cell in list(i_sub_table):
+            print("text:", cell.text, end="#")
+            print("colspan:", cell.colspan, end="#")
+            print("rowspan:", cell.rowspan, end="#")
+            print("rowspan:", cell.node_type)
+
+    print("**************************************key-value调整后************************************************************")
+    segmented_table = table_kv_amend(segmented_table, all_table_node)
+    for i, i_sub_table in enumerate(segmented_table):
+        print("--------------------打印第{}个子表！--------------------".format(i))
+        for cell in list(i_sub_table):
+            print("text:", cell.text, end="#")
+            print("colspan:", cell.colspan, end="#")
+            print("rowspan:", cell.rowspan, end="#")
+            print("rowspan:", cell.node_type)
+    print("**************************************合并后************************************************************")
+    segmented_table = sub_table_merge(segmented_table,all_table_node)
+    for i, i_sub_table in enumerate(segmented_table):
+        print("--------------------打印第{}个子表！--------------------".format(i))
+        for cell in list(i_sub_table):
+            print("text:", cell.text, end="#")
+            print("colspan:", cell.colspan, end="#")
+            print("rowspan:", cell.rowspan,end="#")
+            print("rowspan:", cell.node_type)
