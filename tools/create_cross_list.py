@@ -1,5 +1,7 @@
 from tools.node import Node
 from typing import List, Set
+
+
 def create_cross_list(table: List):
     all_table_node: List[Node] = []
     table_rows, table_columns = 0, 0
@@ -21,7 +23,7 @@ def create_cross_list(table: List):
                             down_pointer=[None] * (table_columns + 1),
                             left_pointer=[None] * (table_rows + 1),
                             right_pointer=[None] * (table_rows + 1),
-                            node_type=cell['node_type'])
+                            node_type=cell.get('node_type', "value"))
 
         created_node.set_of_affiliation.add(created_node)
         all_table_node.append(created_node)
@@ -68,14 +70,14 @@ def create_cross_list(table: List):
         # 插入到水平双向链表
         all_left_pre: Set[Node] = set(rows_head[up_index - 1:down_index])
         all_right_next: Set[Node] = set()
-        for i_row in range(up_index,down_index+1):
-            pre=rows_head[i_row-1]
+        for i_row in range(up_index, down_index + 1):
+            pre = rows_head[i_row - 1]
             while pre:
-                if pre.colspan[1]<cell_node.colspan[0]:
+                if pre.colspan[1] < cell_node.colspan[0]:
                     all_left_pre.add(pre)
-                elif pre.colspan[0]>cell_node.colspan[1]:
+                elif pre.colspan[0] > cell_node.colspan[1]:
                     all_right_next.add(pre)
-                pre=pre.right_pointer[i_row]
+                pre = pre.right_pointer[i_row]
 
         for j_pre in all_left_pre:
             j_pre_up_index, j_pre_down_index = max(j_pre.rowspan[0], up_index), min(j_pre.rowspan[1], down_index)
@@ -95,7 +97,7 @@ def create_cross_list(table: List):
                         j_next.left_pointer[k] = cell_node
 
         # 插入到垂直双向链表
-        all_up_pre: Set[Node] = set(columns_head[left_index-1:right_index])
+        all_up_pre: Set[Node] = set(columns_head[left_index - 1:right_index])
         all_down_next: Set[Node] = set()
         for i_col in range(left_index, right_index + 1):
             pre = columns_head[i_col - 1]
@@ -124,6 +126,7 @@ def create_cross_list(table: List):
     # print("构建完十字双向链表")
     return all_table_node, row_column_head, rows_head, columns_head
 
+
 if __name__ == '__main__':
     from tools.preprocess import any_format_to_json
     import random
@@ -132,10 +135,9 @@ if __name__ == '__main__':
     random.shuffle(gt_table["cells"])
     print(gt_table)
     all_table_node, row_column_head, rows_head, columns_head = create_cross_list(gt_table["cells"])
-    print("rows_head:",rows_head)
-    print("columns_head:",columns_head)
+    print("rows_head:", rows_head)
+    print("columns_head:", columns_head)
     for cell_node in all_table_node:
-
         print("正在插入节点：", cell_node.text)
         print(cell_node)
         print("列：", cell_node.colspan)

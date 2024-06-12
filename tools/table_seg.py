@@ -439,8 +439,6 @@ def table_seg(table_dict) -> (List[Set[Node]], List[Node], List[Node]):
                     else:
                         left_nodes_may_merge = False
 
-                    if i_row_j_col_node.text=="Emily":
-                        print(up_nodes_may_merge,left_nodes_may_merge)
                     # 如果属性为value的结点有可能和上方结点合并但一定不会和左方结点合并，则此时只能和上方结点进行合并
                     if up_nodes_may_merge and not left_nodes_may_merge:
                         temp_set: Set[Node] = set()

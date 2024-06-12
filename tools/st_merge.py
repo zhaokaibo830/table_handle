@@ -225,16 +225,16 @@ def sub_table_merge(segmented_table: List[Set[Node]],all_table_node:List[Node]):
                     continue
 
                 if is_merge(segmented_table[i], segmented_table[j]):
-                    print("--------------------打印可能合并的第一个子表！--------------------")
-                    for cell in list(segmented_table[i]):
-                        print("text:", cell.text, end="#")
-                        print("colspan:", cell.colspan, end="#")
-                        print("rowspan:", cell.rowspan)
-                    print("--------------------打印可能合并的第二个子表！--------------------")
-                    for cell in list(segmented_table[j]):
-                        print("text:", cell.text, end="#")
-                        print("colspan:", cell.colspan, end="#")
-                        print("rowspan:", cell.rowspan)
+                    # print("--------------------打印可能合并的第一个子表！--------------------")
+                    # for cell in list(segmented_table[i]):
+                    #     print("text:", cell.text, end="#")
+                    #     print("colspan:", cell.colspan, end="#")
+                    #     print("rowspan:", cell.rowspan)
+                    # print("--------------------打印可能合并的第二个子表！--------------------")
+                    # for cell in list(segmented_table[j]):
+                    #     print("text:", cell.text, end="#")
+                    #     print("colspan:", cell.colspan, end="#")
+                    #     print("rowspan:", cell.rowspan)
 
                     tag = True
                     merged_table: Set[Node] = merge_two_sub_tables(segmented_table[i], segmented_table[j])

@@ -33,40 +33,44 @@ def table_head_extract(text_list, language) -> List:
     :return:
     table_head：可能为表头的单元格文本列表
     """
-    text = "\n".join(text_list)
+    temp_list_temp=[]
+    for i_text in text_list:
+        temp_list_temp.append('"'+i_text+'"')
+    text = ",\n".join(temp_list_temp)
+    text = "[" + text + "]"
     if language == "Chinese":
         analysis_prompt = PromptTemplate(input_variables=["text"], template=table_head_analysis_prompt_ch)
-        extract_prompt = PromptTemplate(input_variables=["analysis_text"], template=table_head_extract_prompt_ch)
+        extract_prompt = PromptTemplate(input_variables=["context","text"], template=table_head_extract_prompt_ch)
     else:
         analysis_prompt = PromptTemplate(input_variables=["text"], template=table_head_analysis_prompt_en)
-        extract_prompt = PromptTemplate(input_variables=["analysis_text"], template=table_head_extract_prompt_en)
+        extract_prompt = PromptTemplate(input_variables=["context","text"], template=table_head_extract_prompt_en)
     # print(sys.argv[3])
     # print(type(sys.argv[3]))
-    print("-----------------输出text-------------------------------------")
-    print(text)
+    # print("-----------------输出text-------------------------------------")
+    # print(text)
     tag = True
     table_head_temp: List = []
     while tag:
-        analysis_chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat", temperature=random.random() / 2),
+        analysis_chain = LLMChain(llm=ChatOpenAI(model=os.environ['MODEL_NAME'], temperature=random.random() / 2),
                                   prompt=analysis_prompt)
         # chain = LLMChain(llm=ChatOpenAI(model=sys.argv[3]), prompt=prompt)
         analysis_text = analysis_chain.run(text=text)
-        print("-----------------输出大模型的analysis_text结果-------------------------------------")
-        print(analysis_text)
-        output_chain = LLMChain(llm=ChatOpenAI(model="qwen1.5-14b-chat", temperature=0), prompt=extract_prompt)
-        table_head_result = output_chain.run(text=analysis_text)
-        print("-----------------输出大模型的table_head_extract结果-------------------------------------")
-        print(table_head_result)
+        # print("-----------------输出大模型的analysis_text结果-------------------------------------")
+        # print(analysis_text)
+        output_chain = LLMChain(llm=ChatOpenAI(model=os.environ['MODEL_NAME'], temperature=0), prompt=extract_prompt)
+        table_head_result = output_chain.run(context=analysis_text,text=text)
+        # print("-----------------输出大模型的table_head_extract结果-------------------------------------")
+        # print(table_head_result)
         json_left_index, json_right_index = table_head_result.find("["), table_head_result.find("]")
         if json_left_index != -1 and json_right_index != -1:
             try:
-                print(table_head_result[json_left_index:json_right_index + 1])
+                # print(table_head_result[json_left_index:json_right_index + 1])
                 try:
                     table_head_temp = ast.literal_eval(table_head_result[json_left_index:json_right_index + 1])
                 except Exception as e:
                     raise Exception("ast.literal_eval解析错误\n" + str(e))
-                print("-------------table_head_temp------------------")
-                print(table_head_temp)
+                # print("-------------table_head_temp------------------")
+                # print(table_head_temp)
                 if not isinstance(table_head_temp, list):
                     raise Exception('返回结果不是一个列表！')
                 else:
@@ -241,12 +245,14 @@ def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grain
     if language == "Chinese":
         for i_row_j_col in table_dict['cells']:
             cell_text_list.append(
-                i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r", "").replace(" ", ""))
+                                  i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r", "").replace(" ",
+                                                                                                                    "") )
     else:
         for i_row_j_col in table_dict['cells']:
             cell_text_list.append(
                 replace_multiple_spaces(
-                    i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r", "")).strip().lower())
+                                        i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r",
+                                                                                                        "")).strip().lower())
     # all_table_node列表，其中的每一个元素是输入表格中的一个单元格
     all_table_node: List[Node]
     # rows_head是表格构成的双向十字链表以行进行索引的头指针列表
@@ -282,13 +288,13 @@ def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grain
             if all([False if (len(i_segmented_table) == 1 and list(i_segmented_table)[0].node_type == "key") else True
                     for
                     i_segmented_table in segmented_table]):
-                print(
-                    "---------------------------没有剩余的key，并打印table_dict-----------------------------------------")
-                for i_segmented_table in segmented_table:
-                    for j_cell in list(i_segmented_table):
-                        print(j_cell.text, end="#")
-                    print()
-                print(table_dict)
+                # print(
+                #     "---------------------------没有剩余的key，并打印table_dict-----------------------------------------")
+                # for i_segmented_table in segmented_table:
+                #     for j_cell in list(i_segmented_table):
+                #         print(j_cell.text, end="#")
+                #     print()
+                # print(table_dict)
                 for i_table_head in table_head:
                     if i_table_head in table_head_dict:
                         table_head_dict[i_table_head] += 1
@@ -296,34 +302,34 @@ def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grain
                         table_head_dict[i_table_head] = 1
                 # 分割后没有剩余的key说明此时划分的key、value结果在结构上是无歧义的
                 break
-            if count >= 3:
-                print(
-                    "---------------------------有剩余的key且已经达到了最大处理次数，并打印此时的table_dict，打印完之后不再处理-----------------------------------------")
-                for i_segmented_table in segmented_table:
-                    for j_cell in list(i_segmented_table):
-                        print(j_cell.text, end="#")
-                    print()
-                print(table_dict)
+            if count >= 1:
+                # print(
+                #     "---------------------------有剩余的key且已经达到了最大处理次数，并打印此时的table_dict，打印完之后不再处理-----------------------------------------")
+                # for i_segmented_table in segmented_table:
+                #     for j_cell in list(i_segmented_table):
+                #         print(j_cell.text, end="#")
+                #     print()
+                # print(table_dict)
                 for i_table_head in table_head:
                     if i_table_head in table_head_dict:
                         table_head_dict[i_table_head] += 1
                     else:
                         table_head_dict[i_table_head] = 1
                 break
-            print(
-                "---------------------------有剩余的key还没达到了最大处理次数，打印此时的table_dict，打印完之后再次处理-----------------------------------------")
-            for i_segmented_table in segmented_table:
-                for j_cell in list(i_segmented_table):
-                    print(j_cell.text, end="#")
-                print()
-            print(table_dict)
+            # print(
+            #     "---------------------------有剩余的key还没达到了最大处理次数，打印此时的table_dict，打印完之后再次处理-----------------------------------------")
+            # for i_segmented_table in segmented_table:
+            #     for j_cell in list(i_segmented_table):
+            #         print(j_cell.text, end="#")
+            #     print()
+            # print(table_dict)
     # table_head存放key粗粒度检测结果
     table_head: List = []
     for k, v in table_head_dict.items():
         if v > loop / 2:
             table_head.append(k)
-    print("--------------输出key粗粒度检测结果的所有表头-----------------")
-    print(table_head)
+    # print("--------------输出key粗粒度检测结果的所有表头-----------------")
+    # print(table_head)
     if language == "Chinese":
         for i_row_j_col in table_dict['cells']:
             if i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r", "").replace(" ",
@@ -351,9 +357,9 @@ def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grain
     # all_table_node_kv_count统计key粗粒度和每一步细粒度检测的属性类别，key为1，value为0
     all_table_node_kv_count = [[1] if i_cell.node_type == "key" else [0] for i_cell in all_table_node]
 
-    print("----------对整个表进行了key-value分类，输出此时的all_table_node_kv_count---------------")
-    for k in range(len(all_table_node_kv_count)):
-        print(all_table_node[k].text, "-->", all_table_node_kv_count[k])
+    # print("----------对整个表进行了key-value分类，输出此时的all_table_node_kv_count---------------")
+    # for k in range(len(all_table_node_kv_count)):
+    #     print(all_table_node[k].text, "-->", all_table_node_kv_count[k])
 
     if 0 in checkpoint:
         ret.append(coarse_table)
@@ -364,38 +370,44 @@ def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grain
         weights = [1 / len(x) for x in all_table_node_kv_count]
         index = random.choices(range(len(all_table_node_kv_count)), weights=weights, k=1)[0]
         index_node = all_table_node[index]
-        print("-------------index_node------------")
-        print(index_node.text)
-        tag_temp=False
+        # print("-------------index_node------------")
+        # print(index_node.text)
+        tag_temp = False
         for m in range(len(all_table_node_kv_count)):
             for n in range(len(all_table_node_kv_count)):
                 if m == n:
                     continue
                 m_node, n_node = all_table_node[m], all_table_node[n]
-                if not (m_node.colspan[0] <= index_node.colspan[0] and m_node.rowspan[0] <= index_node.rowspan[0] and n_node.colspan[1] >= index_node.colspan[1] and n_node.rowspan[1] >= index_node.rowspan[1]):
+                if not (m_node.colspan[0] <= index_node.colspan[0] and m_node.rowspan[0] <= index_node.rowspan[0] and
+                        n_node.colspan[1] >= index_node.colspan[1] and n_node.rowspan[1] >= index_node.rowspan[1]):
                     continue
                 if not is_sub_table(m_node, n_node):
                     continue
                 sub_table_nodes: List[Node] = get_sub_table_nodes(m_node, n_node, rows_head)
                 if len(sub_table_nodes) > len(all_table_node) / 2:
                     continue
-                print("-----------left_up_node, right_down_node-----------------")
-                print(all_table_node[m].text, all_table_node[n].text)
-                print("--------------------sub_table_nodes-----------------------")
-                for i_sub_table_node in sub_table_nodes:
-                    print(i_sub_table_node.text)
+                # print("-----------left_up_node, right_down_node-----------------")
+                # print(all_table_node[m].text, all_table_node[n].text)
+                # print("--------------------sub_table_nodes-----------------------")
+                # for i_sub_table_node in sub_table_nodes:
+                #     print(i_sub_table_node.text)
                 sub_table_cell_text_list: List[str] = []
                 if language == "Chinese":
                     for i_sub_table_node in sub_table_nodes:
                         sub_table_cell_text_list.append(
-                            i_sub_table_node.text.replace(" ", "").replace("\n", "").replace("\t", "").replace("\r",
-                                                                                                               ""))
+                                                        i_sub_table_node.text.replace(" ", "").replace("\n",
+                                                                                                       "").replace("\t",
+                                                                                                                   "").replace(
+                                                            "\r",
+                                                            ""))
                 else:
                     for i_sub_table_node in sub_table_nodes:
                         sub_table_cell_text_list.append(
-                            replace_multiple_spaces(
-                                i_sub_table_node.text.replace("\n", "").replace("\t", "").replace("\r",
-                                                                                                  "")).strip().lower())
+                                                        replace_multiple_spaces(
+                                                            i_sub_table_node.text.replace("\n", "").replace("\t",
+                                                                                                            "").replace(
+                                                                "\r",
+                                                                "")).strip().lower())
                 sub_table_head = table_head_extract(sub_table_cell_text_list, language)
                 if language == "Chinese":
                     for i_sub_table_node in sub_table_nodes:
@@ -433,17 +445,17 @@ def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grain
                             all_table_node_kv_count[cell_index].append(0)
 
                 handle_sub_table_count += 1
-                tag_temp=True
-                print("----------输出handle_sub_table_count---------------")
-                print(handle_sub_table_count)
-                print("----------输出此时的all_table_node_kv_count---------------")
-                for k in range(len(all_table_node_kv_count)):
-                    print(all_table_node[k].text, "-->", all_table_node_kv_count[k])
+                tag_temp = True
+                # print("----------输出handle_sub_table_count---------------")
+                # print(handle_sub_table_count)
+                # print("----------输出此时的all_table_node_kv_count---------------")
+                # for k in range(len(all_table_node_kv_count)):
+                #     print(all_table_node[k].text, "-->", all_table_node_kv_count[k])
                 if handle_sub_table_count in checkpoint:
                     for i in range(len(all_table_node)):
                         if sum(all_table_node_kv_count[i]) >= len(all_table_node_kv_count[i]) / 2:
                             all_table_node[i].node_type = "key"
-                            print(all_table_node[i].text)
+                            # print(all_table_node[i].text)
                         else:
                             all_table_node[i].node_type = "value"
                         for cell in table_dict['cells']:
@@ -475,7 +487,8 @@ if __name__ == '__main__':
 
     gt_table, propositions = any_format_to_json(r"E:\code\table_handle\tools\11.xlsx")
     print(gt_table)
-    predict_table_list = kv_clf(gt_table, coarse_grained_degree=1, fine_grained_degree=50, checkpoint=[_ for _ in range(0,51,2)],
+    predict_table_list = kv_clf(gt_table, coarse_grained_degree=1, fine_grained_degree=50,
+                                checkpoint=[_ for _ in range(0, 51, 2)],
                                 language="Chinese")
     for i, predict_table in enumerate(predict_table_list):
         print(f"----------------------{i}-----------------------")

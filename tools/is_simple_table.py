@@ -1,10 +1,11 @@
 import json
 import random
-
+from tools.kv_clf import kv_clf
 from tools.node import Node
 from typing import List, Set
 from collections import Counter
 from tools.create_cross_list import create_cross_list
+
 
 def have_next_level_head(i_node: Node, direct: str):
     if direct == 'right':
@@ -23,7 +24,7 @@ def have_next_level_head(i_node: Node, direct: str):
         return True
 
 
-def sub_table_kv_amend(simple_table: List):
+def is_simple_table(simple_table: List, language):
     if len(simple_table) == 1:
         amended_table = []
         simple_table[0]["node_type"] = "value"
@@ -50,7 +51,7 @@ def sub_table_kv_amend(simple_table: List):
     one_level_head = None
     for i, cell in enumerate(simple_table):
         if cell["rowspan"] == [up_index, down_index] and cell["colspan"][0] == left_index:
-            if Counter([i_node["colspan"][0]==cell["colspan"][1]+1 for i_node in simple_table])[True]>1:
+            if Counter([i_node["colspan"][0] == cell["colspan"][1] + 1 for i_node in simple_table])[True] > 1:
                 one_level_head = cell
                 one_level_head["node_type"] = "key"
                 del simple_table[i]
@@ -84,10 +85,10 @@ def sub_table_kv_amend(simple_table: List):
     #     print("colspan:", cell.colspan, end="#")
     #     print("rowspan:", cell.rowspan, end="#")
     #     print("node_type:", cell.node_type)
-    #     print("up_pointer",cell.up_pointer)
-    #     print("down_pointer",cell.down_pointer )
-    #     print("left_pointer",cell.left_pointer)
-    #     print("right_pointer",cell.right_pointer)
+    #     print("up_pointer", cell.up_pointer)
+    #     print("down_pointer", cell.down_pointer)
+    #     print("left_pointer", cell.left_pointer)
+    #     print("right_pointer", cell.right_pointer)
     # 根据表格结构判断表头是否在左边
     left_is_head = True
     left_node: Set[Node] = set()
@@ -137,7 +138,7 @@ def sub_table_kv_amend(simple_table: List):
                 left_is_head = False
                 break
 
-    # print("left_is_head",left_is_head)
+    # print("left_is_head", left_is_head)
     # 根据表格结构判断表头是否在上边
     up_is_head = True
     up_node: Set[Node] = set()
@@ -187,7 +188,7 @@ def sub_table_kv_amend(simple_table: List):
                 up_is_head = False
                 break
 
-    # print("up_is_head",up_is_head)
+    # print("up_is_head", up_is_head)
 
     if left_is_head and not up_is_head:
         head_nodes = left_all_head_node
@@ -195,6 +196,15 @@ def sub_table_kv_amend(simple_table: List):
         head_nodes = up_all_head_node
         pass
     elif left_is_head and up_is_head:
+        temp_table_dict = \
+        kv_clf({"cells": simple_table}, coarse_grained_degree=1, fine_grained_degree=0, checkpoint=[0, 0],
+               language=language)[-1]
+        # print("temp_table_dict:",temp_table_dict)
+        for i_node in all_table_node:
+            for j_cell in temp_table_dict["cells"]:
+                # print(j_cell)
+                if i_node.colspan == j_cell["colspan"] and i_node.rowspan == j_cell["rowspan"]:
+                    i_node.node_type = j_cell["node_type"]
         left_node: Set[Node] = set()
         for i, i_row_head in enumerate(rows_head):
             left_node.add(i_row_head.right_pointer[i + 1])
@@ -205,7 +215,6 @@ def sub_table_kv_amend(simple_table: List):
                 Counter(i_up_node.node_type for i_up_node in up_node)["key"]:
             up_is_head = False
             head_nodes = left_node
-
         else:
             left_is_head = False
             head_nodes = up_node
@@ -297,65 +306,3 @@ def sub_table_kv_amend(simple_table: List):
         have_table_head = False
 
     return amended_table, unified_table, have_table_head
-
-
-def table_kv_amend(segmented_table:List[Set[Node]],all_table_node:List[Node]):
-    for i_segmented_table in segmented_table:
-        sub_table_cell = []
-        for segment_i_cell_j in i_segmented_table:
-            temp_dict = {
-                "colspan": [segment_i_cell_j.colspan[0], segment_i_cell_j.colspan[1]],
-                "rowspan": [segment_i_cell_j.rowspan[0], segment_i_cell_j.rowspan[1]],
-                "text": segment_i_cell_j.text,
-                "node_type": segment_i_cell_j.node_type
-            }
-            sub_table_cell.append(temp_dict)
-        amended_table, _, _ = sub_table_kv_amend(sub_table_cell)
-        for i_amended_table in amended_table:
-            for cell in all_table_node:
-                if i_amended_table["colspan"]==cell.colspan and i_amended_table["rowspan"]==cell.rowspan:
-                    cell.node_type=i_amended_table["node_type"]
-                    break
-    segmented_table = []
-    for cell_node in all_table_node:
-        if all((cell_node not in segment_i) for segment_i in segmented_table):
-            temp_set=set()
-            temp_set.update(cell_node.set_of_affiliation)
-            segmented_table.append(temp_set)
-    return segmented_table
-
-if __name__ == "__main__":
-    from tools.preprocess import any_format_to_json
-    from tools.table_seg import table_seg
-    import random
-    gt_table, propositions = any_format_to_json("11.xlsx")
-    # print("--------gt_table--------------------")
-    # print(gt_table)
-    # amended_table, unified_table, have_table_head=sub_table_kv_amend(gt_table["cells"])
-    # print("0-----")
-    # print(amended_table)
-    # segmented_table, all_table_node, _ = table_seg(gt_table)
-    #
-    # for i, i_sub_table in enumerate(segmented_table):
-    #     print("--------------------打印第{}个子表！--------------------".format(i))
-    #     for cell in list(i_sub_table):
-    #         print("text:", cell.text, end="#")
-    #         print("colspan:", cell.colspan, end="#")
-    #         print("rowspan:", cell.rowspan, end="#")
-    #         print("rowspan:", cell.node_type)
-    #
-    # print(
-    #     "**************************************key-value调整后************************************************************")
-    # segmented_table = table_kv_amend(segmented_table, all_table_node)
-    # for i, i_sub_table in enumerate(segmented_table):
-    #     print("--------------------打印第{}个子表！--------------------".format(i))
-    #     for cell in list(i_sub_table):
-    #         print("text:", cell.text, end="#")
-    #         print("colspan:", cell.colspan, end="#")
-    #         print("rowspan:", cell.rowspan, end="#")
-    #         print("rowspan:", cell.node_type)
-
-    # gt_table=[{'text': '3136.5', 'colspan': [3, 3], 'rowspan': [13, 13], 'node_type': 'value'}, {'text': '/', 'colspan': [3, 3], 'rowspan': [11, 11], 'node_type': 'value'}, {'text': '3489', 'colspan': [3, 3], 'rowspan': [12, 12], 'node_type': 'value'},{'text': '采(注)井 段中深(m)', 'colspan': [3, 3], 'rowspan': [9, 10], 'node_type': 'key'}]
-    random.shuffle(gt_table["cells"])
-    amended_table, unified_table, have_table_head = sub_table_kv_amend(gt_table["cells"])
-    print(amended_table)

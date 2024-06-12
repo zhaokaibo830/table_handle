@@ -63,10 +63,10 @@ def sub_table_adjust(segmented_table: List[Set[Node]], all_table_node: List[Node
         for i_segmented_table in segmented_table:
             if not is_rectangle(i_segmented_table):
                 while not is_rectangle(i_segmented_table):
-                    print("----------------打印不是矩形的子表----------------")
-                    for j_cell in list(i_segmented_table):
-                        print(j_cell.text, end="#")
-                    print()
+                    # print("----------------打印不是矩形的子表----------------")
+                    # for j_cell in list(i_segmented_table):
+                    #     print(j_cell.text, end="#")
+                    # print()
                     tag = False
                     left_index, right_index = list(i_segmented_table)[0].colspan[0], list(i_segmented_table)[0].colspan[1]
                     up_index, down_index = list(i_segmented_table)[0].rowspan[0], list(i_segmented_table)[0].rowspan[1]
@@ -77,20 +77,20 @@ def sub_table_adjust(segmented_table: List[Set[Node]], all_table_node: List[Node
                     for cell in list(i_segmented_table):
                         array_2d[cell.rowspan[0] - up_index:cell.rowspan[1] - up_index + 1,
                         cell.colspan[0] - left_index:cell.colspan[1] - left_index + 1] = 1
-                    print(array_2d)
+                    # print(array_2d)
                     for i in range(array_2d.shape[0]):
                         tag_temp = False
                         for j in range(array_2d.shape[1]):
                             if array_2d[i, j] == 0:
-                                print("i,j:",i,j)
+                                # print("i,j:",i,j)
                                 tag_temp = True
                                 row, column = i + up_index, j + left_index
-                                print("row,column:",row,column)
+                                # print("row,column:",row,column)
                                 for cell in all_table_node:
 
                                     if cell.colspan[0] <= column <= cell.colspan[1] and cell.rowspan[0] <= row <= \
                                             cell.rowspan[1]:
-                                        print("cell.text:",cell.text)
+                                        # print("cell.text:",cell.text)
                                         for i_cell_set_of_affiliation in cell.set_of_affiliation:
                                             if i_cell_set_of_affiliation is not cell:
                                                 i_cell_set_of_affiliation.set_of_affiliation.discard(cell)

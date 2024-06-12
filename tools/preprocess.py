@@ -229,15 +229,14 @@ def format_xml(xml_path: str):
         f.write(formatted_xml)
 
 
-def excel_to_json(excel_path: str) -> Tuple:
+def excel_to_json(excel_path: str) -> Dict:
     """
     输入一个excel文件，输出对应的json统一格式描述，excel是xlsx格式
     :return:
     """
     # 读取 Excel 文件
     wb = load_workbook(excel_path)
-    sheet = wb["table"]
-    sheet1 = wb["fact verification"]
+    sheet = wb.worksheets[0]
 
     # 转换为 JSON 格式
     cells = []
@@ -278,34 +277,12 @@ def excel_to_json(excel_path: str) -> Tuple:
             cells.append({
                 "colspan": col_span,
                 "rowspan": row_span,
-                "text": str(cell_value).strip(),
+                "text": str(cell_value).strip().replace("\n", " "),
                 "node_type": node_type
             })
 
-    propositions = []
-    for row in list(sheet1.iter_rows())[1:]:
-        propositions.append({"proposition": row[0].value, "value": row[1].value})
-        # 输出 JSON 文件
-        # with open('output.json', 'w', encoding='utf-8') as f:
-        #     f.write("{\n")
-        #     f.write('  "cells": [\n')
-        #     for i, cell in enumerate(cells):
-        #         f.write('    {\n')
-        #         f.write(f'      "colspan": [{cell["colspan"][0]}, {cell["colspan"][1]}],\n')
-        #         f.write(f'      "rowspan": [{cell["rowspan"][0]}, {cell["rowspan"][1]}],\n')
-        #         f.write(f'      "text": "{cell["text"].strip().replace("\n", " ")}",\n')
-        #         f.write(f'      "node_type": "{cell["node_type"]}"\n')
-        #         f.write('    }')
-        #         if i != len(cells) - 1:
-        #             f.write(',')
-        #         f.write('\n')
-        #     f.write('  ]\n')
-        #     f.write("}\n")
-        #
-        # # 读取生成的 JSON 文件并返回
-        # json_data = read_json_from_file('output.json')
-        # # print(json_data)
-    return {"cells": cells}, propositions
+
+    return {"cells": cells}
 
 
 def image_to_json(image_path: str) -> Dict:
@@ -394,13 +371,11 @@ def any_format_to_json(file_path: str) -> Dict:
 
 if __name__ == '__main__':
     image_path = r"D:\project\torchlearing\ceshi\table.png"
-    excel_path = r"E:\code\table_handle\tools\11.xlsx"
+    excel_path = r"1.xlsx"
     docx_file = "D:\\project\\torchlearing\\ceshi\\test.docx"
     output_json_path = "output.json"
-    table=excel_to_json(excel_path)[0]
-    with open(os.path.join(output_json_path), 'w',encoding='utf-8') as f:
-        # 使用json.dump()函数将序列化后的JSON格式的数据写入到文件中
-        json.dump(table, f, indent=4, ensure_ascii=False)
+    table=excel_to_json(excel_path)
+    print(table)
     # word_to_json(docx_file)
     # image_to_json(image_path)
     # any_format_to_json(docx_file)

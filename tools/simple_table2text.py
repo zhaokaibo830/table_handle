@@ -61,26 +61,26 @@ def simple_table2text(simple_table: List[Dict], have_table_head: bool, language:
                     temp_cell = temp_cell.up_pointer[temp_cell.colspan[0]]
                 caption_template += i_template
             break
-        print("col_ranges:", col_ranges)
+        # print("col_ranges:", col_ranges)
         pre_row_nodes: List[Node] = []
-        print("caption_template:", caption_template)
-        print("data_start_row:", data_start_row)
+        # print("caption_template:", caption_template)
+        # print("data_start_row:", data_start_row)
         for k, i_row_head in enumerate(rows_head):
             if k < data_start_row:
                 continue
             text_list: List[str] = []
             i_row_nodes: List[Node] = []
-            print("data_start_row:", data_start_row)
-            print("k:", k)
+            # print("data_start_row:", data_start_row)
+            # print("k:", k)
             temp_node: Node = i_row_head.right_pointer[k + 1]
             i_row_nodes.append(temp_node)
             for j_col_range in col_ranges:
                 text_list.append(temp_node.text)
-                print("j_col_range:", j_col_range)
+                # print("j_col_range:", j_col_range)
                 if j_col_range[1] == temp_node.colspan[1]:
                     temp_node = temp_node.right_pointer[k + 1]
                     i_row_nodes.append(temp_node)
-            print(text_list)
+            # print(text_list)
             if not all([cell in pre_row_nodes for cell in i_row_nodes]):
                 caption += caption_template.format(*text_list)
             pre_row_nodes = i_row_nodes[:]
