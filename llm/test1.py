@@ -2,7 +2,8 @@ import os
 import random
 
 os.environ['OPENAI_API_KEY'] = "EMPTY"
-os.environ['OPENAI_API_BASE'] = "http://124.70.207.36:7002/v1"
+os.environ['OPENAI_API_BASE'] = "http://124.70.213.108:7009/ui"
+# os.environ['OPENAI_API_BASE'] = "http://10.8.0.26:6006/v1"
 from langchain.chat_models import ChatOpenAI
 from langchain.document_loaders import TextLoader
 from langchain.embeddings import OpenAIEmbeddings
