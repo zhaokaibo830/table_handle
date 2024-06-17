@@ -249,7 +249,7 @@ def excel_to_json(excel_path: str) -> Dict:
 
             # 检查单元格是否为空
             if cell_value is None:
-                continue
+                cell_value="/"
 
             # 初始化单元格的跨度
             col_start = cell.column
@@ -281,8 +281,21 @@ def excel_to_json(excel_path: str) -> Dict:
                 "node_type": node_type
             })
 
+    cells_temp=[]
+    for cell in cells:
+        tag=False
+        for i,cell_temp in enumerate(cells_temp):
+            if cell["colspan"]==cell_temp["colspan"] and cell["rowspan"]==cell_temp["rowspan"]:
+                tag=True
+                if cell_temp["text"]=="/":
+                    cells_temp[i]=cell
+                break
+        if not tag:
+            cells_temp.append(cell)
 
-    return {"cells": cells}
+
+
+    return {"cells": cells_temp}
 
 
 def image_to_json(image_path: str) -> Dict:
@@ -375,6 +388,9 @@ if __name__ == '__main__':
     docx_file = "D:\\project\\torchlearing\\ceshi\\test.docx"
     output_json_path = "output.json"
     table=excel_to_json(excel_path)
+    with open('./output.json', 'w', encoding='utf-8') as f:
+        # 使用json.dump()函数将序列化后的JSON格式的数据写入到文件中
+        json.dump(table, f, indent=4, ensure_ascii=False)
     print(table)
     # word_to_json(docx_file)
     # image_to_json(image_path)
