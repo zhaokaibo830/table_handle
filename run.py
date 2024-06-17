@@ -8,7 +8,7 @@ from typing import List, Set, Dict
 from pydantic import BaseModel
 
 os.environ['OPENAI_API_KEY'] = "EMPTY"
-os.environ['OPENAI_API_BASE'] = "http://124.70.207.36:7002/v1"
+os.environ['OPENAI_API_BASE'] = "http://124.70.213.108:7009/v1"
 # os.environ['OPENAI_API_BASE'] = "http://10.8.0.6:7002/v1"
 os.environ['MODEL_NAME'] = "qwen1.5-14b-chat"
 
@@ -20,23 +20,23 @@ class Item(BaseModel):
 
 
 @app.post("/api/table2text")
-def input_json(item: Item = Body(...)):
+async def input_json(item: Item = Body(...)):
     """
     :param item: 接受的json不是文件
     :return:输出表格的描述
     """
-    try:
-        for i_cell in item.content:
-            if "node_type" not in i_cell:
-                i_cell["node_type"] = "value"
-        print("-------------------input-----------------------------------")
-        print({"content": item.content})
-        print("-------------------------------------------------------------")
-
-        res = table2text({"cells": item.content})
-    except Exception as e:
-        print(e)
-        res = "表格理解出错！！！"
+    # try:
+    for i_cell in item.content:
+        if "node_type" not in i_cell:
+            i_cell["node_type"] = "value"
+    print("-------------------input-----------------------------------")
+    print({"content": item.content})
+    print("-------------------------------------------------------------")
+    print(111111111111111111)
+    res = await table2text({"cells": item.content})
+    # except Exception as e:
+    #     print(e)
+    #     res = "表格理解出错！！！"
     print("-------------------output-----------------------------------")
     print(res)
     print("-------------------------------------------------------------")
@@ -44,7 +44,7 @@ def input_json(item: Item = Body(...)):
 
 
 @app.post("/api/table2text_excel")
-def input_excel(file: UploadFile = File(...)):
+async def input_excel(file: UploadFile = File(...)):
     """
     :param file: 接收excel文件
     :return: 输出表格的描述
@@ -59,7 +59,7 @@ def input_excel(file: UploadFile = File(...)):
         print("-------------------读取excel-->json-----------------------------------")
         print(table_dict)
         print("-------------------------------------------------------------")
-        res = table2text(table_dict)
+        res = await table2text(table_dict)
     except Exception as e:
         print(e)
         res = "表格理解出错！！！"
@@ -70,7 +70,7 @@ def input_excel(file: UploadFile = File(...)):
 
 
 @app.post("/api/table2text_json_file")
-def input_json_file(file: UploadFile = File(...)):
+async def input_json_file(file: UploadFile = File(...)):
     """
     :param file: 接收的json是文件
     :return:
@@ -86,7 +86,7 @@ def input_json_file(file: UploadFile = File(...)):
         print("-------------------input-----------------------------------")
         print(table_dict)
         print("-------------------------------------------------------------")
-        res = table2text({"cells": table_dict["content"]})
+        res = await table2text({"cells": table_dict["content"]})
 
     except Exception as e:
         print(e)

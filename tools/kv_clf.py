@@ -13,6 +13,7 @@ from tools.table_seg import table_seg
 from tools.node import Node
 import random
 import re
+from langchain_core.output_parsers import StrOutputParser
 
 
 def replace_multiple_spaces(text):
@@ -26,51 +27,54 @@ def keep_chinese_english_digit(text) -> str:
     return result
 
 
-def table_head_extract(text_list, language) -> List:
+async def table_head_extract(text_list, language) -> List:
     """
     利用大模型提取表格中可能为表头的单元格
     :param text_list: 表格中的所有单元格文本构成的列表
     :return:
     table_head：可能为表头的单元格文本列表
     """
-    temp_list_temp=[]
-    for i_text in text_list:
-        temp_list_temp.append('"'+i_text+'"')
-    text = ",\n".join(temp_list_temp)
-    text = "[" + text + "]"
+    text = "\n".join(text_list)
     if language == "Chinese":
         analysis_prompt = PromptTemplate(input_variables=["text"], template=table_head_analysis_prompt_ch)
-        extract_prompt = PromptTemplate(input_variables=["context","text"], template=table_head_extract_prompt_ch)
+        extract_prompt = PromptTemplate(input_variables=["analysis_text"], template=table_head_extract_prompt_ch)
     else:
         analysis_prompt = PromptTemplate(input_variables=["text"], template=table_head_analysis_prompt_en)
-        extract_prompt = PromptTemplate(input_variables=["context","text"], template=table_head_extract_prompt_en)
+        extract_prompt = PromptTemplate(input_variables=["analysis_text"], template=table_head_extract_prompt_en)
     # print(sys.argv[3])
     # print(type(sys.argv[3]))
-    # print("-----------------输出text-------------------------------------")
-    # print(text)
+    print("-----------------输出text-------------------------------------")
+    print(text)
     tag = True
     table_head_temp: List = []
     while tag:
-        analysis_chain = LLMChain(llm=ChatOpenAI(model=os.environ['MODEL_NAME'], temperature=random.random() / 2),
-                                  prompt=analysis_prompt)
+        # analysis_chain = LLMChain(llm=ChatOpenAI(model=os.environ['MODEL_NAME'], temperature=random.random() / 2),
+        #                           prompt=analysis_prompt)
+        llm = ChatOpenAI(model=os.environ['MODEL_NAME'], temperature=random.random() / 2)
+        analysis_chain = analysis_prompt | llm | StrOutputParser()
+        # analysis_chain = analysis_chain | StrOutputParser()
         # chain = LLMChain(llm=ChatOpenAI(model=sys.argv[3]), prompt=prompt)
-        analysis_text = analysis_chain.run(text=text)
-        # print("-----------------输出大模型的analysis_text结果-------------------------------------")
-        # print(analysis_text)
-        output_chain = LLMChain(llm=ChatOpenAI(model=os.environ['MODEL_NAME'], temperature=0), prompt=extract_prompt)
-        table_head_result = output_chain.run(context=analysis_text,text=text)
-        # print("-----------------输出大模型的table_head_extract结果-------------------------------------")
-        # print(table_head_result)
+        analysis_text = await analysis_chain.ainvoke({"text": text})
+        print("-----------------输出大模型的analysis_text结果-------------------------------------")
+        print(analysis_text)
+        # output_chain = LLMChain(llm=ChatOpenAI(model=os.environ['MODEL_NAME'], temperature=0), prompt=extract_prompt)
+        # table_head_result = await output_chain.arun(text=analysis_text)
+        # output_chain |= StrOutputParser()
+        llm = ChatOpenAI(model=os.environ['MODEL_NAME'], temperature=0)
+        output_chain = extract_prompt | llm | StrOutputParser()
+        table_head_result = await output_chain.ainvoke({"text": analysis_text})
+        print("-----------------输出大模型的table_head_extract结果-------------------------------------")
+        print(table_head_result)
         json_left_index, json_right_index = table_head_result.find("["), table_head_result.find("]")
         if json_left_index != -1 and json_right_index != -1:
             try:
-                # print(table_head_result[json_left_index:json_right_index + 1])
+                print(table_head_result[json_left_index:json_right_index + 1])
                 try:
                     table_head_temp = ast.literal_eval(table_head_result[json_left_index:json_right_index + 1])
                 except Exception as e:
                     raise Exception("ast.literal_eval解析错误\n" + str(e))
-                # print("-------------table_head_temp------------------")
-                # print(table_head_temp)
+                print("-------------table_head_temp------------------")
+                print(table_head_temp)
                 if not isinstance(table_head_temp, list):
                     raise Exception('返回结果不是一个列表！')
                 else:
@@ -229,7 +233,7 @@ def sub_table_have_remain_key(sub_table_nodes: List[Node], whole_table_dict: Dic
         return True
 
 
-def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grained_degree: int,
+async def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grained_degree: int,
            checkpoint: List[int], language) -> List:
     """
     利用大模型提取语义信息再结合表格的结构信息对表格中的单元格进行key/value属性分类
@@ -245,14 +249,14 @@ def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grain
     if language == "Chinese":
         for i_row_j_col in table_dict['cells']:
             cell_text_list.append(
-                                  i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r", "").replace(" ",
-                                                                                                                    "") )
+                i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r", "").replace(" ",
+                                                                                                  ""))
     else:
         for i_row_j_col in table_dict['cells']:
             cell_text_list.append(
                 replace_multiple_spaces(
-                                        i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r",
-                                                                                                        "")).strip().lower())
+                    i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r",
+                                                                                    "")).strip().lower())
     # all_table_node列表，其中的每一个元素是输入表格中的一个单元格
     all_table_node: List[Node]
     # rows_head是表格构成的双向十字链表以行进行索引的头指针列表
@@ -268,7 +272,7 @@ def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grain
         count = 0
         while True:
             count += 1
-            table_head = table_head_extract(cell_text_list, language)
+            table_head = await table_head_extract(cell_text_list, language)
             if language == "Chinese":
                 for i_row_j_col in table_dict['cells']:
                     if i_row_j_col["text"].replace("\n", "").replace("\t", "").replace("\r", "").replace(" ",
@@ -395,20 +399,20 @@ def kv_clf(table_dict_no_node_type: Dict, coarse_grained_degree: int, fine_grain
                 if language == "Chinese":
                     for i_sub_table_node in sub_table_nodes:
                         sub_table_cell_text_list.append(
-                                                        i_sub_table_node.text.replace(" ", "").replace("\n",
-                                                                                                       "").replace("\t",
-                                                                                                                   "").replace(
-                                                            "\r",
-                                                            ""))
+                            i_sub_table_node.text.replace(" ", "").replace("\n",
+                                                                           "").replace("\t",
+                                                                                       "").replace(
+                                "\r",
+                                ""))
                 else:
                     for i_sub_table_node in sub_table_nodes:
                         sub_table_cell_text_list.append(
-                                                        replace_multiple_spaces(
-                                                            i_sub_table_node.text.replace("\n", "").replace("\t",
-                                                                                                            "").replace(
-                                                                "\r",
-                                                                "")).strip().lower())
-                sub_table_head = table_head_extract(sub_table_cell_text_list, language)
+                            replace_multiple_spaces(
+                                i_sub_table_node.text.replace("\n", "").replace("\t",
+                                                                                "").replace(
+                                    "\r",
+                                    "")).strip().lower())
+                sub_table_head = await table_head_extract(sub_table_cell_text_list, language)
                 if language == "Chinese":
                     for i_sub_table_node in sub_table_nodes:
                         if i_sub_table_node.text.replace(" ", "").replace("\n", "").replace("\t", "").replace("\r",

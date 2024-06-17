@@ -15,23 +15,18 @@ from langchain.chat_models import ChatOpenAI
 from langchain.chains import LLMChain
 from langchain_core.prompts import PromptTemplate
 from tools.prompt import polish_prompt_en, sub_table_extract_prompt_en, polish_prompt_ch, sub_table_extract_prompt_ch
-from langchain.docstore.document import Document
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores import FAISS
 from tools.kv_amend import sub_table_kv_amend, table_kv_amend
 from tools.func import language_judgement, sub_table_adjust, cmp_dict, cmp_node
 from tools.st_merge import sub_table_merge
 from tools.is_simple_table import is_simple_table
 from tools.create_cross_list import create_cross_list
 from tools.func import is_rectangle
+from langchain_core.output_parsers import StrOutputParser
 
 
-def is_table(table_dict):
-    pass
-
-
-def table2text(table_dict, is_node_type=False, coarse_grained_degree=1, fine_grained_degree=0):
-    fine_grained_degree = len(table_dict["cells"]) // 50
+async def table2text(table_dict, is_node_type=False, coarse_grained_degree=1, fine_grained_degree=0):
+    fine_grained_degree = 0
+    print("fine_grained_degree:",fine_grained_degree)
     left_index, up_index = table_dict["cells"][0]["colspan"][0], table_dict["cells"][0]["rowspan"][0]
     for i_cell in table_dict["cells"]:
         left_index = left_index if left_index <= i_cell["colspan"][0] else i_cell["colspan"][0]
@@ -65,8 +60,8 @@ def table2text(table_dict, is_node_type=False, coarse_grained_degree=1, fine_gra
             print("******表格类型，是一个复杂表格********")
             if not is_node_type:
                 table_dict = \
-                    kv_clf(table_dict, coarse_grained_degree, fine_grained_degree, checkpoint=[0, fine_grained_degree],
-                           language=language)[-1]
+                    (await kv_clf(table_dict, coarse_grained_degree, fine_grained_degree, checkpoint=[0, fine_grained_degree],
+                           language=language))[-1]
                 # print(table_dict)
             segmented_table, all_table_node, rows_head = table_seg(table_dict)
             segmented_table = sub_table_adjust(segmented_table, all_table_node)
@@ -108,16 +103,21 @@ def table2text(table_dict, is_node_type=False, coarse_grained_degree=1, fine_gra
         p_prompt = PromptTemplate(input_variables=["text"], template=polish_prompt_ch)
     else:
         p_prompt = PromptTemplate(input_variables=["text"], template=polish_prompt_en)
-    polish_chain = LLMChain(llm=ChatOpenAI(model=os.environ['MODEL_NAME']), prompt=p_prompt)
-    polish_caption = polish_chain.run(text=caption)
+    llm = ChatOpenAI(model=os.environ['MODEL_NAME'])
+    print("caption:", caption)
+    polish_chain = p_prompt | llm | StrOutputParser()
+    polish_caption = await polish_chain.ainvoke({"text": caption})
+    # polish_chain = LLMChain(llm=ChatOpenAI(model=os.environ['MODEL_NAME']), prompt=p_prompt)
+    # polish_caption = polish_chain.run(text=caption)
+    print("polish_caption:", polish_caption)
     return polish_caption
 
 
 if __name__ == "__main__":
     from tools.preprocess import any_format_to_json
-
+    import asyncio
     os.environ['OPENAI_API_KEY'] = "EMPTY"
     os.environ['OPENAI_API_BASE'] = "http://124.70.207.36:7002/v1"
     gt_table, propositions = any_format_to_json(r"E:\code\table_handle\tools\11.xlsx")
-    caption = table2text(gt_table, is_node_type=False, coarse_grained_degree=1, fine_grained_degree=20)
+    caption = asyncio.run(table2text(gt_table, is_node_type=False, coarse_grained_degree=1, fine_grained_degree=20))
     print(caption)
