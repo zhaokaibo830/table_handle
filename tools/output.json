@@ -3,26 +3,14 @@
         {
             "colspan": [
                 1,
-                4
+                1
             ],
             "rowspan": [
                 1,
                 1
             ],
-            "text": "所有漏洞收集（包含项目已涉及和未涉及的）",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                2,
-                2
-            ],
-            "text": "序号",
-            "node_type": "value"
+            "text": "姓名",
+            "node_type": "key"
         },
         {
             "colspan": [
@@ -30,10 +18,10 @@
                 2
             ],
             "rowspan": [
-                2,
-                2
+                1,
+                1
             ],
-            "text": "漏洞名称",
+            "text": "艾德琳",
             "node_type": "value"
         },
         {
@@ -42,11 +30,11 @@
                 3
             ],
             "rowspan": [
-                2,
-                2
+                1,
+                1
             ],
-            "text": "详细说明",
-            "node_type": "value"
+            "text": "性别",
+            "node_type": "key"
         },
         {
             "colspan": [
@@ -54,59 +42,47 @@
                 4
             ],
             "rowspan": [
-                2,
-                2
-            ],
-            "text": "解决方案",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
                 1,
                 1
             ],
-            "rowspan": [
-                3,
-                3
-            ],
-            "text": "1",
+            "text": "女",
             "node_type": "value"
         },
         {
             "colspan": [
-                2,
-                2
+                5,
+                5
             ],
             "rowspan": [
-                3,
-                3
+                1,
+                1
             ],
-            "text": "nacos认证授权漏洞",
+            "text": "出生日期",
+            "node_type": "key"
+        },
+        {
+            "colspan": [
+                6,
+                6
+            ],
+            "rowspan": [
+                1,
+                1
+            ],
+            "text": "1970-03-21 00:00:00",
             "node_type": "value"
         },
         {
             "colspan": [
-                3,
-                3
+                7,
+                7
             ],
             "rowspan": [
-                3,
-                3
+                1,
+                1
             ],
-            "text": "nacos旧版本中即使开启授权认证，但默认的加密key是固定写死的，造成信息泄露",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                3,
-                3
-            ],
-            "text": "按照最新的nacos版本进行升级部署，自定义配置key解决默认key问题",
-            "node_type": "value"
+            "text": "健康状况",
+            "node_type": "key"
         },
         {
             "colspan": [
@@ -114,11 +90,155 @@
                 1
             ],
             "rowspan": [
+                2,
+                2
+            ],
+            "text": "国籍",
+            "node_type": "key"
+        },
+        {
+            "colspan": [
+                2,
+                2
+            ],
+            "rowspan": [
+                2,
+                2
+            ],
+            "text": "美国",
+            "node_type": "value"
+        },
+        {
+            "colspan": [
+                3,
+                3
+            ],
+            "rowspan": [
+                2,
+                2
+            ],
+            "text": "年龄",
+            "node_type": "key"
+        },
+        {
+            "colspan": [
                 4,
                 4
             ],
-            "text": "2",
+            "rowspan": [
+                2,
+                2
+            ],
+            "text": "54岁",
             "node_type": "value"
+        },
+        {
+            "colspan": [
+                5,
+                5
+            ],
+            "rowspan": [
+                2,
+                2
+            ],
+            "text": "联系电话",
+            "node_type": "key"
+        },
+        {
+            "colspan": [
+                6,
+                6
+            ],
+            "rowspan": [
+                2,
+                2
+            ],
+            "text": "15458958888",
+            "node_type": "value"
+        },
+        {
+            "colspan": [
+                7,
+                7
+            ],
+            "rowspan": [
+                2,
+                2
+            ],
+            "text": "良好",
+            "node_type": "value"
+        },
+        {
+            "colspan": [
+                1,
+                1
+            ],
+            "rowspan": [
+                3,
+                6
+            ],
+            "text": "教育背景",
+            "node_type": "key"
+        },
+        {
+            "colspan": [
+                2,
+                2
+            ],
+            "rowspan": [
+                3,
+                3
+            ],
+            "text": "学位",
+            "node_type": "key"
+        },
+        {
+            "colspan": [
+                3,
+                3
+            ],
+            "rowspan": [
+                3,
+                3
+            ],
+            "text": "毕业院校",
+            "node_type": "key"
+        },
+        {
+            "colspan": [
+                4,
+                4
+            ],
+            "rowspan": [
+                3,
+                3
+            ],
+            "text": "学院",
+            "node_type": "key"
+        },
+        {
+            "colspan": [
+                5,
+                6
+            ],
+            "rowspan": [
+                3,
+                3
+            ],
+            "text": "专业",
+            "node_type": "key"
+        },
+        {
+            "colspan": [
+                7,
+                7
+            ],
+            "rowspan": [
+                3,
+                3
+            ],
+            "text": "毕业年份",
+            "node_type": "key"
         },
         {
             "colspan": [
@@ -129,7 +249,7 @@
                 4,
                 4
             ],
-            "text": "任意文件上传漏洞",
+            "text": "本科",
             "node_type": "value"
         },
         {
@@ -141,7 +261,7 @@
                 4,
                 4
             ],
-            "text": "1、恶意文件上传 没有限制文件上传后缀，导致恶意文件上传至服务器 2、任意文件上传，文件篡改 目前类似minio的oss文件服务系统默认生成的文件权限是可读可写的，因此会造成以PUT方式对原文件进行篡改等操作，造成恶劣影响",
+            "text": "莱斯大学",
             "node_type": "value"
         },
         {
@@ -153,31 +273,43 @@
                 4,
                 4
             ],
-            "text": "1.限制文件上传后缀（前后端必须一起做限制） 2.限制公开的oss文件链接只能以GET方式访问（从ng侧禁止文件服务的PUT,DELETE,POST等请求）",
+            "text": "通信学院",
             "node_type": "value"
         },
         {
             "colspan": [
-                1,
-                1
+                5,
+                6
+            ],
+            "rowspan": [
+                4,
+                4
+            ],
+            "text": "通信工程",
+            "node_type": "value"
+        },
+        {
+            "colspan": [
+                7,
+                7
+            ],
+            "rowspan": [
+                4,
+                4
+            ],
+            "text": "1993年",
+            "node_type": "value"
+        },
+        {
+            "colspan": [
+                2,
+                2
             ],
             "rowspan": [
                 5,
                 5
             ],
-            "text": "3",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                5,
-                5
-            ],
-            "text": "短信炸弹漏洞",
+            "text": "硕士",
             "node_type": "value"
         },
         {
@@ -187,9 +319,9 @@
             ],
             "rowspan": [
                 5,
-                5
+                6
             ],
-            "text": "1、短信发送次数和发送间隔限制 2、同一ip发送次数限制 3、伪造ip漏洞 4、发送前判断库里是否存在,不存在也返回发送成功，避免猜库 5、验证码复用问题",
+            "text": "杜克大学",
             "node_type": "value"
         },
         {
@@ -199,21 +331,33 @@
             ],
             "rowspan": [
                 5,
-                5
+                6
             ],
-            "text": "建议在所有发送验证码前加图形滑块码验证（不限于登录，修改密码等地方）",
+            "text": "计算机学院",
             "node_type": "value"
         },
         {
             "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                6,
+                5,
                 6
             ],
-            "text": "4",
+            "rowspan": [
+                5,
+                5
+            ],
+            "text": "计算机技术",
+            "node_type": "value"
+        },
+        {
+            "colspan": [
+                7,
+                7
+            ],
+            "rowspan": [
+                5,
+                5
+            ],
+            "text": "1996年",
             "node_type": "value"
         },
         {
@@ -225,31 +369,31 @@
                 6,
                 6
             ],
-            "text": "swagger接口暴漏",
+            "text": "博士",
             "node_type": "value"
         },
         {
             "colspan": [
-                3,
-                3
+                5,
+                6
             ],
             "rowspan": [
                 6,
                 6
             ],
-            "text": "未关闭Swagger或未做认证，导致Swagger-ui未授权访问",
+            "text": "计算机科学与技术",
             "node_type": "value"
         },
         {
             "colspan": [
-                4,
-                4
+                7,
+                7
             ],
             "rowspan": [
                 6,
                 6
             ],
-            "text": "做认证或者直接注释掉swagger对外暴漏的接口 如/v2/api-docs等",
+            "text": "2003年",
             "node_type": "value"
         },
         {
@@ -259,10 +403,10 @@
             ],
             "rowspan": [
                 7,
-                7
+                11
             ],
-            "text": "5",
-            "node_type": "value"
+            "text": "工作信息",
+            "node_type": "key"
         },
         {
             "colspan": [
@@ -273,44 +417,32 @@
                 7,
                 7
             ],
-            "text": "网关白名单接口管理问题",
-            "node_type": "value"
+            "text": "学校",
+            "node_type": "key"
         },
         {
             "colspan": [
                 3,
-                3
+                5
             ],
             "rowspan": [
                 7,
                 7
             ],
-            "text": "网关白名单的接口任意暴漏问题",
+            "text": "莱斯大学",
             "node_type": "value"
         },
         {
             "colspan": [
-                4,
-                4
+                6,
+                7
             ],
             "rowspan": [
                 7,
                 7
             ],
-            "text": "加强代码检查和管理，严禁随意暴漏接口，对外暴漏的接口也需要做加密加签等措施",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                8,
-                8
-            ],
-            "text": "6",
-            "node_type": "value"
+            "text": "爱好",
+            "node_type": "key"
         },
         {
             "colspan": [
@@ -321,1039 +453,163 @@
                 8,
                 8
             ],
-            "text": "敏感文件泄露",
-            "node_type": "value"
+            "text": "职位",
+            "node_type": "key"
         },
         {
             "colspan": [
                 3,
-                3
+                5
             ],
             "rowspan": [
                 8,
                 8
             ],
-            "text": "开发人员手动部署完成后的前端zip，tar.gz等压缩包忘记删除，导致前端源码整体泄露",
+            "text": "教授",
             "node_type": "value"
         },
         {
             "colspan": [
-                4,
-                4
+                6,
+                7
             ],
             "rowspan": [
                 8,
                 8
             ],
-            "text": "加强上线后检查和人员培训",
+            "text": "游泳",
             "node_type": "value"
         },
         {
             "colspan": [
-                1,
-                1
+                2,
+                2
             ],
             "rowspan": [
                 9,
                 9
+            ],
+            "text": "任教科目",
+            "node_type": "key"
+        },
+        {
+            "colspan": [
+                3,
+                5
+            ],
+            "rowspan": [
+                9,
+                9
+            ],
+            "text": "计算机组成原理",
+            "node_type": "value"
+        },
+        {
+            "colspan": [
+                6,
+                7
+            ],
+            "rowspan": [
+                9,
+                9
+            ],
+            "text": "招生名额",
+            "node_type": "key"
+        },
+        {
+            "colspan": [
+                2,
+                2
+            ],
+            "rowspan": [
+                10,
+                10
+            ],
+            "text": "研究领域",
+            "node_type": "key"
+        },
+        {
+            "colspan": [
+                3,
+                5
+            ],
+            "rowspan": [
+                10,
+                10
+            ],
+            "text": "计算机体系结构",
+            "node_type": "value"
+        },
+        {
+            "colspan": [
+                6,
+                6
+            ],
+            "rowspan": [
+                10,
+                10
+            ],
+            "text": "硕士名额",
+            "node_type": "key"
+        },
+        {
+            "colspan": [
+                7,
+                7
+            ],
+            "rowspan": [
+                10,
+                10
+            ],
+            "text": "博士名额",
+            "node_type": "key"
+        },
+        {
+            "colspan": [
+                2,
+                2
+            ],
+            "rowspan": [
+                11,
+                11
+            ],
+            "text": "任教时间段",
+            "node_type": "key"
+        },
+        {
+            "colspan": [
+                3,
+                5
+            ],
+            "rowspan": [
+                11,
+                11
+            ],
+            "text": "2003年至今",
+            "node_type": "value"
+        },
+        {
+            "colspan": [
+                6,
+                6
+            ],
+            "rowspan": [
+                11,
+                11
             ],
             "text": "7",
             "node_type": "value"
         },
         {
             "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                9,
-                9
-            ],
-            "text": "URL重定向漏洞",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                9,
-                9
-            ],
-            "text": "跳转到恶意页面",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                9,
-                9
-            ],
-            "text": "https://blog.csdn.net/weixin_46700042/article/details/108990392",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                10,
-                10
-            ],
-            "text": "8",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                10,
-                10
-            ],
-            "text": "spring boot actuator信息泄露",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                10,
-                10
-            ],
-            "text": "heapdump作为Actuator组件最为危险的Web端点，heapdump因未授权访问被恶意人员获取后进行分析可进一步获取敏感信息，泄露redis,nacos，mysql等密码",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                10,
-                10
-            ],
-            "text": "关闭actuator https://blog.csdn.net/weixin_38106322/article/details/126633127",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
+                7,
+                7
             ],
             "rowspan": [
                 11,
                 11
             ],
-            "text": "9",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                11,
-                11
-            ],
-            "text": "异常错误导致信息泄露",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                11,
-                11
-            ],
-            "text": "直接抛出的异常导致用户token，userId等关键信息泄露",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                11,
-                11
-            ],
-            "text": "统一的异常处理页面，详细报错信息在日志中体现，不能直接返回给前端",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                12,
-                12
-            ],
-            "text": "10",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                12,
-                12
-            ],
-            "text": "大量接口未授权访问",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                12,
-                12
-            ],
-            "text": "存在大量的未授权访问接口，可以在不经过认证、鉴权的情况下调用这些接口从而泄露了平台的信息",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                12,
-                12
-            ],
-            "text": "1、非必要接口添加至白名单  2、部分接口未做好认证、鉴权，导致非法调用从而泄露了平台信息。",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                13,
-                13
-            ],
-            "text": "11",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                13,
-                13
-            ],
-            "text": "垂直越权",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                13,
-                13
-            ],
-            "text": "普通用户即可直接调用管理员接口，泄露平台敏感信息及数据信息",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                13,
-                13
-            ],
-            "text": "除去免登录配置的接口外，其余所有接口必须进行越权校验",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                14,
-                14
-            ],
-            "text": "12",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                14,
-                14
-            ],
-            "text": "水平越权",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                14,
-                14
-            ],
-            "text": "相同权限的用户重置密码时，使用小王的token去修改用户小张的密码，从而造成水平越权。",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                14,
-                14
-            ],
-            "text": "在web层接收到操作请求后，在执行这个操作前，对请求的合法性进行校验。查询当前需要操作的资源是否归属当前session中的已登录用户；或者查询当前需要操作的资源是否是允许操作的其它用户。",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                15,
-                15
-            ],
-            "text": "13",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                15,
-                15
-            ],
-            "text": "泄露内网IP",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                15,
-                15
-            ],
-            "text": "泄露了内网IP",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                15,
-                15
-            ],
-            "text": "1、开发人员不要在源代码中、注释中包含有内网      IP 地址  2、合理配置 WEB 服务器，禁止在数据交互中传      输内网 IP地址  3、删除携带内网 IP 地址的页面，并制定完善的      安全编码策略，并且及时检查存在的页面代码      是否包含内部 IP 地址问题。",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                16,
-                16
-            ],
-            "text": "14",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                16,
-                16
-            ],
-            "text": "CORS跨域资源共享",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                16,
-                16
-            ],
-            "text": "CORS配置不当，导致任意来源可信，资源被恶意操作。",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                16,
-                16
-            ],
-            "text": "Access-Control-Allow-Origin不应该设置为null，也不建议设置为*，做好设置成受信的站点",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                17,
-                17
-            ],
-            "text": "15",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                17,
-                17
-            ],
-            "text": "Apache Kafka代码问题漏洞（CVE-2023-25194）",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                17,
-                17
-            ],
-            "text": "Apache Kafka Connect存在代码问题漏洞，攻击者可利用该漏洞在受害者的系统上执行任意代码",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                17,
-                17
-            ],
-            "text": "kafka版本升级至3.4.0",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                18,
-                18
-            ],
-            "text": "16",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                18,
-                18
-            ],
-            "text": "Apache Commons FileUpload拒绝服务漏洞（CVE-2023-24998）",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                18,
-                18
-            ],
-            "text": "Apache Commons FileUpload＜1.5版本中存在一处拒绝服务漏洞（CVE-2023-24998）。Commons FileUpload是Apache组织提供的免费的上传组件。由于Apache Commons FileUpload对请求部分要处理的数量未做限制，导致攻击者可以利用此漏洞恶意上传或一系列上传触发拒绝服务",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                18,
-                18
-            ],
-            "text": "目前，官方已发布新版本修复了该漏洞，请受影响的用户升级到安全版本https://tomcat.apache.org/security-10.html https://commons.apache.org/proper/commons-fileupload/security-reports.html",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                19,
-                19
-            ],
-            "text": "17",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                19,
-                19
-            ],
-            "text": "SQL注入",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                19,
-                19
-            ],
-            "text": "存在某一接口可以拼接sql命令，后端采用MyBatis框架操作SQL，其中使用${}参数符号会导致在SQL语句中注入原始字符串，导致存在sql注入。",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                19,
-                19
-            ],
-            "text": "1、改变${}传参方式, 对参数化查询是采用预编译查询方式  2: 过滤用户输入的特殊字符,如分号,单引号等,防止攻击者传 入恶意SQL代码片段  3、增加接口调用拦截，对内接口仅可内部服务调用，外部 无法访问",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                20,
-                20
-            ],
-            "text": "18",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                20,
-                20
-            ],
-            "text": "zk未授权访问",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                20,
-                20
-            ],
-            "text": "zookeeper安装部署时未增加认证，导致泄露zookeeper中的内容。",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                20,
-                20
-            ],
-            "text": "重新部署zookeeper，添加认证",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                21,
-                21
-            ],
-            "text": "19",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                21,
-                21
-            ],
-            "text": "跨站脚本攻击XSS",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                21,
-                21
-            ],
-            "text": "跨站脚本攻击(Cross Site Scripting)，为不和层叠样式表(Cascading Style Sheets, CSS)的缩写混淆，故将跨站脚本攻击缩写为XSS。恶意攻击者往Web页面里插入恶意Script代码，当用户浏览该页之时，嵌入其中Web里面的Script代码会被执行，从而达到恶意攻击用户的目的。在不同场景下，XSS有相应不同的表现形式，主要分为反射型、存储型以及DOM型的跨站脚本攻击，所造成的影响主要是窃取用户登录凭证（Cookies）、挂马攻击、页面访问挟持等。",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                21,
-                21
-            ],
-            "text": "代码中增加XSS过滤器，对每个请求的参数内容进行校验拦截，清除xss标记内容，如HTML标签,JS语句等。",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                22,
-                22
-            ],
-            "text": "20",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                22,
-                22
-            ],
-            "text": "SSL证书配置缺陷",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                22,
-                22
-            ],
-            "text": "访问站点提示certificate subject name 'm.cuisec.com' does not match target host name '116.181.11.252'    目标网站SSL证书配置存在缺陷，请查看SSL证书是否到期、证书是否吊销、证书域名是否不符。",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                22,
-                22
-            ],
-            "text": "合理配置SSL证书， 1. 需要配置符合PFS规范的加密套件，推荐配置：ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4:!DH:!DHE ； 2. 需要在服务端TLS协议中启用TLS1.2，推荐配置：TLSv1 TLSv1.1 TLSv1.2 ； 3. 需要保证当前域名与所使用的证书匹配； 4. 需要保证证书在有效期内； 5. 需要保证证书签发机构是可信的CA机构。 另参考 https://blog.51cto.com/czwanga/1925013",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                23,
-                23
-            ],
-            "text": "21",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                23,
-                23
-            ],
-            "text": "支持低版本TLS协议",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                23,
-                23
-            ],
-            "text": "在测试中发现服务器支持低版本的 TLS1.0和 TLS1.1协议，这些协议存在公开的漏洞建议，应该禁止使用。 TLS 1.0和 TLS 1.1可能会受到FREAK、POODLE、BEAST和CRIME等漏洞的影响",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                23,
-                23
-            ],
-            "text": "修改服务器配置，TLS协议仅支持TLSv1.2及以上。 1）nginx建议配置： # Enable TLSv1.2, disable SSLv3.0, TLSv1.0 and TLSv1.1 ssl_protocols TLSv1.2; # Enable modern TLS cipher suites ssl_ciphers  'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384'; # The order of cipher suites matters ssl_prefer_server_ciphers on;  2）apache配置 # Enable TLSv1.2, disable SSLv3.0, TLSv1.0 and TLSv1.1 SSLProtocol             all -SSLv3 -TLSv1 -TLSv1.1 # Enable modern TLS cipher suites SSLCipherSuite           ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384 # The order of cipher suites matters SSLHonorCipherOrder     on # Disable TLS compression SSLCompression          off # Necessary for Perfect Forward Secrecy (PFS) SSLSessionTickets       off",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                24,
-                24
-            ],
-            "text": "22",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                24,
-                24
-            ],
-            "text": "Apache Struts类加载器安全绕过漏洞",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                24,
-                24
-            ],
-            "text": "Apache Struts框架是一个一个基于 Java Servlets,JavaBeans, 和 JavaServer Pages (JSP)的Web应用框架的开源项目。    Apache Struts 存在安全绕过漏洞，攻击者利用漏洞绕过某些安全限制和执行未经授权的操作。 参考： http://www.cnvd.org.cn/flaw/show/CNVD-2014-02702",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                24,
-                24
-            ],
-            "text": "建议下载补丁进行修复，网址如下： http://struts.apache.org/",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                25,
-                25
-            ],
-            "text": "23",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                25,
-                25
-            ],
-            "text": "Grafana 身份认证绕过漏洞（CVE2023-3128）",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                25,
-                25
-            ],
-            "text": "=_xlfn.DISPIMG(\"ID_372B549E41954F118425AA7FB91986D5\",1)",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                25,
-                25
-            ],
-            "text": "升级版本至10.0.1、9.5.5、9.4.13、9.3.16、9.2.20  或 8.5.27及以上",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                26,
-                26
-            ],
-            "text": "24",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                26,
-                26
-            ],
-            "text": "Apache RocketMQ",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                26,
-                26
-            ],
-            "text": "影响版本  5.x <= 5.1.0 及4.x<=4.9.6",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                26,
-                26
-            ],
-            "text": "/",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                27,
-                27
-            ],
-            "text": "25",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                27,
-                27
-            ],
-            "text": "Spring Security 身份认证绕过漏洞",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                27,
-                27
-            ],
-            "text": "影响版本 Spring Security: 6.1.0 to 6.1.1 6.0.0 to 6.0.4 5.8.0 to 5.8.4 5.7.0 to 5.7.9 5.6.0 to 5.6.11",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                27,
-                27
-            ],
-            "text": "/",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                28,
-                28
-            ],
-            "text": "26",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                28,
-                28
-            ],
-            "text": "MinIO 信息泄露漏洞",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                28,
-                28
-            ],
-            "text": "RELEASE.2023-03-20T20-16-18Z >MINIO> = RELEASE.2019-12-17T23-16-337",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                28,
-                28
-            ],
-            "text": "/",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                1,
-                1
-            ],
-            "rowspan": [
-                29,
-                29
-            ],
-            "text": "27",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                2,
-                2
-            ],
-            "rowspan": [
-                29,
-                29
-            ],
-            "text": "Apache Kafka ConnectJNDI注入漏洞",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                3,
-                3
-            ],
-            "rowspan": [
-                29,
-                29
-            ],
-            "text": "2.3.0 <= Apache Kafka <= 3.3.2",
-            "node_type": "value"
-        },
-        {
-            "colspan": [
-                4,
-                4
-            ],
-            "rowspan": [
-                29,
-                29
-            ],
-            "text": "/",
+            "text": "2",
             "node_type": "value"
         }
     ]
