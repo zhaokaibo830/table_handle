@@ -25,18 +25,17 @@ async def input_json(item: Item = Body(...)):
     :param item: 接受的json不是文件
     :return:输出表格的描述
     """
-    # try:
-    for i_cell in item.content:
-        if "node_type" not in i_cell:
-            i_cell["node_type"] = "value"
-    print("-------------------input-----------------------------------")
-    print({"content": item.content})
-    print("-------------------------------------------------------------")
-    print(111111111111111111)
-    res = await table2text({"cells": item.content})
-    # except Exception as e:
-    #     print(e)
-    #     res = "表格理解出错！！！"
+    try:
+        for i_cell in item.content:
+            if "node_type" not in i_cell:
+                i_cell["node_type"] = "value"
+        print("-------------------input-----------------------------------")
+        print({"content": item.content})
+        print("-------------------------------------------------------------")
+        res = await table2text({"cells": item.content})
+    except Exception as e:
+        print(e)
+        res = "表格理解出错！！！"
     print("-------------------output-----------------------------------")
     print(res)
     print("-------------------------------------------------------------")
@@ -49,20 +48,20 @@ async def input_excel(file: UploadFile = File(...)):
     :param file: 接收excel文件
     :return: 输出表格的描述
     """
-    try:
+    # try:
         # 读取表格的json文件
-        f = open("temp.xlsx", 'wb')
-        data = file.file.read()
-        f.write(data)
-        f.close()
-        table_dict = excel_to_json("temp.xlsx")
-        print("-------------------读取excel-->json-----------------------------------")
-        print(table_dict)
-        print("-------------------------------------------------------------")
-        res = await table2text(table_dict)
-    except Exception as e:
-        print(e)
-        res = "表格理解出错！！！"
+    f = open("temp.xlsx", 'wb')
+    data = file.file.read()
+    f.write(data)
+    f.close()
+    table_dict = excel_to_json("temp.xlsx")
+    print("-------------------读取excel-->json-----------------------------------")
+    print(table_dict)
+    print("-------------------------------------------------------------")
+    res = await table2text(table_dict)
+    # except Exception as e:
+    #     print(e)
+    #     res = "表格理解出错！！！"
     print("-------------------output-----------------------------------")
     print(res)
     print("-------------------------------------------------------------")

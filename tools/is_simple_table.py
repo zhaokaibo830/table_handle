@@ -24,7 +24,7 @@ def have_next_level_head(i_node: Node, direct: str):
         return True
 
 
-def is_simple_table(simple_table: List, language):
+async def is_simple_table(simple_table: List, language):
     if len(simple_table) == 1:
         amended_table = []
         simple_table[0]["node_type"] = "value"
@@ -197,8 +197,8 @@ def is_simple_table(simple_table: List, language):
         pass
     elif left_is_head and up_is_head:
         temp_table_dict = \
-        kv_clf({"cells": simple_table}, coarse_grained_degree=1, fine_grained_degree=0, checkpoint=[0, 0],
-               language=language)[-1]
+            (await kv_clf({"cells": simple_table}, coarse_grained_degree=1, fine_grained_degree=0, checkpoint=[0, 0],
+               language=language))[-1]
         # print("temp_table_dict:",temp_table_dict)
         for i_node in all_table_node:
             for j_cell in temp_table_dict["cells"]:
@@ -306,3 +306,13 @@ def is_simple_table(simple_table: List, language):
         have_table_head = False
 
     return amended_table, unified_table, have_table_head
+
+if __name__ == "__main__":
+    from tools.preprocess import excel_to_json
+    from tools.func import language_judgement
+    table_dict = excel_to_json("1.xlsx")
+    print(table_dict)
+    language = language_judgement(table_dict["cells"])
+    whole_table_amended_table, whole_table_unified_table, whole_table_have_table_head = is_simple_table(
+        table_dict["cells"], language)
+    print(whole_table_amended_table)

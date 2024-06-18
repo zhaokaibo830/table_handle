@@ -49,7 +49,7 @@ async def table2text(table_dict, is_node_type=False, coarse_grained_degree=1, fi
             caption += "\n"
         pass
     else:
-        whole_table_amended_table, whole_table_unified_table, whole_table_have_table_head = is_simple_table(
+        whole_table_amended_table, whole_table_unified_table, whole_table_have_table_head = await is_simple_table(
             table_dict["cells"], language)
         segmented_table: List[Set[Node]] = []
         if whole_table_have_table_head:
