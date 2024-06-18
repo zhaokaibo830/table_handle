@@ -383,15 +383,15 @@ def any_format_to_json(file_path: str) -> Dict:
 
 
 if __name__ == '__main__':
-    image_path = r"D:\project\torchlearing\ceshi\table.png"
+    # image_path = r"D:\project\torchlearing\ceshi\table.png"
     excel_path = r"1.xlsx"
-    docx_file = "D:\\project\\torchlearing\\ceshi\\test.docx"
+    # docx_file = "D:\\project\\torchlearing\\ceshi\\test.docx"
     output_json_path = "output.json"
     table=excel_to_json(excel_path)
     with open('./output.json', 'w', encoding='utf-8') as f:
         # 使用json.dump()函数将序列化后的JSON格式的数据写入到文件中
         json.dump(table, f, indent=4, ensure_ascii=False)
-    print(table)
+    # print(table)
     # word_to_json(docx_file)
     # image_to_json(image_path)
     # any_format_to_json(docx_file)
