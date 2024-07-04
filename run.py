@@ -11,7 +11,7 @@ os.environ['OPENAI_API_KEY'] = "EMPTY"
 os.environ['OPENAI_API_BASE'] = "http://124.70.213.108:7009/v1"
 # os.environ['OPENAI_API_BASE'] = "http://10.8.0.6:7002/v1"
 os.environ['MODEL_NAME'] = "qwen1.5-14b-chat"
-
+#
 app = FastAPI()
 
 
@@ -99,4 +99,4 @@ async def input_json_file(file: UploadFile = File(...)):
 if __name__ == "__main__":
     for key, value in os.environ.items():
         print(f"{key}: {value}")
-    uvicorn.run(port=8005, app=app, host="0.0.0.0")
+    uvicorn.run(port=8006, app=app, host="0.0.0.0")

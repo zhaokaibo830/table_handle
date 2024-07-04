@@ -10,7 +10,7 @@ FROM python:3.8.18
 # Set environment variables
 ENV OPENAI_API_KEY EMPTY
 # 大模型的部署路径
-ENV OPENAI_API_BASE http://124.70.207.36:7002/v1
+ENV OPENAI_API_BASE http://124.70.213.108:7009/v1
 # 大模型的名字
 ENV MODEL_NAME qwen1.5-14b-chat
 
@@ -20,13 +20,15 @@ COPY table2text/ ./table2text/
 
 COPY requirements.txt ./
 
+# RUN pip install --upgrade pip
+
 RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 
 RUN pyarmor gen -O code/ ./table2text/*
 
 RUN rm -rf ./table2text
 
-EXPOSE 8005
+EXPOSE 8006
 
 WORKDIR ./code
 
