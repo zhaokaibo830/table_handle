@@ -2,7 +2,7 @@ import json
 from tools.table_seg import table_seg
 from tools.node import Node
 from tools.kv_clf import kv_clf
-from tools.simple_table2text import simple_table2text
+from tools.simple_table2summary import simple_table2summary
 from functools import cmp_to_key
 from typing import List, Set, Dict
 import uvicorn
@@ -24,7 +24,7 @@ from tools.func import is_rectangle
 from langchain_core.output_parsers import StrOutputParser
 
 
-async def table2text(table_dict, is_node_type=False, coarse_grained_degree=1, fine_grained_degree=0):
+async def table2summary(table_dict, is_node_type=False, coarse_grained_degree=1, fine_grained_degree=0):
     fine_grained_degree = 0
     print("fine_grained_degree:",fine_grained_degree)
     left_index, up_index = table_dict["cells"][0]["colspan"][0], table_dict["cells"][0]["rowspan"][0]
@@ -74,9 +74,9 @@ async def table2text(table_dict, is_node_type=False, coarse_grained_degree=1, fi
             segment_i.sort(key=cmp_to_key(cmp_node))
             if len(segment_i) == 2:
                 if language == "Chinese":
-                    caption += segment_i[0].text + "是" + segment_i[1].text + "。 "
+                    caption += segment_i[0].text + "是" + "()" + "。 "
                 else:
-                    caption += segment_i[0].text + "is" + segment_i[1].text + ". "
+                    caption += segment_i[0].text + "is" + "()" + ". "
             elif len(segment_i) > 2:
                 sub_table_cell = []
                 for segment_i_cell_j in segment_i:
@@ -91,7 +91,7 @@ async def table2text(table_dict, is_node_type=False, coarse_grained_degree=1, fi
                 # print(sub_table_cell)
                 try:
                     _, unified_table, have_table_head = sub_table_kv_amend(sub_table_cell)
-                    caption += simple_table2text(unified_table, have_table_head, language)
+                    caption += simple_table2summary(unified_table, have_table_head, language)
                 except Exception as e:
                     print("子表处理异常！！！！！！")
                     print(e)

@@ -25,7 +25,7 @@ polish_prompt_en = """
 
 polish_prompt_ch = """
             {text}
-            请把以上内容润色成人类习惯的描述方式。
+            以上是一个关于表格的表头描述模板，请用一段话叙述此表都包含了哪些信息。
             """
 
 sub_table_extract_prompt_en = """

@@ -2,7 +2,7 @@ import uvicorn
 from fastapi import FastAPI, File, UploadFile, Form, Body
 import os
 from tools.preprocess import excel_to_json
-from tools.table2text import table2text
+from tools.table2summary import table2summary
 import json
 from typing import List, Set, Dict
 from pydantic import BaseModel
@@ -32,7 +32,7 @@ async def input_json(item: Item = Body(...)):
         print("-------------------input-----------------------------------")
         print({"content": item.content})
         print("-------------------------------------------------------------")
-        res = await table2text({"cells": item.content})
+        res = await table2summary({"cells": item.content})
     except Exception as e:
         print(e)
         res = "表格理解出错！！！"
@@ -58,7 +58,7 @@ async def input_excel(file: UploadFile = File(...)):
     print("-------------------读取excel-->json-----------------------------------")
     print(table_dict)
     print("-------------------------------------------------------------")
-    res = await table2text(table_dict)
+    res = await table2summary(table_dict)
     # except Exception as e:
     #     print(e)
     #     res = "表格理解出错！！！"
@@ -85,7 +85,7 @@ async def input_json_file(file: UploadFile = File(...)):
         print("-------------------input-----------------------------------")
         print(table_dict)
         print("-------------------------------------------------------------")
-        res = await table2text({"cells": table_dict["content"]})
+        res = await table2summary({"cells": table_dict["content"]})
 
     except Exception as e:
         print(e)
