@@ -25,7 +25,7 @@ polish_prompt_en = """
 
 polish_prompt_ch = """
             {text}
-            请把以上内容润色成人类习惯的描述方式。
+            请客观把以上内容转换成人类习惯的描述方式，不要随意猜测为你或者我，只需要客观描述。
             """
 
 sub_table_extract_prompt_en = """
