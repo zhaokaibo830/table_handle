@@ -9,9 +9,8 @@ from pydantic import BaseModel
 
 os.environ['OPENAI_API_KEY'] = "EMPTY"
 os.environ['OPENAI_API_BASE'] = "http://124.70.213.108:7009/v1"
-# os.environ['OPENAI_API_BASE'] = "http://10.8.0.6:7002/v1"
 os.environ['MODEL_NAME'] = "qwen1.5-14b-chat"
-#
+
 app = FastAPI()
 
 
@@ -29,9 +28,9 @@ async def input_json(item: Item = Body(...)):
         for i_cell in item.content:
             if "node_type" not in i_cell:
                 i_cell["node_type"] = "value"
-        print("-------------------input-----------------------------------")
-        print({"content": item.content})
-        print("-------------------------------------------------------------")
+        # print("-------------------input-----------------------------------")
+        # print({"content": item.content})
+        # print("-------------------------------------------------------------")
         res = await table2summary({"cells": item.content})
     except Exception as e:
         print(e)
@@ -55,9 +54,9 @@ async def input_excel(file: UploadFile = File(...)):
     f.write(data)
     f.close()
     table_dict = excel_to_json("temp.xlsx")
-    print("-------------------读取excel-->json-----------------------------------")
-    print(table_dict)
-    print("-------------------------------------------------------------")
+    # print("-------------------读取excel-->json-----------------------------------")
+    # print(table_dict)
+    # print("-------------------------------------------------------------")
     res = await table2summary(table_dict)
     # except Exception as e:
     #     print(e)
@@ -82,9 +81,9 @@ async def input_json_file(file: UploadFile = File(...)):
         f.close()
         with open("temp.json", "r", encoding='utf-8') as f:
             table_dict: Dict = json.load(f)
-        print("-------------------input-----------------------------------")
-        print(table_dict)
-        print("-------------------------------------------------------------")
+        # print("-------------------input-----------------------------------")
+        # print(table_dict)
+        # print("-------------------------------------------------------------")
         res = await table2summary({"cells": table_dict["content"]})
 
     except Exception as e:

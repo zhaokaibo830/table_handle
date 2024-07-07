@@ -43,8 +43,8 @@ async def table_head_extract(text_list, language) -> List:
         extract_prompt = PromptTemplate(input_variables=["analysis_text"], template=table_head_extract_prompt_en)
     # print(sys.argv[3])
     # print(type(sys.argv[3]))
-    print("-----------------输出text-------------------------------------")
-    print(text)
+    # print("-----------------输出text-------------------------------------")
+    # print(text)
     tag = True
     table_head_temp: List = []
     while tag:
@@ -55,26 +55,26 @@ async def table_head_extract(text_list, language) -> List:
         # analysis_chain = analysis_chain | StrOutputParser()
         # chain = LLMChain(llm=ChatOpenAI(model=sys.argv[3]), prompt=prompt)
         analysis_text = await analysis_chain.ainvoke({"text": text})
-        print("-----------------输出大模型的analysis_text结果-------------------------------------")
-        print(analysis_text)
+        # print("-----------------输出大模型的analysis_text结果-------------------------------------")
+        # print(analysis_text)
         # output_chain = LLMChain(llm=ChatOpenAI(model=os.environ['MODEL_NAME'], temperature=0), prompt=extract_prompt)
         # table_head_result = await output_chain.arun(text=analysis_text)
         # output_chain |= StrOutputParser()
         llm = ChatOpenAI(model=os.environ['MODEL_NAME'], temperature=0)
         output_chain = extract_prompt | llm | StrOutputParser()
         table_head_result = await output_chain.ainvoke({"text": analysis_text})
-        print("-----------------输出大模型的table_head_extract结果-------------------------------------")
-        print(table_head_result)
+        # print("-----------------输出大模型的table_head_extract结果-------------------------------------")
+        # print(table_head_result)
         json_left_index, json_right_index = table_head_result.find("["), table_head_result.find("]")
         if json_left_index != -1 and json_right_index != -1:
             try:
-                print(table_head_result[json_left_index:json_right_index + 1])
+                # print(table_head_result[json_left_index:json_right_index + 1])
                 try:
                     table_head_temp = ast.literal_eval(table_head_result[json_left_index:json_right_index + 1])
                 except Exception as e:
                     raise Exception("ast.literal_eval解析错误\n" + str(e))
-                print("-------------table_head_temp------------------")
-                print(table_head_temp)
+                # print("-------------table_head_temp------------------")
+                # print(table_head_temp)
                 if not isinstance(table_head_temp, list):
                     raise Exception('返回结果不是一个列表！')
                 else:
