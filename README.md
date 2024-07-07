@@ -2,7 +2,7 @@
 ## 部署
 ### Dockerfile文件
 
-```python
+```bash
 FROM python:3.8.18
 
 ENV OPENAI_API_KEY EMPTY
