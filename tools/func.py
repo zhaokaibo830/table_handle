@@ -3,7 +3,7 @@ from tools.node import Node
 from typing import List, Set
 import numpy as np
 from typing import List, Set, Dict
-
+import requests
 def cmp_node(node1: Node, node2: Node):
     if node1.rowspan[0] < node2.rowspan[0]:
         return -1
@@ -114,6 +114,38 @@ def sub_table_adjust(segmented_table: List[Set[Node]], all_table_node: List[Node
             break
     return segmented_table
 
+def available_model(all_models: List[Dict]):
+    for i_models in all_models:
+        try:
+            model_name = i_models["MODEL_NAME"]
+            api_base = i_models["OPENAI_API_BASE"]
+            api_key = i_models["OPENAI_API_KEY"]
+            # 请求终端点
+            endpoint = "/completions"
+
+            # 完整 URL
+            url = api_base + endpoint
+
+            # 请求头
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json"
+            }
+
+            # 请求体数据
+            data = {
+                "model": model_name,
+                "prompt": "Hello, how are you?",
+                "max_tokens": 50
+            }
+
+            # 发送 POST 请求
+            response = requests.post(url, headers=headers, json=data)
+            if response.status_code == 200:
+                return model_name, api_base, api_key
+        except:
+            continue
+    return "", "", ""
 
 if __name__ == '__main__':
     from tools.preprocess import any_format_to_json
