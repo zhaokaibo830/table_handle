@@ -3,6 +3,9 @@ from tools.node import Node
 from typing import List, Set
 import numpy as np
 from typing import List, Set, Dict
+import requests
+import os
+
 
 def cmp_node(node1: Node, node2: Node):
     if node1.rowspan[0] < node2.rowspan[0]:
@@ -15,6 +18,7 @@ def cmp_node(node1: Node, node2: Node):
         else:
             return 1
 
+
 def cmp_dict(node1: Dict, node2: Dict):
     if node1["rowspan"][0] < node2["rowspan"][0]:
         return -1
@@ -25,6 +29,7 @@ def cmp_dict(node1: Dict, node2: Dict):
             return -1
         else:
             return 1
+
 
 def language_judgement(table: List) -> str:
     """
@@ -68,7 +73,8 @@ def sub_table_adjust(segmented_table: List[Set[Node]], all_table_node: List[Node
                     #     print(j_cell.text, end="#")
                     # print()
                     tag = False
-                    left_index, right_index = list(i_segmented_table)[0].colspan[0], list(i_segmented_table)[0].colspan[1]
+                    left_index, right_index = list(i_segmented_table)[0].colspan[0], list(i_segmented_table)[0].colspan[
+                        1]
                     up_index, down_index = list(i_segmented_table)[0].rowspan[0], list(i_segmented_table)[0].rowspan[1]
                     for cell in list(i_segmented_table):
                         left_index, right_index = min(left_index, cell.colspan[0]), max(right_index, cell.colspan[1])
@@ -115,9 +121,44 @@ def sub_table_adjust(segmented_table: List[Set[Node]], all_table_node: List[Node
     return segmented_table
 
 
+def available_model(all_models: List[Dict]):
+    for i_models in all_models:
+        try:
+            model_name = i_models["MODEL_NAME"]
+            api_base = i_models["OPENAI_API_BASE"]
+            api_key = i_models["OPENAI_API_KEY"]
+            # 请求终端点
+            endpoint = "/completions"
+
+            # 完整 URL
+            url = api_base + endpoint
+
+            # 请求头
+            headers = {
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json"
+            }
+
+            # 请求体数据
+            data = {
+                "model": model_name,
+                "prompt": "Hello, how are you?",
+                "max_tokens": 50
+            }
+
+            # 发送 POST 请求
+            response = requests.post(url, headers=headers, json=data)
+            if response.status_code == 200:
+                return model_name, api_base, api_key
+        except:
+            continue
+    return "", "", ""
+
+
 if __name__ == '__main__':
     from tools.preprocess import any_format_to_json
     from tools.table_seg import table_seg
+
     gt_table, propositions = any_format_to_json(r"E:\code\table_handle\tools\11.xlsx")
 
     segmented_table, all_table_node, rows_head = table_seg(gt_table)
