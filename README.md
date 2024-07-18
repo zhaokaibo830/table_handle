@@ -14,7 +14,7 @@
 ## 路由
 
 ```
-/api/table2text  #接收json
+/api/table2text  #接收json 
 /api/table2text_excel #接收excel文件
 /api/table2text_json_file #接收json文件
 ```
