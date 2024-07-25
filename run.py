@@ -24,10 +24,13 @@ def model_config(all_models):
     except Exception as e:
         print("模型配置出错！", e)
         os.environ['MODEL_NAME'], os.environ['OPENAI_API_BASE'], os.environ['OPENAI_API_KEY'] = "", "", ""
-
+    print("大模型的配置如下：")
     print("MODEL_NAME:", os.environ['MODEL_NAME'])
     print("OPENAI_API_BASE:", os.environ['OPENAI_API_BASE'])
     print("OPENAI_API_KEY:", os.environ['OPENAI_API_KEY'])
+
+
+model_config(all_models)
 
 
 class Item(BaseModel):
@@ -35,20 +38,36 @@ class Item(BaseModel):
 
 
 @app.post("/api/table2text")
-async def input_json(item: Item = Body(...)):
+async def input_json(json_table: str = Form(...), model_name: str = Form(""), openai_api_key: str = Form(""),
+                     openai_base_url: str = Form("")):
     """
-    :param item: 接受的json不是文件
+    :param item: 接受的表格是一个json字符串
+    :param model_name:大模型的名字，如果为空则使用提前设定好的
+    :param openai_api_key:大模型的密钥，如果为空则使用提前设定好的
+    :param openai_base_url:大模型的url，如果为空则使用提前设定好的
     :return:输出表格的描述
     """
-    model_config(all_models)
+    if model_name:
+        os.environ['MODEL_NAME'] = model_name
+    if openai_api_key:
+        os.environ['OPENAI_API_KEY'] = openai_api_key
+    if openai_base_url:
+        os.environ['OPENAI_API_BASE'] = openai_base_url
+    if model_name or openai_api_key or openai_base_url:
+        print("此次调用大模型配置变更结果如下：")
+        print("MODEL_NAME:", os.environ['MODEL_NAME'])
+        print("OPENAI_API_BASE:", os.environ['OPENAI_API_BASE'])
+        print("OPENAI_API_KEY:", os.environ['OPENAI_API_KEY'])
+
     try:
-        for i_cell in item.content:
+        item = json.loads(json_table)
+        for i_cell in item["content"]:
             if "node_type" not in i_cell:
                 i_cell["node_type"] = "value"
         print("-------------------input-----------------------------------")
-        print({"content": item.content})
+        print({"content": item["content"]})
         print("-------------------------------------------------------------")
-        res = await table2text({"cells": item.content})
+        res = await table2text({"cells": item["content"]})
     except Exception as e:
         print(e)
         res = "表格理解出错！！！"
@@ -59,12 +78,28 @@ async def input_json(item: Item = Body(...)):
 
 
 @app.post("/api/table2text_excel")
-async def input_excel(file: UploadFile = File(...)):
+async def input_excel(file: UploadFile = File(...), model_name: str = Form(""), openai_api_key: str = Form(""),
+                      openai_base_url: str = Form("")):
     """
     :param file: 接收excel文件
-    :return: 输出表格的描述
+    :param model_name:大模型的名字，如果为空则使用提前设定好的
+    :param openai_api_key:大模型的密钥，如果为空则使用提前设定好的
+    :param openai_base_url:大模型的url，如果为空则使用提前设定好的
+    :return:输出表格的描述
     """
-    model_config(all_models)
+    if model_name:
+        os.environ['MODEL_NAME'] = model_name
+    if openai_api_key:
+        os.environ['OPENAI_API_KEY'] = openai_api_key
+    if openai_base_url:
+        os.environ['OPENAI_API_BASE'] = openai_base_url
+
+    if model_name or openai_api_key or openai_base_url:
+        print("此次调用大模型配置变更结果如下：")
+        print("MODEL_NAME:", os.environ['MODEL_NAME'])
+        print("OPENAI_API_BASE:", os.environ['OPENAI_API_BASE'])
+        print("OPENAI_API_KEY:", os.environ['OPENAI_API_KEY'])
+
     try:
         # 读取表格的json文件
         f = open("temp.xlsx", 'wb')
@@ -86,12 +121,28 @@ async def input_excel(file: UploadFile = File(...)):
 
 
 @app.post("/api/table2text_json_file")
-async def input_json_file(file: UploadFile = File(...)):
+async def input_json_file(file: UploadFile = File(...), model_name: str = Form(""), openai_api_key: str = Form(""),
+                          openai_base_url: str = Form("")):
     """
     :param file: 接收的json是文件
-    :return:
+    :param model_name:大模型的名字，如果为空则使用提前设定好的
+    :param openai_api_key:大模型的密钥，如果为空则使用提前设定好的
+    :param openai_base_url:大模型的url，如果为空则使用提前设定好的
+    :return:输出表格的描述
     """
-    model_config(all_models)
+    if model_name:
+        os.environ['MODEL_NAME'] = model_name
+    if openai_api_key:
+        os.environ['OPENAI_API_KEY'] = openai_api_key
+    if openai_base_url:
+        os.environ['OPENAI_API_BASE'] = openai_base_url
+
+    if model_name or openai_api_key or openai_base_url:
+        print("此次调用大模型配置变更结果如下：")
+        print("MODEL_NAME:", os.environ['MODEL_NAME'])
+        print("OPENAI_API_BASE:", os.environ['OPENAI_API_BASE'])
+        print("OPENAI_API_KEY:", os.environ['OPENAI_API_KEY'])
+
     try:
         # 读取表格的json文件
         f = open("temp.json", 'wb')
