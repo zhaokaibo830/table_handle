@@ -1,4 +1,5 @@
 import os
+import time
 
 import requests
 from langchain.chat_models import ChatOpenAI
@@ -6,10 +7,10 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate
 import asyncio
 from langchain.chains import LLMChain
-os.environ['OPENAI_API_KEY'] = "EMPTY"
-# # os.environ['OPENAI_API_BASE'] = "http://124.70.213.108:7009/v1"
+os.environ['OPENAI_API_KEY'] = "sk-Mj4ShXvqWIAEexqoQfBqdwjAKvFeOcVGiiXn2heC3b9bukw4"
+os.environ['OPENAI_API_BASE'] = "https://api.chatanywhere.com.cn/v1"
 # os.environ['OPENAI_API_BASE'] = "http://10.8.0.6:7002/v1"
-# os.environ['MODEL_NAME'] = "qwen1.5-14b-chat"
+os.environ['MODEL_NAME'] = "gpt-3.5-turbo"
 
 async def test():
     polish_prompt_ch = """
@@ -36,10 +37,4 @@ async def test():
     polish_caption = await polish_chain.ainvoke({"text": caption})
     print(polish_caption)
 if __name__ == '__main__':
-    # asyncio.run(test())
-    from tools.func import available_model
-    from config import all_models
-    os.environ['MODEL_NAME'], os.environ['OPENAI_API_BASE'], os.environ['OPENAI_API_KEY']= available_model(all_models)
-    print(os.environ['MODEL_NAME'])
-    print(os.environ['OPENAI_API_BASE'])
     asyncio.run(test())
