@@ -144,4 +144,5 @@ async def chatgpt_smi(path):
 
 if __name__ == "__main__":
     # asyncio.run(our_smi(r"C:\Users\A\Desktop\表格数据集"))
-    asyncio.run(qwen_smi(r"C:\Users\A\Desktop\表格数据集"))
+    # asyncio.run(qwen_smi(r"C:\Users\A\Desktop\表格数据集"))
+    asyncio.run(chatgpt_smi(r"C:\Users\A\Desktop\表格数据集"))
